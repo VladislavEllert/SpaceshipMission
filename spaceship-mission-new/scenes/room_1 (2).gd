@@ -11,14 +11,13 @@ var current_messages: Array[String] = []
 const TYPE_SPEED: float = 0.03
 
 # --- Текстуры фона ---
-const BG_DEFAULT   := preload("res://ImagesBackground/result_Room1.png")
+const BG_DEFAULT   := preload("res://ImagesBackground/result_newfirstroom.png")
 const BG_ALTERNATE := preload("res://ImagesBackground/result_newfirstroomopenwad.png")
 
 # --- Текстуры реактора ---
-const REACTOR_COLORED := preload("res://ImagesBackground/reacterwithcolor (1).png")
+const REACTOR_COLORED := preload("res://items/newreactorsec.png")
 
 var bg_toggled: bool = false
-var hidden_item_taken: bool = false
 
 # --- Сообщения для ScreenButton ---
 var messages_no_card: Array[String] = [
@@ -83,12 +82,16 @@ func _ready() -> void:
 
 	reactor_button.pressed.connect(_on_reactor_pressed)
 
-	# Восстанавливаем только визуальное состояние реактора (как у робота через GameState)
+	# Восстанавливаем только визуальное состояние реактора
 	if GameState.reactor_picked_up:
 		reactor.visible = false
 		reactor_button.visible = false
 	elif GameState.reactor_colored:
 		reactor.texture = REACTOR_COLORED
+
+	# Если предмет уже был взят ранее, скрытая кнопка больше не должна появляться
+	if GameState.hidden_tool_taken:
+		hidden_button.visible = false
 
 # -------------------------------------------------------
 
@@ -103,7 +106,7 @@ func _on_bg_toggle_pressed() -> void:
 	bg_toggled = not bg_toggled
 	if bg_toggled:
 		room_background.texture = BG_ALTERNATE
-		if not hidden_item_taken:
+		if not GameState.hidden_tool_taken:
 			hidden_button.visible = true
 	else:
 		room_background.texture = BG_DEFAULT
@@ -111,17 +114,20 @@ func _on_bg_toggle_pressed() -> void:
 
 # --- Скрытая кнопка ---
 func _on_hidden_button_pressed() -> void:
-	if hidden_item_taken:
+	if GameState.hidden_tool_taken:
 		return
-	hidden_item_taken = true
+
+	GameState.hidden_tool_taken = true
 	hidden_button.visible = false
 
 	var main_game := get_tree().get_first_node_in_group("MainGame")
 	if main_game == null:
 		return
+
 	var inventory = main_game.get_node("UILayer/InventoryRoot")
 	if not inventory.is_open:
 		inventory._on_toggle_button_pressed()
+
 	inventory.add_item("tool")
 
 # --- Клик по реактору ---

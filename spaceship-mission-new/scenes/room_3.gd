@@ -4,7 +4,7 @@ signal go_left
 signal go_right
  
 # --- Текстура реактора ---
-const REACTOR_TEXTURE := preload("res://ImagesBackground/reacterwithcolor (1).png")
+const REACTOR_TEXTURE := preload("res://items/newreactorsec.png")
  
 # --- Typewriter ---
 const TYPE_SPEED: float = 0.03
