@@ -45,5 +45,6 @@ offset_top = 328.0
 offset_right = 80.0
 offset_bottom = 386.0
 icon = ExtResource("4_ip44v")
+flat = true
 
 [connection signal="pressed" from="ButtonExit" to="." method="_on_BackButton_pressed"]

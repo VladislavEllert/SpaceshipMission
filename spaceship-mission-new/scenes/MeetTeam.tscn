@@ -1,0 +1,61 @@
+[gd_scene load_steps=5 format=3 uid="uid://l1pejthq86os"]
+
+[ext_resource type="Texture2D" uid="uid://ck0ardtwt6pj2" path="res://ImagesBackground/result_roomfinalteam.png" id="1_dwllp"]
+[ext_resource type="Texture2D" uid="uid://b4g2d5nqipdyr" path="res://items/person.png" id="2_jstph"]
+[ext_resource type="Texture2D" uid="uid://ch4kncjxv2o5" path="res://items/right-arrow.png" id="3_ma1f5"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dwllp"]
+bg_color = Color(0.408329, 0.408329, 0.408329, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 15
+corner_radius_top_right = 15
+corner_radius_bottom_right = 15
+corner_radius_bottom_left = 15
+
+[node name="MeetTeam" type="Node2D"]
+
+[node name="Background" type="TextureRect" parent="."]
+offset_right = 1280.0
+offset_bottom = 718.0
+texture = ExtResource("1_dwllp")
+
+[node name="Person" type="Sprite2D" parent="."]
+position = Vector2(209, 508)
+scale = Vector2(0.417597, 0.413411)
+texture = ExtResource("2_jstph")
+
+[node name="Button" type="TextureButton" parent="."]
+offset_left = 1215.0
+offset_top = 360.0
+offset_right = 1265.0
+offset_bottom = 410.0
+texture_normal = ExtResource("3_ma1f5")
+
+[node name="DialogPanel" type="Panel" parent="."]
+visible = false
+offset_left = 59.0
+offset_top = 489.0
+offset_right = 1219.0
+offset_bottom = 680.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_dwllp")
+
+[node name="NextButton" type="TextureButton" parent="DialogPanel"]
+layout_mode = 0
+offset_left = 1092.0
+offset_top = 69.0
+offset_right = 1142.0
+offset_bottom = 119.0
+texture_normal = ExtResource("3_ma1f5")
+
+[node name="DialogLabel" type="RichTextLabel" parent="DialogPanel"]
+layout_mode = 0
+offset_left = 230.0
+offset_top = 19.0
+offset_right = 1070.0
+offset_bottom = 172.0
+
+[node name="Sprite2D" type="Sprite2D" parent="DialogPanel"]
