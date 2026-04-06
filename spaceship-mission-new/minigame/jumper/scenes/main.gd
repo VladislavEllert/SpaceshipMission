@@ -30,7 +30,6 @@ func _ready() -> void:
 	print('Ready')
 	print($GameOver/RetryButton)
 	$GameOver/RetryButton.pressed.connect(_restart_game)
-	_exit_button.pressed.connect(_exit_button_pressed)
 	new_game()
 
 func new_game() -> void:
@@ -173,6 +172,7 @@ func _win() -> void:
 func _update_score() -> void:
 	score_label.text = "СЧЕТ: " + str(score)
 
-func _exit_button_pressed() -> void:
+
+func _on_exit_pressed() -> void:
 	game_running = false
 	game_exit.emit()

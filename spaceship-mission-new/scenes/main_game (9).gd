@@ -297,6 +297,7 @@ func open_platformer() -> void:
 		return
 	platformer_instance = platformer_scene.instantiate()
 	platformer_instance.connect("game_won", Callable(self, "on_platformer_solved"))
+	platformer_instance.connect("game_exit", Callable(self, "close_platformer"))
 	$MiniGameLayer.add_child(platformer_instance)
 	$UILayer.visible = false
 
