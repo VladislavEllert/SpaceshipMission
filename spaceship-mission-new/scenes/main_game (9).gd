@@ -301,7 +301,8 @@ func open_platformer() -> void:
 	$UILayer.visible = false
 
 func close_platformer() -> void:
-	if platformer_instance:
+	if is_instance_valid(platformer_instance):
+		$MiniGameLayer.remove_child(platformer_instance)
 		platformer_instance.queue_free()
 		platformer_instance = null
 	get_tree().paused = false
@@ -359,7 +360,8 @@ func open_pipe_game() -> void:
 	$UILayer.visible = false
 
 func close_pipe_game() -> void:
-	if pipe_game_instance:
+	if is_instance_valid(pipe_game_instance):
+		$MiniGameLayer.remove_child(pipe_game_instance)
 		pipe_game_instance.queue_free()
 		pipe_game_instance = null
 	get_tree().paused = false
@@ -382,7 +384,8 @@ func open_jumper() -> void:
 	$UILayer.visible = false
 
 func close_jumper() -> void:
-	if jumper_instance:
+	if is_instance_valid(jumper_instance):
+		$MiniGameLayer.remove_child(jumper_instance)
 		jumper_instance.queue_free()
 		jumper_instance = null
 	get_tree().paused = false

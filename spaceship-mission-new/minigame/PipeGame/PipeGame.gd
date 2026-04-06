@@ -86,7 +86,7 @@ var _tex_rects:  Array = []
 var _textures:   Dictionary = {}
 
 @onready var _grid_container: GridContainer = $GridContainer
-@onready var _win_label:      Label         = $WinLabel
+@onready var _win_overlay:    Control       = $WinOverlay
 @onready var _exit_button:    TextureButton = $TextureButton
 @onready var _check_button:   Button        = $CheckButton
 
@@ -96,10 +96,12 @@ var _red_flash: ColorRect
 
 # ── Life-cycle ─────────────────────────────────────────────────────────────────
 func _ready() -> void:
-	_win_label.z_index = 10  # draw above TextureRect background
+	_win_overlay.z_index = 10  # draw above TextureRect background
+	_win_overlay.size = get_viewport().get_visible_rect().size
 	_exit_button.pressed.connect(_on_exit_pressed)
 	_check_button.pressed.connect(_on_check_pressed)
 	_style_check_button()
+	_style_win_panel()
 	_load_textures()
 	_setup_puzzle()
 	_build_grid()
@@ -214,6 +216,13 @@ func _style_check_button() -> void:
 	_check_button.add_theme_font_size_override("font_size", 28)
 
 
+# ── Win overlay panel style ────────────────────────────────────────────────────
+func _style_win_panel() -> void:
+	var sb := StyleBoxFlat.new()
+	sb.bg_color = Color(0, 0, 0, 0.75)
+	$WinOverlay/CenterContainer/PanelContainer.add_theme_stylebox_override("panel", sb)
+
+
 # ── Input ──────────────────────────────────────────────────────────────────────
 func _on_cell_input(event: InputEvent, idx: int) -> void:
 	if event is InputEventMouseButton \
@@ -231,13 +240,22 @@ func _on_check_pressed() -> void:
 		return
 	if _check_win_by_flow():
 		_won = true
-		_win_label.show()
-		await get_tree().create_timer(2.0).timeout
-		puzzle_solved.emit()
+		_on_win()
 	else:
 		_red_flash.show()
 		await get_tree().create_timer(1.0).timeout
 		_red_flash.hide()
+
+
+func _on_win() -> void:
+	# 1. Stop all input
+	set_process_input(false)
+	# 2. Show the ПОБЕДА overlay
+	_win_overlay.visible = true
+	# 3. Wait 2 seconds
+	await get_tree().create_timer(2.0).timeout
+	# 4. Signal win to the main game (main_game closes the overlay and returns to room 3)
+	puzzle_solved.emit()
 
 
 # ── Win check: every non-empty tile must be at its correct rotation ───────────

@@ -14,6 +14,7 @@ var ship_panel_opened: bool = false
 var ship_fully_solved: bool = false
  
 # Реактор — единственное что нужно сохранять между комнатами
+var reactor_colored: bool = false     # реактор починен инструментом в Room1
 var reactor_picked_up: bool = false   # реактор забрали из Room1 в инвентарь
 var reactor_installed: bool = false   # реактор установлен в Room3
  

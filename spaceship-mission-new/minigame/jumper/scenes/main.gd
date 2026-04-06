@@ -24,11 +24,13 @@ var _flag_node: Node = null
 @onready var start_label := $HUD/StartLabel
 @onready var game_over_node := $GameOver
 @onready var win_node := $Win
+@onready var _exit_button: TextureButton = $HUD/Exit
 
 func _ready() -> void:
 	print('Ready')
 	print($GameOver/RetryButton)
 	$GameOver/RetryButton.pressed.connect(_restart_game)
+	_exit_button.pressed.connect(_exit_button_pressed)
 	new_game()
 
 func new_game() -> void:
@@ -171,11 +173,6 @@ func _win() -> void:
 func _update_score() -> void:
 	score_label.text = "СЧЕТ: " + str(score)
 
-func _on_close() -> void:
-	var main_game := get_tree().get_first_node_in_group("MainGame")
-	if main_game:
-		main_game.close_jumper()
-		
 func _exit_button_pressed() -> void:
 	game_running = false
-	emit_signal("game_exit")
+	game_exit.emit()

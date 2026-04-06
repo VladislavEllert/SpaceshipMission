@@ -3,15 +3,11 @@
 [ext_resource type="Script" uid="uid://baywxa8qxcqpr" path="res://minigame/jumper/scenes/main.gd" id="1_jmain"]
 [ext_resource type="PackedScene" uid="uid://c7682rnfolln5" path="res://minigame/jumper/scenes/player.tscn" id="2_jmain"]
 [ext_resource type="Texture2D" uid="uid://c13a6h4iv6bw4" path="res://items/left-arrow.png" id="3_scwe8"]
-
-[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_4dhqc"]
-load_path = "res://.godot/imported/layer1.png-8aefb0a5985dbab0a45e2e982cfe6f41.ctex"
+[ext_resource type="Texture2D" uid="uid://bdo1rhatb8p2y" path="res://minigame/jumper/images/bg/layer1.png" id="4_jmain"]
+[ext_resource type="Texture2D" uid="uid://b2vbhcy0a07ca" path="res://minigame/jumper/images/bg/land.png" id="5_jmain"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_jgnd"]
 size = Vector2(1280, 119)
-
-[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_scwe8"]
-load_path = "res://.godot/imported/layer_ground.png-0faf72ee584c60215c39bd710393df87.ctex"
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jgo"]
 bg_color = Color(0.12, 0.12, 0.35, 0.88)
@@ -25,7 +21,7 @@ script = ExtResource("1_jmain")
 
 [node name="BgSprite" type="Sprite2D" parent="."]
 scale = Vector2(1.00078, 1.00139)
-texture = SubResource("CompressedTexture2D_4dhqc")
+texture = ExtResource("4_jmain")
 centered = false
 
 [node name="Ground" type="StaticBody2D" parent="."]
@@ -38,7 +34,7 @@ shape = SubResource("RectangleShape2D_jgnd")
 [node name="GroundSprite" type="Sprite2D" parent="Ground"]
 position = Vector2(0, 603)
 scale = Vector2(1.00234, 0.414286)
-texture = SubResource("CompressedTexture2D_scwe8")
+texture = ExtResource("5_jmain")
 centered = false
 
 [node name="Player" parent="." instance=ExtResource("2_jmain")]
@@ -63,6 +59,13 @@ theme_override_font_sizes/font_size = 42
 text = "КЛИКНИ ЧТОБЫ НАЧАТЬ"
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="Exit" type="TextureButton" parent="HUD"]
+offset_left = 18.0
+offset_top = 317.0
+offset_right = 68.0
+offset_bottom = 367.0
+texture_normal = ExtResource("3_scwe8")
 
 [node name="GameOver" type="CanvasLayer" parent="."]
 visible = false
@@ -105,12 +108,4 @@ text = "ПОБЕДА!"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Exit" type="TextureButton" parent="."]
-offset_left = 18.0
-offset_top = 317.0
-offset_right = 68.0
-offset_bottom = 367.0
-texture_normal = ExtResource("3_scwe8")
-
 [connection signal="pressed" from="GameOver/RetryButton" to="." method="_restart_game"]
-[connection signal="pressed" from="Exit" to="." method="_exit_button_pressed"]
