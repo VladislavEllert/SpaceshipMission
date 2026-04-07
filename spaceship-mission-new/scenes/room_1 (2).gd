@@ -43,6 +43,10 @@ var messages_reactor_done: Array[String] = [
 	"✅ Готово! Реактор восстановлен. Можно забрать его.",
 ]
 
+var messages_door_locked: Array[String] = [
+	"Дверь заблокирована",
+]
+
 var active_dialog: Panel = null
 var active_label: RichTextLabel = null
 var active_next: TextureButton = null
@@ -60,6 +64,7 @@ var active_next: TextureButton = null
 @onready var hidden_button: TextureButton    = $HiddenButton
 @onready var reactor: Sprite2D               = $Reactor
 @onready var reactor_button: TextureButton   = $ReactorButton
+@onready var door_button: TextureButton      = $Door
 
 func _ready() -> void:
 	$LeftArrow.pressed.connect(_on_left_pressed)
@@ -81,6 +86,7 @@ func _ready() -> void:
 	hidden_button.pressed.connect(_on_hidden_button_pressed)
 
 	reactor_button.pressed.connect(_on_reactor_pressed)
+	door_button.pressed.connect(_on_door_pressed)
 
 	# Восстанавливаем только визуальное состояние реактора
 	if GameState.reactor_picked_up:
@@ -159,6 +165,9 @@ func _on_reactor_pressed() -> void:
 		if not inventory.is_open:
 			inventory._on_toggle_button_pressed()
 		inventory.add_item("reactor")
+
+func _on_door_pressed() -> void:
+	_open_dialog(screen_dialog, screen_label, screen_next, messages_door_locked)
 
 func _open_screen_dialog(messages: Array[String]) -> void:
 	_open_dialog(screen_dialog, screen_label, screen_next, messages)
