@@ -95,13 +95,10 @@ offset_right = 358.0
 offset_bottom = 416.0
 flat = true
 
-[node name="SolvedBannerPlatformer" type="ColorRect" parent="."]
+[node name="SolvedBannerPlatformer" type="Polygon2D" parent="."]
 visible = false
-offset_left = 327.0
-offset_top = 243.0
-offset_right = 356.0
-offset_bottom = 283.0
 color = Color(0.447059, 0.658824, 0.223529, 0.65098)
+polygon = PackedVector2Array(326, 234, 324, 279, 356, 283, 357, 243)
 
 [node name="ButtonJumper" type="Button" parent="."]
 offset_left = 416.0
@@ -112,7 +109,7 @@ flat = true
 
 [node name="SolvedBannerJumper" type="Polygon2D" parent="."]
 visible = false
-position = Vector2(1, -1)
+position = Vector2(0, -1)
 color = Color(0.447059, 0.658824, 0.223529, 0.65098)
 polygon = PackedVector2Array(325, 232, 324.435, 257.997, 324, 281, 338, 285, 357, 283, 356, 242)
 

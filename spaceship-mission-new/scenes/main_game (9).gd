@@ -387,7 +387,8 @@ func open_jumper() -> void:
 	jumper_instance.connect("game_exit", Callable(self, "close_jumper"))
 	$MiniGameLayer.add_child(jumper_instance)
 	$UILayer.visible = false
-	input_blocker.visible = true
+	if current_room:
+		current_room.visible = false
 
 func close_jumper() -> void:
 	if is_instance_valid(jumper_instance):
@@ -396,7 +397,6 @@ func close_jumper() -> void:
 		jumper_instance = null
 	get_tree().paused = false
 	$UILayer.visible = true
-	input_blocker.visible = false
 	room_index = 3
 	_load_room(room_index)
 

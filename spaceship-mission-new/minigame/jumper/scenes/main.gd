@@ -53,8 +53,6 @@ func new_game() -> void:
 	win_node.hide()
 	start_label.show()
 	_update_score()
-	var btn: Button = $GameOver/RetryButton
-	btn.button_down.connect(_restart_game)
 
 func _get_current_speed() -> float:
 	var t := float(score) / float(WIN_SCORE)
