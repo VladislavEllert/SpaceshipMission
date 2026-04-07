@@ -179,6 +179,10 @@ position = Vector2(119, 92)
 scale = Vector2(0.291788, 0.316406)
 texture = ExtResource("6_s61je")
 
+[node name="ReactorGlow" type="Polygon2D" parent="."]
+visible = false
+color = Color(0.447059, 0.658824, 0.223529, 0.65098)
+
 [connection signal="pressed" from="LeftArrow" to="." method="_on_left_pressed"]
 [connection signal="pressed" from="RightArrow" to="." method="_on_right_pressed"]
 [connection signal="pressed" from="Minigame/15Puzzels" to="." method="_on_puzzle_button_pressed"]

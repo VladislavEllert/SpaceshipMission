@@ -25,6 +25,7 @@ var reactor_installed: bool = false
  
 @onready var reactor_button: TextureButton  = $ReactorButton
 @onready var reactor_place: Sprite2D        = $ReactorPlace
+@onready var reactor_glow: Polygon2D        = $ReactorGlow
  
 # Диалоговая панель — добавь в сцену узлы как описано ниже
 @onready var dialog_panel: Panel            = $DialogPanel
@@ -44,6 +45,7 @@ func _ready() -> void:
 		reactor_installed = true
 		reactor_place.texture = REACTOR_TEXTURE
 		reactor_place.visible = true
+		reactor_glow.visible = true
 	else:
 		reactor_place.visible = false
  
@@ -69,6 +71,7 @@ func _on_reactor_button_pressed() -> void:
 		GameState.reactor_installed = true  # сохраняем в глобальный стейт
 		reactor_place.texture = REACTOR_TEXTURE
 		reactor_place.visible = true
+		reactor_glow.visible = true
 		inventory.remove_item("reactor")
 		inventory.clear_selection()
 		_open_dialog(messages_reactor_installed)
