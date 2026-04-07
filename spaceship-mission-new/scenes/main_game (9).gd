@@ -23,6 +23,11 @@ var jumper_scene := preload("res://minigame/jumper/scenes/main.tscn")
 var jumper_instance: Node = null
 var jumper_solved: bool = false
 
+# LaserMirror
+var laser_mirror_scene := preload("res://minigame/LaserMirror/LaserMirror.tscn")
+var laser_mirror_instance: Node = null
+var laser_mirror_solved: bool = false
+
 # PipeGame
 var pipe_game_scene := preload("res://minigame/PipeGame/PipeGame.tscn")
 var pipe_game_instance: Node = null
@@ -182,6 +187,11 @@ func _load_room(index: int) -> void:
 		var banner_pipe := current_room.get_node_or_null("SolvedBannerPipeGame")
 		if banner_pipe:
 			banner_pipe.visible = true
+
+	if index == 3 and laser_mirror_solved and current_room:
+		var banner_laser := current_room.get_node_or_null("SolvedBannerLaserMirror")
+		if banner_laser:
+			banner_laser.visible = true
 
 func _on_room_go_left() -> void:
 	var next := room_index - 1
@@ -404,6 +414,33 @@ func on_jumper_solved() -> void:
 	jumper_solved = true
 	_check_power_solved()
 	close_jumper()
+
+# -------- LaserMirror --------
+func open_laser_mirror() -> void:
+	if laser_mirror_instance != null:
+		return
+	laser_mirror_instance = laser_mirror_scene.instantiate()
+	laser_mirror_instance.connect("puzzle_solved", Callable(self, "on_laser_mirror_solved"))
+	laser_mirror_instance.connect("minigame_closed", Callable(self, "close_laser_mirror"))
+	$MiniGameLayer.add_child(laser_mirror_instance)
+	$UILayer.visible = false
+	if current_room:
+		current_room.visible = false
+
+func close_laser_mirror() -> void:
+	if is_instance_valid(laser_mirror_instance):
+		$MiniGameLayer.remove_child(laser_mirror_instance)
+		laser_mirror_instance.queue_free()
+		laser_mirror_instance = null
+	get_tree().paused = false
+	$UILayer.visible = true
+	room_index = 3
+	_load_room(room_index)
+
+func on_laser_mirror_solved() -> void:
+	laser_mirror_solved = true
+	_check_power_solved()
+	close_laser_mirror()
 
 func _check_power_solved() -> void:
 	if puzzle_solved_15 and flask_solved and pipe_game_solved and (jumper_solved or platformer_solved):

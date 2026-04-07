@@ -37,6 +37,8 @@ var win_panel: Control
 var _solved := false
 var _source_pos := Vector2i(0, 0)  # x = col, y = row
 
+@onready var _exit_button: TextureButton = $Exit
+
 
 # ────────────────────────────────────────────────────────────────────────────
 func _ready() -> void:
@@ -46,6 +48,7 @@ func _ready() -> void:
 	_redraw_laser()              # 4. лазер
 	queue_redraw()               # 5. перерисовка _draw()
 	_create_all_touch_buttons()  # 6. ПОСЛЕДНИМ — кнопки поверх всего
+	_exit_button.pressed.connect(_on_exit)
 
 
 # ── Инициализация пазла ───────────────────────────────────────────────────────
@@ -193,15 +196,6 @@ func _build_ui() -> void:
 	hint.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(hint)
 
-	# Кнопка выхода ✕
-	var exit_btn := Button.new()
-	exit_btn.text = "✕"
-	exit_btn.position = Vector2(1215, 8)
-	exit_btn.size = Vector2(55, 42)
-	exit_btn.add_theme_font_size_override("font_size", 22)
-	exit_btn.pressed.connect(_on_exit)
-	add_child(exit_btn)
-
 	# ── Панель победы ──────────────────────────────────────────────────────
 	win_panel = Control.new()
 	win_panel.name = "WinPanel"
@@ -253,7 +247,7 @@ func _build_ui() -> void:
 	close_btn.position = Vector2(440, 390)
 	close_btn.size = Vector2(400, 60)
 	close_btn.add_theme_font_size_override("font_size", 24)
-	close_btn.pressed.connect(_on_exit)
+	close_btn.pressed.connect(func(): emit_signal("puzzle_solved"))
 	win_panel.add_child(close_btn)
 
 
@@ -292,7 +286,7 @@ func _on_cell_tapped(col: int, row: int) -> void:
 
 # ── Победа и выход ────────────────────────────────────────────────────────────
 
-## Вспышка лазера → пауза → панель победы + сигнал родителю
+## Вспышка лазера → пауза → панель победы → авто-закрытие через 2.5с
 func _on_win() -> void:
 	_solved = true
 	var tw := create_tween()
@@ -302,6 +296,9 @@ func _on_win() -> void:
 	if not is_inside_tree():
 		return
 	win_panel.visible = true
+	await get_tree().create_timer(2.5).timeout
+	if not is_inside_tree():
+		return
 	emit_signal("puzzle_solved")
 
 

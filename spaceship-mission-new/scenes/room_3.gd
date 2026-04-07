@@ -158,3 +158,11 @@ func _on_pipe_game_button_pressed() -> void:
 	if main_game.pipe_game_solved:
 		return
 	main_game.open_pipe_game()
+
+func _on_laser_mirror_button_pressed() -> void:
+	var main_game := get_tree().get_first_node_in_group("MainGame")
+	if main_game == null:
+		return
+	if main_game.laser_mirror_solved:
+		return
+	main_game.open_laser_mirror()
