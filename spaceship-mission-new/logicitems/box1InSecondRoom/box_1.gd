@@ -50,9 +50,6 @@ func _open_chest() -> void:
 	if main_game:
 		main_game.on_chest1_solved()
 		main_game.inventory.add_item("keycard")
-		var inventory = main_game.get_node("UILayer/InventoryRoot")
-		if not inventory.is_open:
-			inventory._on_toggle_button_pressed()
 
 	await get_tree().create_timer(0.7).timeout
 	_close_chest()

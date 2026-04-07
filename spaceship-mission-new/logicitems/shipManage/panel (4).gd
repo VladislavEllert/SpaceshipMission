@@ -226,6 +226,11 @@ func _on_game_won() -> void:
 	GameState.panel_game_won = true
 	GameState.ship_fully_solved = true
 
+	dialog_messages = ["Корабль откалиброван"]
+	dialog_index = 0
+	dialog_box.visible = true
+	_show_dialog_message(0)
+
 func _random_far_pos(from: Vector2) -> Vector2:
 	var pos: Vector2
 	for _i in range(20):

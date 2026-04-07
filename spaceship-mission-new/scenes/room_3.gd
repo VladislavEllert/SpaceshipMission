@@ -71,8 +71,6 @@ func _on_reactor_button_pressed() -> void:
 		reactor_place.visible = true
 		inventory.remove_item("reactor")
 		inventory.clear_selection()
-		if inventory.is_open:
-			inventory._on_toggle_button_pressed()
 		_open_dialog(messages_reactor_installed)
 	else:
 		_open_dialog(messages_no_reactor)
