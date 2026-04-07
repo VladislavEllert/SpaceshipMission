@@ -11,11 +11,12 @@ func _ready() -> void:
 	# Строки статуса — меняются в зависимости от прогресса
 	var nav     = "Навигация - настроена ✅" if GameState.ship_fully_solved else "Навигация - сбита ❌"
 	var reactor = "Ядро - восстановлено ✅" if GameState.reactor_installed  else "Ядро - отказ ❌"
- 
+	var power   = "Питание - настроено ✅" if GameState.power_solved        else "Питание - отключено ❌"
+
 	full_text = (
 		"СТАТУС КОРАБЛЯ: КРИТИЧЕСКИЙ\n" +
 		reactor + "\n" +
-		"Питание - отключено ❌\n" +
+		power + "\n" +
 		"Дверь блока - заблокирована ❌\n" +
 		nav + "\n" +
 		"Последняя запись бортового дневника была сохранена в памяти робота ARIA ✅"

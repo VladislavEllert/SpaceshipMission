@@ -215,6 +215,7 @@ func close_board() -> void:
 
 func on_board_solved() -> void:
 	puzzle_solved_15 = true
+	_check_power_solved()
 	if current_room and current_room.name == "Room3":
 		var banner := current_room.get_node_or_null("SolvedBanner15")
 		if banner:
@@ -241,6 +242,7 @@ func close_flask() -> void:
 
 func on_flask_solved() -> void:
 	flask_solved = true
+	_check_power_solved()
 	close_flask()
 
 # -------- massage --------
@@ -313,6 +315,7 @@ func close_platformer() -> void:
 
 func on_platformer_solved() -> void:
 	platformer_solved = true
+	_check_power_solved()
 	close_platformer()
 
 # -------- ball --------
@@ -372,6 +375,7 @@ func close_pipe_game() -> void:
 
 func on_pipe_game_solved() -> void:
 	pipe_game_solved = true
+	_check_power_solved()
 	close_pipe_game()
 
 # -------- jumper --------
@@ -383,6 +387,7 @@ func open_jumper() -> void:
 	jumper_instance.connect("game_exit", Callable(self, "close_jumper"))
 	$MiniGameLayer.add_child(jumper_instance)
 	$UILayer.visible = false
+	input_blocker.visible = true
 
 func close_jumper() -> void:
 	if is_instance_valid(jumper_instance):
@@ -391,9 +396,15 @@ func close_jumper() -> void:
 		jumper_instance = null
 	get_tree().paused = false
 	$UILayer.visible = true
+	input_blocker.visible = false
 	room_index = 3
 	_load_room(room_index)
 
 func on_jumper_solved() -> void:
 	jumper_solved = true
+	_check_power_solved()
 	close_jumper()
+
+func _check_power_solved() -> void:
+	if puzzle_solved_15 and flask_solved and pipe_game_solved and (jumper_solved or platformer_solved):
+		GameState.power_solved = true

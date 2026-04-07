@@ -149,6 +149,7 @@ func on_board_solved() -> void:
 		var banner := current_room.get_node_or_null("SolvedBanner15")
 		if banner:
 			banner.visible = true
+	_check_power_solved()
 
 # -------- FlaskPuzzel --------
 func open_flask() -> void:
@@ -171,6 +172,7 @@ func close_flask() -> void:
 
 func on_flask_solved() -> void:
 	flask_solved = true
+	_check_power_solved()
 	close_flask()
 
 # -------- massage --------
@@ -241,6 +243,7 @@ func close_platformer() -> void:
 
 func on_platformer_solved() -> void:
 	platformer_solved = true
+	_check_power_solved()
 	close_platformer()
 
 # -------- PipeGame --------
@@ -265,6 +268,7 @@ func close_pipe_game() -> void:
 
 func on_pipe_game_solved() -> void:
 	pipe_game_solved = true
+	_check_power_solved()
 	close_pipe_game()
 
 # -------- Jumper --------
@@ -289,4 +293,9 @@ func close_jumper() -> void:
 
 func on_jumper_solved() -> void:
 	jumper_solved = true
+	_check_power_solved()
 	close_jumper()
+
+func _check_power_solved() -> void:
+	if puzzle_solved_15 and flask_solved and pipe_game_solved and jumper_solved:
+		GameState.power_solved = true

@@ -18,4 +18,7 @@ var reactor_colored: bool = false     # реактор починен инстр
 var reactor_picked_up: bool = false   # реактор забрали из Room1 в инвентарь
 var reactor_installed: bool = false   # реактор установлен в Room3
 var hidden_tool_taken: bool = false
+
+# Питание — все мини-игры 3-й комнаты пройдены
+var power_solved: bool = false
  
