@@ -13,6 +13,7 @@ const TYPE_SPEED: float = 0.03
 # --- Текстуры фона ---
 const BG_DEFAULT   := preload("res://ImagesBackground/result_newfirstroom.png")
 const BG_ALTERNATE := preload("res://ImagesBackground/result_newfirstroomopenwad.png")
+const BG_DOOR_OPEN := preload("res://ImagesBackground/result_newFirstRoomOpenDoor.png")
 
 # --- Текстуры реактора ---
 const REACTOR_COLORED := preload("res://items/newreactorsec.png")
@@ -33,6 +34,9 @@ var messages_already_unlocked: Array[String] = [
 # --- Сообщения для Stars ---
 var messages_no_access: Array[String] = [
 	"🚫 Нет доступа. Сначала подтвердите личность на панели управления.",
+]
+var messages_panel_done: Array[String] = [
+	"✅ Корабль откалиброван. Навигационная система работает в штатном режиме.",
 ]
 
 # --- Сообщения для реактора ---
@@ -87,6 +91,10 @@ func _ready() -> void:
 
 	reactor_button.pressed.connect(_on_reactor_pressed)
 	door_button.pressed.connect(_on_door_pressed)
+
+	# Если дверь открыта — меняем фон
+	if GameState.room1_door_opened:
+		room_background.texture = BG_DOOR_OPEN
 
 	# Восстанавливаем только визуальное состояние реактора
 	if GameState.reactor_picked_up:
@@ -194,10 +202,13 @@ func _on_stars_pressed() -> void:
 	var main_game := get_tree().get_first_node_in_group("MainGame")
 	if main_game == null:
 		return
-	if main_game.screen_unlocked:
-		main_game.open_panel()
-	else:
+	if not main_game.screen_unlocked:
 		_open_dialog(stars_dialog, stars_label, stars_next, messages_no_access)
+		return
+	if GameState.ship_fully_solved:
+		_open_dialog(stars_dialog, stars_label, stars_next, messages_panel_done)
+		return
+	main_game.open_panel()
 
 func _open_dialog(dialog: Panel, label: RichTextLabel, next_btn: TextureButton, messages: Array[String]) -> void:
 	active_dialog = dialog

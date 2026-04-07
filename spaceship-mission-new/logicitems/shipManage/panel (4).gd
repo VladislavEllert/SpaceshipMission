@@ -225,6 +225,7 @@ func _on_game_won() -> void:
 	screen_bg.color = Color(0.0, 1.0, 0.1, 0.3)
 	GameState.panel_game_won = true
 	GameState.ship_fully_solved = true
+	_check_door_unlocked()
 
 	dialog_messages = ["Корабль откалиброван"]
 	dialog_index = 0
@@ -241,6 +242,10 @@ func _random_far_pos(from: Vector2) -> Vector2:
 		if pos.distance_to(from) > 150:
 			return pos
 	return pos
+
+func _check_door_unlocked() -> void:
+	if GameState.reactor_installed and GameState.power_solved and GameState.ship_fully_solved:
+		GameState.door_unlocked = true
 
 func _on_back_pressed() -> void:
 	var main_game := get_tree().get_first_node_in_group("MainGame")

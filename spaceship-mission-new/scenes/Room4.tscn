@@ -108,6 +108,17 @@ offset_top = 307.0
 offset_right = 222.0
 offset_bottom = 418.0
 
+[node name="DoorUnlockButton" type="TextureButton" parent="."]
+offset_left = 1045.0
+offset_top = 336.0
+offset_right = 1171.0
+offset_bottom = 424.0
+
+[node name="SolvedBannerDoor" type="Polygon2D" parent="."]
+color = Color(0.447059, 0.658824, 0.223529, 0.65098)
+polygon = PackedVector2Array(1083, 346, 1162, 346, 1130, 422, 1052, 409)
+
 [connection signal="pressed" from="RightArrow" to="." method="_on_right_pressed"]
 [connection signal="pressed" from="LeftArrow" to="." method="_on_left_pressed"]
 [connection signal="pressed" from="MainMassage" to="." method="_on_main_massage_button_pressed"]
+[connection signal="pressed" from="DoorUnlockButton" to="." method="_on_door_unlock_pressed"]

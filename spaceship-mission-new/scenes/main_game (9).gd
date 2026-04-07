@@ -450,6 +450,8 @@ func on_laser_mirror_solved() -> void:
 func _check_power_solved() -> void:
 	if puzzle_solved_15 and flask_solved and pipe_game_solved and laser_mirror_solved and (jumper_solved or platformer_solved):
 		GameState.power_solved = true
+		if GameState.reactor_installed and GameState.ship_fully_solved:
+			GameState.door_unlocked = true
 
 # -------- FlowConnect --------
 var flow_connect_instance: Node = null

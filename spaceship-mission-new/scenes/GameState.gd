@@ -21,4 +21,10 @@ var hidden_tool_taken: bool = false
 
 # Питание — все мини-игры 3-й комнаты пройдены
 var power_solved: bool = false
+
+# Дверь разблокирована (все системы восстановлены)
+var door_unlocked: bool = false
+
+# Фон первой комнаты изменён (дверь открыта)
+var room1_door_opened: bool = false
  
