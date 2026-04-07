@@ -188,6 +188,11 @@ func _load_room(index: int) -> void:
 		if banner_pipe:
 			banner_pipe.visible = true
 
+	if index == 3 and laser_mirror_solved and current_room:
+		var banner_laser := current_room.get_node_or_null("SolvedBannerLaserMirror")
+		if banner_laser:
+			banner_laser.visible = true
+
 	if index == 3 and flow_connect_solved and current_room:
 		var banner_fc := current_room.get_node_or_null("SolvedBannerFlowConnect")
 		if banner_fc:
@@ -443,7 +448,7 @@ func on_laser_mirror_solved() -> void:
 	close_laser_mirror()
 
 func _check_power_solved() -> void:
-	if puzzle_solved_15 and flask_solved and pipe_game_solved and (jumper_solved or platformer_solved):
+	if puzzle_solved_15 and flask_solved and pipe_game_solved and laser_mirror_solved and (jumper_solved or platformer_solved):
 		GameState.power_solved = true
 
 # -------- FlowConnect --------

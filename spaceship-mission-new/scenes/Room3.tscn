@@ -122,28 +122,16 @@ offset_bottom = 433.0
 color = Color(0.447059, 0.658824, 0.223529, 0.65098)
 
 [node name="ButtonPipeGame" type="Button" parent="."]
-offset_left = 880.0
-offset_top = 130.0
-offset_right = 1050.0
-offset_bottom = 490.0
+offset_left = 1090.0
+offset_top = 160.0
+offset_right = 1215.0
+offset_bottom = 480.0
 flat = true
 
 [node name="SolvedBannerPipeGame" type="Polygon2D" parent="."]
 visible = false
 color = Color(0.447059, 0.658824, 0.223529, 0.65098)
-polygon = PackedVector2Array(1004, 217, 1005, 273, 1058, 270, 1060, 206)
-
-[node name="ButtonLaserMirror" type="Button" parent="."]
-offset_left = 1055.0
-offset_top = 100.0
-offset_right = 1205.0
-offset_bottom = 280.0
-flat = true
-
-[node name="SolvedBannerLaserMirror" type="Polygon2D" parent="."]
-visible = false
-color = Color(0.447059, 0.658824, 0.223529, 0.65098)
-polygon = PackedVector2Array(1120, 190, 1123, 269, 1210, 261, 1207, 171)
+polygon = PackedVector2Array(1127, 192, 1128, 264, 1209, 256, 1210, 170)
 
 [node name="ReactorPlace" type="Sprite2D" parent="."]
 visible = false
@@ -194,6 +182,7 @@ texture = ExtResource("6_s61je")
 [node name="ReactorGlow" type="Polygon2D" parent="."]
 visible = false
 color = Color(0.447059, 0.658824, 0.223529, 0.65098)
+polygon = PackedVector2Array(609, 278, 612, 275, 615, 271, 618, 269, 663, 269, 666, 271, 668, 271, 672, 275, 674, 279, 675, 284, 675, 417, 673, 421, 669, 425, 664, 427, 658, 429, 653, 429, 621, 429, 617, 428, 613, 424, 609, 418, 608, 412)
 
 [node name="ScreenButton" type="Button" parent="."]
 offset_left = 740.0
@@ -202,11 +191,23 @@ offset_right = 794.0
 offset_bottom = 420.0
 flat = true
 
+[node name="SolvedBannerLaserMirror" type="Polygon2D" parent="."]
+visible = false
+position = Vector2(1009, 215)
+color = Color(0.447059, 0.658824, 0.223529, 0.65098)
+polygon = PackedVector2Array(-2, 7, 0, 59, 46, 53, 47, -5)
+
 [node name="SolvedBannerFlowConnect" type="Polygon2D" parent="."]
 visible = false
 position = Vector2(10, 214)
 color = Color(0.447059, 0.658824, 0.223529, 0.65098)
 polygon = PackedVector2Array(725, 135, 738, 198, 756.314, 195.376, 785, 196, 771, 136)
+
+[node name="ButtonLaserMirror" type="TextureButton" parent="."]
+offset_left = 1008.0
+offset_top = 211.0
+offset_right = 1066.0
+offset_bottom = 451.0
 
 [connection signal="pressed" from="LeftArrow" to="." method="_on_left_pressed"]
 [connection signal="pressed" from="RightArrow" to="." method="_on_right_pressed"]
@@ -215,6 +216,6 @@ polygon = PackedVector2Array(725, 135, 738, 198, 756.314, 195.376, 785, 196, 771
 [connection signal="pressed" from="Button2" to="." method="_on_platformer_button_pressed"]
 [connection signal="pressed" from="ButtonJumper" to="." method="_on_jumper_button_pressed"]
 [connection signal="pressed" from="ButtonPipeGame" to="." method="_on_pipe_game_button_pressed"]
-[connection signal="pressed" from="ButtonLaserMirror" to="." method="_on_laser_mirror_button_pressed"]
 [connection signal="pressed" from="ReactorButton" to="." method="_on_reactor_button_pressed"]
 [connection signal="pressed" from="ScreenButton" to="." method="_on_screen_button_pressed"]
+[connection signal="pressed" from="ButtonLaserMirror" to="." method="_on_laser_mirror_button_pressed"]
