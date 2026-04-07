@@ -108,5 +108,14 @@ text = "ПОБЕДА!"
 horizontal_alignment = 1
 vertical_alignment = 1
 
+[node name="DebugWinButton" type="Button" parent="HUD"]
+offset_left = 1100.0
+offset_top = 8.0
+offset_right = 1270.0
+offset_bottom = 55.0
+theme_override_font_sizes/font_size = 28
+text = "[ ПРОЙТИ ]"
+
 [connection signal="pressed" from="HUD/Exit" to="." method="_on_exit_pressed"]
 [connection signal="pressed" from="GameOver/RetryButton" to="." method="_restart_game"]
+[connection signal="pressed" from="HUD/DebugWinButton" to="." method="_win"]

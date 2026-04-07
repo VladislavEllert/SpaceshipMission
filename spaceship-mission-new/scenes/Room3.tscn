@@ -69,14 +69,12 @@ offset_right = 177.0
 offset_bottom = 484.0
 rotation = 0.0296706
 
-[node name="SolvedBanner15" type="ColorRect" parent="."]
+[node name="SolvedBanner15" type="Polygon2D" parent="."]
 visible = false
-offset_left = 84.0
-offset_top = 184.0
-offset_right = 168.0
-offset_bottom = 258.0
+position = Vector2(83, 173)
 rotation = 0.136136
 color = Color(0.447059, 0.658824, 0.223529, 0.65098)
+polygon = PackedVector2Array(0.135712, 0.990753, 7.57285, 84.7564, 7.57285, 84.7564, 89.7642, 80.563, 89.7642, 80.563, 82.3813, 11.9299, 82.3813, 11.9299)
 
 [node name="Button" type="Button" parent="."]
 offset_left = 216.0
@@ -85,13 +83,10 @@ offset_right = 282.0
 offset_bottom = 452.0
 flat = true
 
-[node name="SolvedBannerFlask" type="ColorRect" parent="."]
+[node name="SolvedBannerFlask" type="Polygon2D" parent="."]
 visible = false
-offset_left = 232.0
-offset_top = 216.0
-offset_right = 280.0
-offset_bottom = 272.0
 color = Color(0.447059, 0.658824, 0.223529, 0.65098)
+polygon = PackedVector2Array(234, 207, 234, 270, 278, 273, 281, 250, 281, 222)
 
 [node name="Button2" type="Button" parent="."]
 offset_left = 316.0
@@ -115,13 +110,11 @@ offset_right = 468.0
 offset_bottom = 416.0
 flat = true
 
-[node name="SolvedBannerJumper" type="ColorRect" parent="."]
+[node name="SolvedBannerJumper" type="Polygon2D" parent="."]
 visible = false
-offset_left = 425.0
-offset_top = 243.0
-offset_right = 460.0
-offset_bottom = 283.0
+position = Vector2(1, -1)
 color = Color(0.447059, 0.658824, 0.223529, 0.65098)
+polygon = PackedVector2Array(325, 232, 324.435, 257.997, 324, 281, 338, 285, 357, 283, 356, 242)
 
 [node name="MainReact" type="ColorRect" parent="."]
 visible = false
@@ -138,13 +131,10 @@ offset_right = 1215.0
 offset_bottom = 480.0
 flat = true
 
-[node name="SolvedBannerPipeGame" type="ColorRect" parent="."]
+[node name="SolvedBannerPipeGame" type="Polygon2D" parent="."]
 visible = false
-offset_left = 1131.0
-offset_top = 191.0
-offset_right = 1206.0
-offset_bottom = 256.0
 color = Color(0.447059, 0.658824, 0.223529, 0.65098)
+polygon = PackedVector2Array(1127, 192, 1128, 264, 1209, 256, 1210, 170)
 
 [node name="ReactorPlace" type="Sprite2D" parent="."]
 visible = false
