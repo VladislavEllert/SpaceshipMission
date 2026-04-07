@@ -158,13 +158,10 @@ func _on_flag_reached(body: Node) -> void:
 	if body != player:
 		return
 	game_running = false
-	win_node.show()
-	await get_tree().create_timer(2.5).timeout
 	emit_signal("game_won")
 
 func _win() -> void:
 	game_running = false
-	win_node.show()
 	emit_signal("game_won")
 
 func _update_score() -> void:

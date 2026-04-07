@@ -248,13 +248,7 @@ func _on_check_pressed() -> void:
 
 
 func _on_win() -> void:
-	# 1. Stop all input
 	set_process_input(false)
-	# 2. Show the ПОБЕДА overlay
-	_win_overlay.visible = true
-	# 3. Wait 2 seconds
-	await get_tree().create_timer(2.0).timeout
-	# 4. Signal win to the main game (main_game closes the overlay and returns to room 3)
 	puzzle_solved.emit()
 
 

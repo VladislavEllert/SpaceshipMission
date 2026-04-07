@@ -31,12 +31,22 @@ var reactor_installed: bool = false
 @onready var dialog_panel: Panel            = $DialogPanel
 @onready var dialog_label: RichTextLabel    = $DialogPanel/DialogLabel
 @onready var next_button: TextureButton     = $DialogPanel/NextButton
- 
+@onready var screen_button: Button          = $ScreenButton
+
+# --- Сообщения для ScreenButton ---
+var messages_screen_locked: Array[String] = [
+	"Питание не восстановлено",
+]
+var messages_screen_solved: Array[String] = [
+	"✅ Энергоцепи восстановлены",
+]
+
 func _ready() -> void:
 	$LeftArrow.pressed.connect(_on_left_pressed)
 	$RightArrow.pressed.connect(_on_right_pressed)
- 
+
 	reactor_button.pressed.connect(_on_reactor_button_pressed)
+	screen_button.pressed.connect(_on_screen_button_pressed)
 	dialog_panel.visible = false
 	next_button.pressed.connect(_on_next_pressed)
  
@@ -158,3 +168,30 @@ func _on_pipe_game_button_pressed() -> void:
 	if main_game.pipe_game_solved:
 		return
 	main_game.open_pipe_game()
+
+# -------------------------------------------------------
+
+func _on_screen_button_pressed() -> void:
+	var main_game := get_tree().get_first_node_in_group("MainGame")
+	if main_game == null:
+		return
+
+	# Если FlowConnect уже решён — показываем статус
+	if main_game.flow_connect_solved:
+		_open_dialog(messages_screen_solved)
+		return
+
+	# Проверяем, решены ли все мини-игры отсека
+	var all_solved: bool = (
+		main_game.puzzle_solved_15 and
+		main_game.flask_solved and
+		main_game.pipe_game_solved and
+		(main_game.jumper_solved or main_game.platformer_solved)
+	)
+
+	if not all_solved:
+		_open_dialog(messages_screen_locked)
+		return
+
+	# Все задания выполнены — открываем FlowConnect
+	main_game.open_flow_connect()

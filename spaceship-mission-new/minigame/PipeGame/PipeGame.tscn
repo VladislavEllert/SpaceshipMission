@@ -37,7 +37,7 @@ theme_override_constants/margin_bottom = 24
 layout_mode = 2
 size_flags_horizontal = 8
 theme_override_font_sizes/font_size = 120
-text = "ПОБЕДА!"
+text = ""
 horizontal_alignment = 1
 vertical_alignment = 1
 

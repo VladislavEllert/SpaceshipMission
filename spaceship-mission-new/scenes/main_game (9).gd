@@ -183,6 +183,11 @@ func _load_room(index: int) -> void:
 		if banner_pipe:
 			banner_pipe.visible = true
 
+	if index == 3 and flow_connect_solved and current_room:
+		var banner_fc := current_room.get_node_or_null("SolvedBannerFlowConnect")
+		if banner_fc:
+			banner_fc.visible = true
+
 func _on_room_go_left() -> void:
 	var next := room_index - 1
 	if next < 1:
@@ -408,3 +413,38 @@ func on_jumper_solved() -> void:
 func _check_power_solved() -> void:
 	if puzzle_solved_15 and flask_solved and pipe_game_solved and (jumper_solved or platformer_solved):
 		GameState.power_solved = true
+
+# -------- FlowConnect --------
+var flow_connect_instance: Node = null
+var flow_connect_solved: bool = false
+
+func open_flow_connect() -> void:
+	if flow_connect_instance != null:
+		return
+	var script : GDScript = load("res://minigame/FlowConnect/FlowConnect.gd") as GDScript
+	if script == null:
+		push_error("FlowConnect.gd not found")
+		return
+	flow_connect_instance = Node2D.new()
+	flow_connect_instance.set_script(script)
+	flow_connect_instance.connect("puzzle_solved", Callable(self, "on_flow_connect_solved"))
+	flow_connect_instance.connect("puzzle_exit",   Callable(self, "close_flow_connect"))
+	$MiniGameLayer.add_child(flow_connect_instance)
+	$UILayer.visible = false
+
+func close_flow_connect() -> void:
+	if is_instance_valid(flow_connect_instance):
+		$MiniGameLayer.remove_child(flow_connect_instance)
+		flow_connect_instance.queue_free()
+		flow_connect_instance = null
+	$UILayer.visible = true
+	room_index = 3
+	_load_room(room_index)
+
+func on_flow_connect_solved() -> void:
+	flow_connect_solved = true
+	close_flow_connect()
+	if current_room:
+		var banner := current_room.get_node_or_null("SolvedBannerFlowConnect")
+		if banner:
+			banner.visible = true

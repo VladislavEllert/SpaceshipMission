@@ -183,6 +183,19 @@ texture = ExtResource("6_s61je")
 visible = false
 color = Color(0.447059, 0.658824, 0.223529, 0.65098)
 
+[node name="ScreenButton" type="Button" parent="."]
+offset_left = 740.0
+offset_top = 345.0
+offset_right = 794.0
+offset_bottom = 420.0
+flat = true
+
+[node name="SolvedBannerFlowConnect" type="Polygon2D" parent="."]
+visible = false
+position = Vector2(10, 214)
+color = Color(0.447059, 0.658824, 0.223529, 0.65098)
+polygon = PackedVector2Array(725, 135, 738, 198, 756.314, 195.376, 785, 196, 771, 136)
+
 [connection signal="pressed" from="LeftArrow" to="." method="_on_left_pressed"]
 [connection signal="pressed" from="RightArrow" to="." method="_on_right_pressed"]
 [connection signal="pressed" from="Minigame/15Puzzels" to="." method="_on_puzzle_button_pressed"]
@@ -191,3 +204,4 @@ color = Color(0.447059, 0.658824, 0.223529, 0.65098)
 [connection signal="pressed" from="ButtonJumper" to="." method="_on_jumper_button_pressed"]
 [connection signal="pressed" from="ButtonPipeGame" to="." method="_on_pipe_game_button_pressed"]
 [connection signal="pressed" from="ReactorButton" to="." method="_on_reactor_button_pressed"]
+[connection signal="pressed" from="ScreenButton" to="." method="_on_screen_button_pressed"]
