@@ -28,7 +28,6 @@ const TYPE_SPEED: float = 0.015
 @onready var dialog_label: RichTextLabel = $RobotDialog/DialogLabel
 @onready var next_button: TextureButton = $RobotDialog/NextButton
 @onready var ball_button: TextureButton = $BallButton
-@onready var door_solved_banner: Polygon2D = $SolvedBannerDoor
 
 func _ready() -> void:
 	$LeftArrow.pressed.connect(_on_left_pressed)
@@ -39,8 +38,7 @@ func _ready() -> void:
 	robot_dialog.visible = false
 	next_button.visible = false
 
-	# Полигон загорается как только все условия выполнены
-	door_solved_banner.visible = GameState.door_unlocked
+	# (SolvedBannerDoor удалён из сцены)
 
 func _on_left_pressed() -> void:
 	emit_signal("go_left")
@@ -50,7 +48,6 @@ func _on_right_pressed() -> void:
 
 func _on_door_unlock_pressed() -> void:
 	GameState.room1_door_opened = true
-	door_button.visible = false
 
 func _on_main_massage_button_pressed() -> void:
 	var main_game := get_tree().get_first_node_in_group("MainGame")

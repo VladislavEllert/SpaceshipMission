@@ -175,7 +175,14 @@ func _on_reactor_pressed() -> void:
 		inventory.add_item("reactor")
 
 func _on_door_pressed() -> void:
-	_open_dialog(screen_dialog, screen_label, screen_next, messages_door_locked)
+	if GameState.door_unlocked:
+		if GameState.room1_door_opened:
+			get_tree().change_scene_to_file("res://scenes/MeetTeam.tscn")
+		else:
+			GameState.room1_door_opened = true
+			room_background.texture = BG_DOOR_OPEN
+	else:
+		_open_dialog(screen_dialog, screen_label, screen_next, messages_door_locked)
 
 func _open_screen_dialog(messages: Array[String]) -> void:
 	_open_dialog(screen_dialog, screen_label, screen_next, messages)
