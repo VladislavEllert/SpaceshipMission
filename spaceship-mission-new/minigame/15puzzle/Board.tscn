@@ -31,19 +31,6 @@ offset_bottom = 616.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Button" type="Button" parent="Tiles"]
-modulate = Color(0.622572, 0.535566, 0.231939, 1)
-self_modulate = Color(0.727017, 0.199193, 0.131369, 1)
-layout_mode = 0
-offset_left = -251.0
-offset_top = 18.0
-offset_right = -99.0
-offset_bottom = 148.0
-theme_override_colors/font_disabled_color = Color(0.491637, 0.224089, 0.126332, 1)
-theme_override_colors/icon_disabled_color = Color(0.37712, 0.11178, 0.717778, 1)
-theme_override_colors/font_pressed_color = Color(0.568277, 0.503703, 0.871464, 1)
-text = "для прохождения 
-"
 
 [node name="Exit" type="Button" parent="."]
 layout_mode = 0
@@ -54,5 +41,4 @@ offset_bottom = 392.0
 icon = ExtResource("3_3hini")
 flat = true
 
-[connection signal="pressed" from="Tiles/Button" to="." method="_on_puzzle_solved"]
 [connection signal="pressed" from="Exit" to="." method="_on_exit_button_pressed"]

@@ -162,15 +162,6 @@ offset_bottom = 419.0
 icon = ExtResource("9_07rta")
 flat = true
 
-[node name="Button" type="Button" parent="."]
-layout_mode = 0
-offset_left = 565.0
-offset_top = 35.0
-offset_right = 717.0
-offset_bottom = 96.0
-text = "для прохождения 
-"
-
 [node name="Arrow" type="Sprite2D" parent="."]
 position = Vector2(436, 225)
 rotation = -3.47146
@@ -183,4 +174,3 @@ scale = Vector2(0.515625, 0.566406)
 texture = ExtResource("8_8ecy7")
 
 [connection signal="pressed" from="Board/ExitButton" to="." method="_on_exit_pressed"]
-[connection signal="pressed" from="Button" to="." method="_on_button_pressed"]

@@ -67,14 +67,6 @@ offset_right = 68.0
 offset_bottom = 367.0
 texture_normal = ExtResource("3_scwe8")
 
-[node name="DebugWinButton" type="Button" parent="HUD"]
-offset_left = 1100.0
-offset_top = 8.0
-offset_right = 1270.0
-offset_bottom = 55.0
-theme_override_font_sizes/font_size = 28
-text = "[ ПРОЙТИ ]"
-
 [node name="GameOver" type="CanvasLayer" parent="."]
 visible = false
 
@@ -117,5 +109,4 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [connection signal="pressed" from="HUD/Exit" to="." method="_on_exit_pressed"]
-[connection signal="pressed" from="HUD/DebugWinButton" to="." method="_win"]
 [connection signal="pressed" from="GameOver/RetryButton" to="." method="_restart_game"]
