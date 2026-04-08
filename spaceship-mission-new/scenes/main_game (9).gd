@@ -156,6 +156,11 @@ func _go_to_room(index: int) -> void:
 	tween.tween_callback(_load_room.bind(room_index))
 	tween.tween_property(fade_rect, "modulate:a", 0.0, FADE_DURATION)
 
+func _hide_current_room() -> void:
+	if current_room:
+		current_room.visible = false
+		current_room.process_mode = Node.PROCESS_MODE_DISABLED
+
 func _load_room(index: int) -> void:
 	if current_room:
 		current_room.queue_free()
@@ -237,6 +242,7 @@ func open_board() -> void:
 		board_scene = load("res://minigame/15puzzle/Board.tscn")
 	board_instance = board_scene.instantiate()
 	$MiniGameLayer.add_child(board_instance)
+	_hide_current_room()
 
 func close_board() -> void:
 	if board_instance:
@@ -266,6 +272,7 @@ func open_flask() -> void:
 	flask_instance = flask_scene.instantiate()
 	flask_instance.connect("puzzle_solved", Callable(self, "on_flask_solved"))
 	$MiniGameLayer.add_child(flask_instance)
+	_hide_current_room()
 
 func close_flask() -> void:
 	if flask_instance:
@@ -348,6 +355,7 @@ func open_platformer() -> void:
 	platformer_instance.connect("game_exit", Callable(self, "close_platformer"))
 	$MiniGameLayer.add_child(platformer_instance)
 	$UILayer.visible = false
+	_hide_current_room()
 
 func close_platformer() -> void:
 	if is_instance_valid(platformer_instance):
@@ -414,6 +422,7 @@ func open_pipe_game() -> void:
 	pipe_game_instance.connect("puzzle_exit", Callable(self, "close_pipe_game"))
 	$MiniGameLayer.add_child(pipe_game_instance)
 	$UILayer.visible = false
+	_hide_current_room()
 
 func close_pipe_game() -> void:
 	if is_instance_valid(pipe_game_instance):
@@ -441,8 +450,7 @@ func open_jumper() -> void:
 	jumper_instance.connect("game_exit", Callable(self, "close_jumper"))
 	$MiniGameLayer.add_child(jumper_instance)
 	$UILayer.visible = false
-	if current_room:
-		current_room.visible = false
+	_hide_current_room()
 
 func close_jumper() -> void:
 	if is_instance_valid(jumper_instance):
@@ -470,8 +478,7 @@ func open_laser_mirror() -> void:
 	laser_mirror_instance.connect("minigame_closed", Callable(self, "close_laser_mirror"))
 	$MiniGameLayer.add_child(laser_mirror_instance)
 	$UILayer.visible = false
-	if current_room:
-		current_room.visible = false
+	_hide_current_room()
 
 func close_laser_mirror() -> void:
 	if is_instance_valid(laser_mirror_instance):
@@ -505,6 +512,7 @@ func open_shell_game() -> void:
 	shell_game_instance.connect("minigame_cancelled", Callable(self, "close_shell_game"))
 	$MiniGameLayer.add_child(shell_game_instance)
 	$UILayer.visible = false
+	_hide_current_room()
 
 func close_shell_game() -> void:
 	if is_instance_valid(shell_game_instance):
@@ -536,6 +544,7 @@ func open_flow_connect() -> void:
 	flow_connect_instance.connect("puzzle_exit",   Callable(self, "close_flow_connect"))
 	$MiniGameLayer.add_child(flow_connect_instance)
 	$UILayer.visible = false
+	_hide_current_room()
 
 func close_flow_connect() -> void:
 	if is_instance_valid(flow_connect_instance):

@@ -209,12 +209,13 @@ func _on_screen_button_pressed() -> void:
 		_open_dialog(messages_screen_no_reactor)
 		return
 
-	# Проверяем, решены ли все 5 мини-игр отсека
+	# Проверяем, решены ли все 6 мини-игр отсека
 	var all_solved: bool = (
 		main_game.puzzle_solved_15 and
 		main_game.flask_solved and
 		main_game.pipe_game_solved and
 		main_game.laser_mirror_solved and
+		main_game.shell_game_solved and
 		(main_game.jumper_solved or main_game.platformer_solved)
 	)
 

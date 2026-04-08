@@ -27,9 +27,6 @@ var _flag_node: Node = null
 @onready var _exit_button: TextureButton = $HUD/Exit
 
 func _ready() -> void:
-	print('Ready')
-	print($GameOver/RetryButton)
-	$GameOver/RetryButton.pressed.connect(_restart_game)
 	new_game()
 
 func new_game() -> void:
@@ -134,6 +131,10 @@ func _on_obstacle_hit(body: Node) -> void:
 func _game_over() -> void:
 	game_running = false
 	game_over_node.show()
+	await get_tree().create_timer(1.2).timeout
+	game_over_node.hide()
+	new_game()
+	call_deferred("_start_game")
 
 func _spawn_flag() -> void:
 	_flag_spawned = true
