@@ -1,10 +1,12 @@
-[gd_scene load_steps=7 format=3 uid="uid://bk1stlpail2vg"]
+[gd_scene load_steps=9 format=3 uid="uid://bk1stlpail2vg"]
 
 [ext_resource type="Script" uid="uid://c2ayhbj28onb4" path="res://minigame/FlaskPuzzel/flask_puzzel.gd" id="1_8ecy7"]
 [ext_resource type="Texture2D" uid="uid://gmvjliy0oteg" path="res://items/backbotl.png" id="1_vykvq"]
 [ext_resource type="Texture2D" uid="uid://b2vsfrhct2pls" path="res://items/Group 1.png" id="3_7yi23"]
 [ext_resource type="Texture2D" uid="uid://dddnekoaikhus" path="res://items/flask6.png" id="4_5mrnj"]
 [ext_resource type="Texture2D" uid="uid://du3v5duqghooc" path="res://items/flask_3099558.png" id="5_5lktb"]
+[ext_resource type="Texture2D" uid="uid://dtqx3kont88pj" path="res://minigame/FlaskPuzzel/curved-arrow_15603914.png" id="7_5lktb"]
+[ext_resource type="Texture2D" uid="uid://e4p37b4cobva" path="res://minigame/FlaskPuzzel/number-8.png" id="8_8ecy7"]
 [ext_resource type="Texture2D" uid="uid://c13a6h4iv6bw4" path="res://items/left-arrow.png" id="9_07rta"]
 
 [node name="FlaskPuzzel" type="Control"]
@@ -72,10 +74,10 @@ flat = true
 
 [node name="Flask2" type="Control" parent="Board"]
 anchors_preset = 0
-offset_left = 498.0
-offset_top = 18.0
-offset_right = 765.0
-offset_bottom = 420.0
+offset_left = 506.0
+offset_top = 21.0
+offset_right = 773.0
+offset_bottom = 423.0
 
 [node name="Mask" type="Control" parent="Board/Flask2"]
 clip_children = 1
@@ -112,10 +114,10 @@ flat = true
 
 [node name="Flask3" type="Control" parent="Board"]
 anchors_preset = 0
-offset_left = 696.0
-offset_top = 113.0
-offset_right = 1051.0
-offset_bottom = 597.0
+offset_left = 705.0
+offset_top = 114.0
+offset_right = 1060.0
+offset_bottom = 598.0
 
 [node name="Mask" type="Control" parent="Board/Flask3"]
 clip_children = 1
@@ -168,6 +170,17 @@ offset_right = 717.0
 offset_bottom = 96.0
 text = "для прохождения 
 "
+
+[node name="Arrow" type="Sprite2D" parent="."]
+position = Vector2(436, 225)
+rotation = -3.47146
+scale = Vector2(0.201172, 0.171875)
+texture = ExtResource("7_5lktb")
+
+[node name="eight" type="Sprite2D" parent="."]
+position = Vector2(431, 124)
+scale = Vector2(0.515625, 0.566406)
+texture = ExtResource("8_8ecy7")
 
 [connection signal="pressed" from="Board/ExitButton" to="." method="_on_exit_pressed"]
 [connection signal="pressed" from="Button" to="." method="_on_button_pressed"]
