@@ -57,6 +57,11 @@ var chest2_scene: PackedScene = null
 var chest2_instance: Node = null
 var chest2_opened: bool = false
 
+# ShellGame
+var shell_game_scene: PackedScene = null
+var shell_game_instance: Node = null
+var shell_game_solved: bool = false
+
 # ball
 var ball_scene: PackedScene = null
 var ball_instance: Node = null
@@ -206,6 +211,11 @@ func _load_room(index: int) -> void:
 		var banner_fc := current_room.get_node_or_null("SolvedBannerFlowConnect")
 		if banner_fc:
 			banner_fc.visible = true
+
+	if index == 3 and shell_game_solved and current_room:
+		var banner_sg := current_room.get_node_or_null("SolvedBannerShellGame")
+		if banner_sg:
+			banner_sg.visible = true
 
 func _on_room_go_left() -> void:
 	var next := room_index - 1
@@ -483,6 +493,31 @@ func _check_power_solved() -> void:
 		GameState.power_solved = true
 		if GameState.reactor_installed and GameState.ship_fully_solved:
 			GameState.door_unlocked = true
+
+# -------- ShellGame --------
+func open_shell_game() -> void:
+	if shell_game_instance != null:
+		return
+	if shell_game_scene == null:
+		shell_game_scene = load("res://minigame/shell_game/ShellGame.tscn")
+	shell_game_instance = shell_game_scene.instantiate()
+	shell_game_instance.connect("minigame_completed", Callable(self, "on_shell_game_completed"))
+	shell_game_instance.connect("minigame_cancelled", Callable(self, "close_shell_game"))
+	$MiniGameLayer.add_child(shell_game_instance)
+	$UILayer.visible = false
+
+func close_shell_game() -> void:
+	if is_instance_valid(shell_game_instance):
+		$MiniGameLayer.remove_child(shell_game_instance)
+		shell_game_instance.queue_free()
+		shell_game_instance = null
+	$UILayer.visible = true
+	room_index = 3
+	_load_room(room_index)
+
+func on_shell_game_completed(success: bool, _difficulty: int) -> void:
+	if success:
+		shell_game_solved = true
 
 # -------- FlowConnect --------
 var flow_connect_instance: Node = null

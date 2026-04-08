@@ -184,6 +184,14 @@ func _on_laser_mirror_button_pressed() -> void:
 		return
 	main_game.open_laser_mirror()
 
+func _on_shell_game_button_pressed() -> void:
+	var main_game := get_tree().get_first_node_in_group("MainGame")
+	if main_game == null:
+		return
+	if main_game.shell_game_solved:
+		return
+	main_game.open_shell_game()
+
 # -------------------------------------------------------
 
 func _on_screen_button_pressed() -> void:
