@@ -1,6 +1,59 @@
-[gd_scene load_steps=2 format=3 uid="uid://bshellgame001"]
+[gd_scene load_steps=3 format=3 uid="uid://bshellgame001"]
 
-[ext_resource type="Script" uid="uid://bla458yqrac3j" path="res://minigame/shell_game/ShellGame.gd" id="1_script"]
+[ext_resource type="Script" uid="uid://bdhd1jy28fenq" path="res://minigame/shell_game/ShellGame.gd" id="1_script"]
+[ext_resource type="Texture2D" uid="uid://c13a6h4iv6bw4" path="res://items/left-arrow.png" id="2_p1t4o"]
 
 [node name="ShellGame" type="Node2D"]
 script = ExtResource("1_script")
+
+[node name="Exit" type="TextureButton" parent="."]
+offset_left = 52.0
+offset_top = 334.0
+offset_right = 102.0
+offset_bottom = 384.0
+texture_normal = ExtResource("2_p1t4o")
+
+[node name="UILayer" type="CanvasLayer" parent="."]
+
+[node name="PhaseLabel" type="Label" parent="UILayer"]
+anchors_preset = 10
+anchor_right = 1.0
+offset_top = 18.0
+offset_bottom = 72.0
+theme_override_colors/font_color = Color(0, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 4
+theme_override_font_sizes/font_size = 38
+horizontal_alignment = 1
+
+[node name="StartButton" type="Button" parent="UILayer"]
+custom_minimum_size = Vector2(160, 80)
+anchors_preset = -1
+anchor_left = 0.498
+anchor_top = 0.5
+anchor_right = 0.498
+anchor_bottom = 0.5
+offset_left = -78.44
+offset_top = -43.0
+offset_right = 81.56
+offset_bottom = 37.0
+theme_override_font_sizes/font_size = 30
+text = "НАЧАТЬ"
+
+[node name="TryAgainButton" type="Button" parent="UILayer"]
+visible = false
+custom_minimum_size = Vector2(160, 80)
+anchors_preset = -1
+anchor_left = 0.498
+anchor_top = 0.5
+anchor_right = 0.498
+anchor_bottom = 0.5
+offset_left = -172.44
+offset_top = -45.0
+offset_right = 176.56
+offset_bottom = 35.0
+theme_override_font_sizes/font_size = 30
+text = "ПОПРОБОВАТЬ СНОВА"
+
+[connection signal="pressed" from="UILayer/StartButton" to="." method="start_game"]
+[connection signal="pressed" from="UILayer/TryAgainButton" to="." method="start_game"]

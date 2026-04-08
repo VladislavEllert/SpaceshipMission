@@ -215,6 +215,18 @@ offset_top = 211.0
 offset_right = 1066.0
 offset_bottom = 451.0
 
+[node name="SolvedBannerShellGame" type="Polygon2D" parent="."]
+visible = false
+color = Color(0.447059, 0.658824, 0.223529, 0.65098)
+polygon = PackedVector2Array(932, 244, 929, 282, 969, 279, 966, 234)
+
+[node name="ButtonShellGame" type="Button" parent="."]
+offset_left = 855.0
+offset_top = 155.0
+offset_right = 990.0
+offset_bottom = 490.0
+flat = true
+
 [connection signal="pressed" from="LeftArrow" to="." method="_on_left_pressed"]
 [connection signal="pressed" from="RightArrow" to="." method="_on_right_pressed"]
 [connection signal="pressed" from="Minigame/15Puzzels" to="." method="_on_puzzle_button_pressed"]
@@ -225,3 +237,4 @@ offset_bottom = 451.0
 [connection signal="pressed" from="ReactorButton" to="." method="_on_reactor_button_pressed"]
 [connection signal="pressed" from="ScreenButton" to="." method="_on_screen_button_pressed"]
 [connection signal="pressed" from="ButtonLaserMirror" to="." method="_on_laser_mirror_button_pressed"]
+[connection signal="pressed" from="ButtonShellGame" to="." method="_on_shell_game_button_pressed"]

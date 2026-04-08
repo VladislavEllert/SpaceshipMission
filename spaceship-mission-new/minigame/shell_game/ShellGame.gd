@@ -8,12 +8,11 @@ signal minigame_completed(success: bool, difficulty: int)
 signal minigame_cancelled()
 
 # ── Enums ─────────────────────────────────────────────────────────────────────
-enum Difficulty { EASY = 0, MEDIUM = 1, HARD = 2 }
 enum Phase { IDLE, SHOW_ITEM, HIDE_ITEM, SHUFFLE, WAIT_FOR_CLICK, REVEAL }
 
 # ── Config ────────────────────────────────────────────────────────────────────
-const SWAP_COUNTS: Dictionary   = { 0: 4,    1: 8,    2: 14  }
-const SWAP_DURATION: Dictionary = { 0: 0.6,  1: 0.35, 2: 0.2 }
+const SWAP_COUNT: int   = 8
+const SWAP_DURATION: float = 0.35
 
 const CONTAINER_SIZE := Vector2(200.0, 220.0)
 const CONTAINER_HALF := Vector2(100.0, 110.0)
@@ -25,7 +24,6 @@ const LIFT_HEIGHT    := -90.0
 const LIFT_DUR       := 0.4
 
 # ── State ─────────────────────────────────────────────────────────────────────
-var difficulty: int        = Difficulty.MEDIUM   # int, not enum type — avoids cast issues
 var current_phase: Phase   = Phase.IDLE
 
 var hidden_index: int      = 0
@@ -59,10 +57,10 @@ var tex_win:       Texture2D = null
 var tex_lose:      Texture2D = null
 
 # ── UI nodes ─────────────────────────────────────────────────────────────────
-var ui_layer:     CanvasLayer = null
-var phase_label:  Label       = null
-var result_label: Label       = null
-var start_btn:    Button      = null
+@onready var phase_label:    Label         = $UILayer/PhaseLabel
+@onready var start_btn:      Button        = $UILayer/StartButton
+@onready var try_again_btn:  Button        = $UILayer/TryAgainButton
+@onready var exit_btn:       TextureButton = $Exit
 
 # ─────────────────────────────────────────────────────────────────────────────
 # INIT
@@ -72,7 +70,14 @@ func _ready() -> void:
 	_init_slot_positions()
 	container_positions = slot_positions.duplicate()
 	_load_textures()
-	_create_ui()
+	exit_btn.pressed.connect(_on_exit_pressed)
+
+func _on_exit_pressed() -> void:
+	var main_game := get_tree().get_first_node_in_group("MainGame")
+	if main_game and main_game.has_method("close_shell_game"):
+		main_game.close_shell_game()
+	else:
+		get_tree().change_scene_to_file("res://scenes/Room3.tscn")
 
 func _init_slot_positions() -> void:
 	# 2×2 grid centred at (640, 320)
@@ -102,72 +107,6 @@ func _try_load(path: String) -> Texture2D:
 		return load(path) as Texture2D
 	return null
 
-func _create_ui() -> void:
-	ui_layer = CanvasLayer.new()
-	add_child(ui_layer)
-
-	# Phase label — top-centre
-	phase_label = _make_label("", 38, Color.CYAN)
-	phase_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	phase_label.set_anchor_and_offset(SIDE_LEFT,   0.0,    0.0)
-	phase_label.set_anchor_and_offset(SIDE_RIGHT,  1.0,    0.0)
-	phase_label.set_anchor_and_offset(SIDE_TOP,    0.0,   18.0)
-	phase_label.set_anchor_and_offset(SIDE_BOTTOM, 0.0,   72.0)
-	ui_layer.add_child(phase_label)
-
-	# Result label — bottom overlay
-	result_label = _make_label("", 54, Color(0.2, 1.0, 0.4))
-	result_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	result_label.set_anchor_and_offset(SIDE_LEFT,   0.0,    0.0)
-	result_label.set_anchor_and_offset(SIDE_RIGHT,  1.0,    0.0)
-	result_label.set_anchor_and_offset(SIDE_TOP,    1.0, -110.0)
-	result_label.set_anchor_and_offset(SIDE_BOTTOM, 1.0,  -50.0)
-	result_label.modulate.a = 0.0
-	ui_layer.add_child(result_label)
-
-	# Difficulty buttons row — bottom-centre
-	var diff_row := HBoxContainer.new()
-	diff_row.set_anchor_and_offset(SIDE_LEFT,   0.0,   0.0)
-	diff_row.set_anchor_and_offset(SIDE_RIGHT,  1.0,   0.0)
-	diff_row.set_anchor_and_offset(SIDE_TOP,    1.0, -48.0)
-	diff_row.set_anchor_and_offset(SIDE_BOTTOM, 1.0,  -4.0)
-	diff_row.alignment = BoxContainer.ALIGNMENT_CENTER
-	diff_row.add_theme_constant_override("separation", 20)
-	ui_layer.add_child(diff_row)
-
-	var diff_names := ["Easy", "Medium", "Hard"]
-	for i in range(3):
-		var btn := _make_button(diff_names[i], 26)
-		var captured_i := i
-		btn.pressed.connect(func(): difficulty = captured_i)
-		diff_row.add_child(btn)
-
-	# START button — bottom-right corner
-	start_btn = _make_button("START", 30)
-	start_btn.custom_minimum_size = Vector2(160, 80)
-	start_btn.set_anchor_and_offset(SIDE_LEFT,   1.0, -180.0)
-	start_btn.set_anchor_and_offset(SIDE_RIGHT,  1.0,  -10.0)
-	start_btn.set_anchor_and_offset(SIDE_TOP,    1.0,  -65.0)
-	start_btn.set_anchor_and_offset(SIDE_BOTTOM, 1.0,  -10.0)
-	start_btn.pressed.connect(start_game)
-	ui_layer.add_child(start_btn)
-
-func _make_label(text: String, font_size: int, color: Color) -> Label:
-	var lbl := Label.new()
-	lbl.text = text
-	lbl.add_theme_font_size_override("font_size", font_size)
-	lbl.add_theme_color_override("font_color", color)
-	lbl.add_theme_color_override("font_outline_color", Color.BLACK)
-	lbl.add_theme_constant_override("outline_size", 4)
-	return lbl
-
-func _make_button(text: String, font_size: int) -> Button:
-	var btn := Button.new()
-	btn.text = text
-	btn.add_theme_font_size_override("font_size", font_size)
-	btn.custom_minimum_size = Vector2(130, 80)
-	return btn
-
 # ─────────────────────────────────────────────────────────────────────────────
 # GAME FLOW  (async coroutine chain)
 # ─────────────────────────────────────────────────────────────────────────────
@@ -180,14 +119,14 @@ func start_game() -> void:
 	chip_visible         = false
 	can_click            = false
 	result_container_tapped = -1
-	result_label.modulate.a = 0.0
-	result_label.text    = ""
+	phase_label.text     = ""
 	start_btn.visible    = false
+	try_again_btn.visible = false
 	queue_redraw()
 
 	hidden_index  = randi() % 4
 	current_phase = Phase.SHOW_ITEM
-	_set_phase_label("Remember!")
+	_set_phase_label("Запомни!")
 	_phase_show_item()   # starts the async chain; no await here — fire & forget
 
 # ── Phase: show chip ─────────────────────────────────────────────────────────
@@ -202,7 +141,7 @@ func _phase_show_item() -> void:
 	await get_tree().create_timer(1.5).timeout
 
 	current_phase = Phase.HIDE_ITEM
-	_set_phase_label("Watch!")
+	_set_phase_label("Следи!")
 
 	var tw2 := create_tween()
 	tw2.tween_method(_lift_setter.bind(hidden_index), LIFT_HEIGHT, 0.0, LIFT_DUR)
@@ -218,8 +157,8 @@ func _phase_shuffle() -> void:
 	current_phase = Phase.SHUFFLE
 	is_animating  = true
 
-	var count := int(SWAP_COUNTS[difficulty])
-	var dur   := float(SWAP_DURATION[difficulty])
+	var count := SWAP_COUNT
+	var dur   := SWAP_DURATION
 
 	_build_swap_queue(count)
 
@@ -276,7 +215,7 @@ func _on_shuffle_done() -> void:
 	is_animating  = false
 	current_phase = Phase.WAIT_FOR_CLICK
 	can_click     = true
-	_set_phase_label("Choose!")
+	_set_phase_label("Выбирай!")
 
 # ── Lift helper — called by tween_method().bind(idx) ────────────────────────
 # tween_method supplies the interpolated float as arg 0; bind appends idx as arg 1
@@ -308,19 +247,21 @@ func _phase_reveal(correct: bool) -> void:
 	await tw.finished
 
 	if correct:
-		result_label.add_theme_color_override("font_color", Color(0.1, 1.0, 0.3))
-		result_label.text = "Correct!"
+		phase_label.add_theme_color_override("font_color", Color(0.1, 1.0, 0.3))
+		phase_label.text = "ПОБЕДА"
 	else:
-		result_label.add_theme_color_override("font_color", Color(1.0, 0.25, 0.25))
-		result_label.text = "Wrong!"
-
-	var fade := create_tween()
-	fade.tween_property(result_label, "modulate:a", 1.0, 0.3)
-	await fade.finished
-
+		phase_label.add_theme_color_override("font_color", Color(1.0, 0.25, 0.25))
+		phase_label.text = "НЕПРАВИЛЬНО"
 	await get_tree().create_timer(2.5).timeout
-	minigame_completed.emit(correct, difficulty)
-	start_btn.visible = true
+	minigame_completed.emit(correct, 1)
+	if correct:
+		var main_game := get_tree().get_first_node_in_group("MainGame")
+		if main_game and main_game.has_method("close_shell_game"):
+			main_game.close_shell_game()
+		else:
+			get_tree().change_scene_to_file("res://scenes/Room3.tscn")
+	else:
+		try_again_btn.visible = true
 
 # ─────────────────────────────────────────────────────────────────────────────
 # INPUT
