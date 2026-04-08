@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://qqo23l2ymka3"]
+[gd_scene load_steps=9 format=3 uid="uid://qqo23l2ymka3"]
 
 [ext_resource type="Script" uid="uid://bc1ohm7t7d76n" path="res://scenes/room_3.gd" id="1_gn08f"]
 [ext_resource type="Texture2D" uid="uid://dou4rsjforjbf" path="res://ImagesBackground/result_Room3.png" id="1_ykapl"]
@@ -6,6 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://ch4kncjxv2o5" path="res://items/right-arrow.png" id="4_dw1qw"]
 [ext_resource type="Texture2D" uid="uid://pk53wbvfckre" path="res://ImagesBackground/reacterwithcolor (1).png" id="5_dw1qw"]
 [ext_resource type="Texture2D" uid="uid://ck38uu1ima4b4" path="res://items/compface.png" id="6_s61je"]
+[ext_resource type="FontFile" uid="uid://b7dduljs7hlra" path="res://Iceberg-Regular.ttf" id="7_gn08f"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_784tl"]
 bg_color = Color(0.408329, 0.408329, 0.408329, 1)
@@ -160,6 +161,11 @@ offset_left = 228.0
 offset_top = 21.0
 offset_right = 1043.0
 offset_bottom = 152.0
+theme_override_fonts/normal_font = ExtResource("7_gn08f")
+theme_override_fonts/mono_font = ExtResource("7_gn08f")
+theme_override_fonts/italics_font = ExtResource("7_gn08f")
+theme_override_fonts/bold_italics_font = ExtResource("7_gn08f")
+theme_override_fonts/bold_font = ExtResource("7_gn08f")
 theme_override_font_sizes/bold_italics_font_size = 30
 theme_override_font_sizes/italics_font_size = 30
 theme_override_font_sizes/mono_font_size = 30

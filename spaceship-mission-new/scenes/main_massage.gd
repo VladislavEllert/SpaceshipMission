@@ -26,18 +26,16 @@ func _ready() -> void:
 	start_typing()
 
 func start_typing() -> void:
-	story_label.text = ""
-	char_index = 0
+	story_label.text = full_text
+	story_label.visible_characters = 0
 	_type_next_char()
 
 func _type_next_char() -> void:
-	if char_index > full_text.length():
+	if story_label.visible_characters >= story_label.get_total_character_count():
 		return
-	story_label.text = full_text.substr(0, char_index)
-	char_index += 1
-	if char_index <= full_text.length():
-		await get_tree().create_timer(type_speed).timeout
-		_type_next_char()
+	story_label.visible_characters += 1
+	await get_tree().create_timer(type_speed).timeout
+	_type_next_char()
 
 func _close_message() -> void:
 	var main_game := get_tree().get_first_node_in_group("MainGame")

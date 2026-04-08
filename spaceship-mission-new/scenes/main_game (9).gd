@@ -14,51 +14,51 @@ var room_index: int = 1
 const FADE_DURATION: float = 0.4
 
 # platformer
-var platformer_scene := preload("res://minigame/jumper/scenes/main.tscn")
+var platformer_scene: PackedScene = null
 var platformer_instance: Node = null
 var platformer_solved: bool = false
 
 # jumper
-var jumper_scene := preload("res://minigame/jumper/scenes/main.tscn")
+var jumper_scene: PackedScene = null
 var jumper_instance: Node = null
 var jumper_solved: bool = false
 
 # LaserMirror
-var laser_mirror_scene := preload("res://minigame/LaserMirror/LaserMirror.tscn")
+var laser_mirror_scene: PackedScene = null
 var laser_mirror_instance: Node = null
 var laser_mirror_solved: bool = false
 
 # PipeGame
-var pipe_game_scene := preload("res://minigame/PipeGame/PipeGame.tscn")
+var pipe_game_scene: PackedScene = null
 var pipe_game_instance: Node = null
 var pipe_game_solved: bool = false
 
 # 15puzzle
-var board_scene := preload("res://minigame/15puzzle/Board.tscn")
+var board_scene: PackedScene = null
 var board_instance: Node = null
 var puzzle_solved_15: bool = false
 
 # FlaskPuzzel
-var flask_scene := preload("res://minigame/FlaskPuzzel/FlaskPuzzel.tscn")
+var flask_scene: PackedScene = null
 var flask_instance: Node = null
 var flask_solved: bool = false
 
 # massage
-var message4_scene := preload("res://scenes/MainMassage.tscn")
+var message4_scene: PackedScene = null
 var message4_instance: Node = null
 
 # box 1
-var chest1_scene := preload("res://logicitems/box1InSecondRoom/Box1.tscn")
+var chest1_scene: PackedScene = null
 var chest1_instance: Node = null
 var chest1_opened: bool = false
 
 # box 2
-var chest2_scene := preload("res://logicitems/box2InSecondRoom/Box2.tscn")
+var chest2_scene: PackedScene = null
 var chest2_instance: Node = null
 var chest2_opened: bool = false
 
 # ball
-var ball_scene := preload("res://logicitems/Ball/Ball.tscn")
+var ball_scene: PackedScene = null
 var ball_instance: Node = null
 
 var collected_items: Array[String] = []
@@ -106,7 +106,16 @@ func _play_wakeup_blink() -> void:
 	tween.tween_property(fade_rect, "modulate:a", 0.0, 0.5)
 	tween.tween_callback(dialog_box.start)
 
+func _input(event: InputEvent) -> void:
+	if event.is_action_pressed("ui_cancel"):
+		var existing_menu := $UILayer.get_node_or_null("PauseMenu")
+		if existing_menu == null:
+			_on_menu_button_pressed()
+
 func _on_menu_button_pressed() -> void:
+	var existing_menu := $UILayer.get_node_or_null("PauseMenu")
+	if existing_menu != null:
+		return
 	var menu := pause_menu_scene.instantiate()
 	$UILayer.add_child(menu)
 
@@ -214,6 +223,8 @@ func _on_room_go_right() -> void:
 func open_board() -> void:
 	if board_instance != null:
 		return
+	if board_scene == null:
+		board_scene = load("res://minigame/15puzzle/Board.tscn")
 	board_instance = board_scene.instantiate()
 	$MiniGameLayer.add_child(board_instance)
 
@@ -240,6 +251,8 @@ func on_board_solved() -> void:
 func open_flask() -> void:
 	if flask_instance != null:
 		return
+	if flask_scene == null:
+		flask_scene = load("res://minigame/FlaskPuzzel/FlaskPuzzel.tscn")
 	flask_instance = flask_scene.instantiate()
 	flask_instance.connect("puzzle_solved", Callable(self, "on_flask_solved"))
 	$MiniGameLayer.add_child(flask_instance)
@@ -264,6 +277,8 @@ func on_flask_solved() -> void:
 func open_message4() -> void:
 	if message4_instance:
 		return
+	if message4_scene == null:
+		message4_scene = load("res://scenes/MainMassage.tscn")
 	message4_instance = message4_scene.instantiate()
 	$MiniGameLayer.add_child(message4_instance)
 
@@ -278,6 +293,8 @@ func close_message4() -> void:
 func open_chest1() -> void:
 	if chest1_instance != null:
 		return
+	if chest1_scene == null:
+		chest1_scene = load("res://logicitems/box1InSecondRoom/Box1.tscn")
 	chest1_instance = chest1_scene.instantiate()
 	$MiniGameLayer.add_child(chest1_instance)
 
@@ -295,6 +312,8 @@ func on_chest1_solved() -> void:
 func open_chest2() -> void:
 	if chest2_instance != null:
 		return
+	if chest2_scene == null:
+		chest2_scene = load("res://logicitems/box2InSecondRoom/Box2.tscn")
 	chest2_instance = chest2_scene.instantiate()
 	$MiniGameLayer.add_child(chest2_instance)
 
@@ -312,6 +331,8 @@ func on_chest2_solved() -> void:
 func open_platformer() -> void:
 	if platformer_instance != null:
 		return
+	if platformer_scene == null:
+		platformer_scene = load("res://minigame/jumper/scenes/main.tscn")
 	platformer_instance = platformer_scene.instantiate()
 	platformer_instance.connect("game_won", Callable(self, "on_platformer_solved"))
 	platformer_instance.connect("game_exit", Callable(self, "close_platformer"))
@@ -337,6 +358,8 @@ func on_platformer_solved() -> void:
 func open_ball() -> void:
 	if ball_instance != null:
 		return
+	if ball_scene == null:
+		ball_scene = load("res://logicitems/Ball/Ball.tscn")
 	# Показываем ToggleButton инвентаря
 	$UILayer/InventoryRoot/ToggleButton.visible = true
 	ball_instance = ball_scene.instantiate()
@@ -352,12 +375,14 @@ func close_ball() -> void:
 	if inv.is_open:
 		inv._on_toggle_button_pressed()
 # -------- ship panel (Room1) --------
-var panel_scene := preload("res://logicitems/shipManage/Panel.tscn")
+var panel_scene: PackedScene = null
 var panel_instance: Node = null
 
 func open_panel() -> void:
 	if panel_instance != null:
 		return
+	if panel_scene == null:
+		panel_scene = load("res://logicitems/shipManage/Panel.tscn")
 	panel_instance = panel_scene.instantiate()
 	$MiniGameLayer.add_child(panel_instance)
 
@@ -372,6 +397,8 @@ func close_panel() -> void:
 func open_pipe_game() -> void:
 	if pipe_game_instance != null:
 		return
+	if pipe_game_scene == null:
+		pipe_game_scene = load("res://minigame/PipeGame/PipeGame.tscn")
 	pipe_game_instance = pipe_game_scene.instantiate()
 	pipe_game_instance.connect("puzzle_solved", Callable(self, "on_pipe_game_solved"))
 	pipe_game_instance.connect("puzzle_exit", Callable(self, "close_pipe_game"))
@@ -397,6 +424,8 @@ func on_pipe_game_solved() -> void:
 func open_jumper() -> void:
 	if jumper_instance != null:
 		return
+	if jumper_scene == null:
+		jumper_scene = load("res://minigame/jumper/scenes/main.tscn")
 	jumper_instance = jumper_scene.instantiate()
 	jumper_instance.connect("game_won", Callable(self, "on_jumper_solved"))
 	jumper_instance.connect("game_exit", Callable(self, "close_jumper"))
@@ -424,6 +453,8 @@ func on_jumper_solved() -> void:
 func open_laser_mirror() -> void:
 	if laser_mirror_instance != null:
 		return
+	if laser_mirror_scene == null:
+		laser_mirror_scene = load("res://minigame/LaserMirror/LaserMirror.tscn")
 	laser_mirror_instance = laser_mirror_scene.instantiate()
 	laser_mirror_instance.connect("puzzle_solved", Callable(self, "on_laser_mirror_solved"))
 	laser_mirror_instance.connect("minigame_closed", Callable(self, "close_laser_mirror"))

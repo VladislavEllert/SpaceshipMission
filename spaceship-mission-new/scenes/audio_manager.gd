@@ -23,3 +23,9 @@ func set_music_volume(value: float) -> void:
 func set_sfx_volume(value: float) -> void:
 	sfx_volume = value
 	sfx_player.volume_db = linear_to_db(value) if value > 0.001 else -80.0
+
+func _notification(what: int) -> void:
+	if what == NOTIFICATION_APPLICATION_PAUSED or what == NOTIFICATION_WM_WINDOW_FOCUS_OUT:
+		music_player.stream_paused = true
+	elif what == NOTIFICATION_APPLICATION_RESUMED or what == NOTIFICATION_WM_WINDOW_FOCUS_IN:
+		music_player.stream_paused = false

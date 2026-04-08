@@ -230,29 +230,30 @@ func _open_dialog(dialog: Panel, label: RichTextLabel, next_btn: TextureButton, 
 
 func _show_message(index: int) -> void:
 	full_text = current_messages[index]
-	active_label.text = ""
+	active_label.text = full_text
+	active_label.visible_characters = 0
 	active_next.visible = true
 	is_typing = true
-	_type_next_char(0)
+	_type_next_char()
 
-func _type_next_char(char_idx: int) -> void:
+func _type_next_char() -> void:
 	if not is_typing:
-		active_label.text = full_text
+		active_label.visible_characters = -1
 		active_next.visible = true
 		return
-	if char_idx > full_text.length():
+	if active_label.visible_characters >= active_label.get_total_character_count():
 		is_typing = false
 		active_next.visible = true
 		return
-	active_label.text = full_text.substr(0, char_idx)
+	active_label.visible_characters += 1
 	await get_tree().create_timer(TYPE_SPEED).timeout
-	_type_next_char(char_idx + 1)
+	_type_next_char()
 
 func _on_next_pressed(dialog: Panel) -> void:
 	AudioManager.play_click()
 	if is_typing:
 		is_typing = false
-		active_label.text = full_text
+		active_label.visible_characters = -1
 		active_next.visible = true
 		return
 	current_index += 1

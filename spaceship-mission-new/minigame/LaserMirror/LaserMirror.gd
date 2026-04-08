@@ -33,7 +33,6 @@ var grid: Array = []            # grid[row][col] → CellType int
 var rotatable: Dictionary = {}  # ключ Vector2i(col, row) → true
 var laser_line: Line2D
 var laser_glow: Line2D
-var win_panel: Control
 var _solved := false
 var _source_pos := Vector2i(0, 0)  # x = col, y = row
 
@@ -196,59 +195,7 @@ func _build_ui() -> void:
 	hint.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(hint)
 
-	# ── Панель победы ──────────────────────────────────────────────────────
-	win_panel = Control.new()
-	win_panel.name = "WinPanel"
-	win_panel.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	win_panel.visible = false
-	win_panel.z_index = 10
-	add_child(win_panel)
-
-	# Затемнение фона
-	var win_bg := ColorRect.new()
-	win_bg.color = Color(0, 0, 0, 0.78)
-	win_bg.size = Vector2(1280, 720)
-	win_bg.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	win_panel.add_child(win_bg)
-
-	# Карточка
-	var card := ColorRect.new()
-	card.position = Vector2(340, 240)
-	card.size = Vector2(600, 220)
-	card.color = Color(0.051, 0.106, 0.165, 1.0)
-	card.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	win_panel.add_child(card)
-
-	# Текст победы
-	var win_lbl := Label.new()
-	win_lbl.text = "СИСТЕМА АКТИВИРОВАНА"
-	win_lbl.position = Vector2(300, 268)
-	win_lbl.size = Vector2(680, 60)
-	win_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	win_lbl.add_theme_font_size_override("font_size", 36)
-	win_lbl.add_theme_color_override("font_color", Color(0.2, 1.0, 0.5, 1.0))
-	win_lbl.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	win_panel.add_child(win_lbl)
-
-	# Иконка
-	var wicon := Label.new()
-	wicon.text = "◉"
-	wicon.position = Vector2(300, 325)
-	wicon.size = Vector2(680, 60)
-	wicon.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	wicon.add_theme_font_size_override("font_size", 50)
-	wicon.add_theme_color_override("font_color", Color(0.0, 1.0, 0.4, 1.0))
-	wicon.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	win_panel.add_child(wicon)
-
-	# Кнопка «Закрыть»
-	var close_btn := Button.new()
-	close_btn.text = "ЗАКРЫТЬ"
-	close_btn.position = Vector2(440, 390)
-	close_btn.size = Vector2(400, 60)
-	close_btn.add_theme_font_size_override("font_size", 24)
-	close_btn.pressed.connect(func(): emit_signal("puzzle_solved"))
-	win_panel.add_child(close_btn)
+	# win_panel убран — после решения сразу закрываемся как в других мини-играх
 
 
 ## Создаём невидимые Button-узлы поверх каждой вращаемой ячейки.
@@ -286,17 +233,13 @@ func _on_cell_tapped(col: int, row: int) -> void:
 
 # ── Победа и выход ────────────────────────────────────────────────────────────
 
-## Вспышка лазера → пауза → панель победы → авто-закрытие через 2.5с
+## Вспышка лазера → короткая пауза → закрываем мини-игру как в других пазлах
 func _on_win() -> void:
 	_solved = true
 	var tw := create_tween()
 	tw.tween_property(laser_line, "modulate", Color(3.0, 3.0, 3.0, 1.0), 0.10)
 	tw.tween_property(laser_line, "modulate", Color(1.0, 1.0, 1.0, 1.0), 0.30)
-	await get_tree().create_timer(0.5).timeout
-	if not is_inside_tree():
-		return
-	win_panel.visible = true
-	await get_tree().create_timer(2.5).timeout
+	await get_tree().create_timer(0.6).timeout
 	if not is_inside_tree():
 		return
 	emit_signal("puzzle_solved")

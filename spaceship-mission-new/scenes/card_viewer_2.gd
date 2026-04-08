@@ -1,5 +1,8 @@
 extends Control
 
+signal card_opened
+signal card_closed
+
 const CARD_TEXTURE: Texture2D = preload("res://items/paperbig.png")
 const CLOSE_ARROW: Texture2D  = preload("res://items/right-arrow.png")
 
@@ -14,6 +17,8 @@ func _ready() -> void:
 
 func show_card() -> void:
 	visible = true
+	emit_signal("card_opened")
 
 func _on_close_pressed() -> void:
 	visible = false
+	emit_signal("card_closed")

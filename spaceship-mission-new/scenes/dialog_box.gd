@@ -33,26 +33,30 @@ func start() -> void:
 
 func _show_message(index: int) -> void:
 	full_text = messages[index]
-	dialog_label.text = ""
+	dialog_label.text = full_text
+	dialog_label.visible_characters = 0
 	next_button.visible = false
 	is_typing = true
-	_type_next_char(0)
+	_type_next_char()
 
-func _type_next_char(char_idx: int) -> void:
-	if char_idx > full_text.length():
+func _type_next_char() -> void:
+	if not is_typing:
+		dialog_label.visible_characters = -1
+		next_button.visible = true
+		return
+	if dialog_label.visible_characters >= dialog_label.get_total_character_count():
 		is_typing = false
 		next_button.visible = true
 		return
-
-	dialog_label.text = full_text.substr(0, char_idx)
+	dialog_label.visible_characters += 1
 	await get_tree().create_timer(TYPE_SPEED).timeout
-	_type_next_char(char_idx + 1)
+	_type_next_char()
 
 func _on_next_pressed() -> void:
 	# Если ещё печатается — показать весь текст сразу
 	if is_typing:
 		is_typing = false
-		dialog_label.text = full_text
+		dialog_label.visible_characters = -1
 		next_button.visible = true
 		return
 

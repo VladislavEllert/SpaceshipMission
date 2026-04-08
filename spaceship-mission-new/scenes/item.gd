@@ -15,9 +15,16 @@ func _ready() -> void:
 	input_event.connect(_on_input_event)
 
 func _on_input_event(viewport, event: InputEvent, shape_idx: int) -> void:
-	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
-		var main_game := get_tree().get_first_node_in_group("MainGame")
-		if main_game:
-			main_game.inventory.add_item(item_id)
-			main_game.mark_item_collected(item_id)
-		queue_free()
+	if event is InputEventMouseButton:
+		if not (event.button_index == MOUSE_BUTTON_LEFT and event.pressed):
+			return
+	elif event is InputEventScreenTouch:
+		if not event.pressed:
+			return
+	else:
+		return
+	var main_game := get_tree().get_first_node_in_group("MainGame")
+	if main_game:
+		main_game.inventory.add_item(item_id)
+		main_game.mark_item_collected(item_id)
+	queue_free()

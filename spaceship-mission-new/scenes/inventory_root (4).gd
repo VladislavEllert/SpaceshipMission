@@ -111,27 +111,33 @@ func clear_selection() -> void:
 	_update_slots()
 
 func _on_slot_gui_input(idx: int, event: InputEvent) -> void:
+	var tapped := false
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
+		tapped = true
+	elif event is InputEventScreenTouch and event.pressed:
+		tapped = true
+	if tapped:
 		if idx >= items.size():
 			return
+		var was_selected := (selected_index == idx)
 		if selected_index == idx:
 			selected_index = -1
 		else:
 			selected_index = idx
 		_update_slots()
-		# Если выбрана карточка — показываем крупный вид
-		if selected_index >= 0 and items[selected_index] == "card":
+		# Открываем большую картинку только при нажатии на уже выбранный слот
+		if was_selected and idx < items.size():
+			var item_id := items[idx]
 			var main_game := get_tree().get_first_node_in_group("MainGame")
 			if main_game:
-				var card_viewer = main_game.get_node_or_null("UILayer/CardViewer")
-				if card_viewer:
-					card_viewer.show_card()
-	if selected_index >= 0 and items[selected_index] == "starmap":
-		var main_game := get_tree().get_first_node_in_group("MainGame")
-		if main_game:
-			var card_viewer2 = main_game.get_node_or_null("UILayer/CardViewer2")
-			if card_viewer2:
-				card_viewer2.show_card()
+				if item_id == "card":
+					var card_viewer = main_game.get_node_or_null("UILayer/CardViewer")
+					if card_viewer:
+						card_viewer.show_card()
+				elif item_id == "starmap":
+					var card_viewer2 = main_game.get_node_or_null("UILayer/CardViewer2")
+					if card_viewer2:
+						card_viewer2.show_card()
 
 
 	

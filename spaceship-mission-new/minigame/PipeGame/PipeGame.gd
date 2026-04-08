@@ -225,9 +225,12 @@ func _style_win_panel() -> void:
 
 # ── Input ──────────────────────────────────────────────────────────────────────
 func _on_cell_input(event: InputEvent, idx: int) -> void:
-	if event is InputEventMouseButton \
-			and event.button_index == MOUSE_BUTTON_LEFT \
-			and event.pressed:
+	var tapped := false
+	if event is InputEventScreenTouch and event.pressed:
+		tapped = true
+	elif event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
+		tapped = true
+	if tapped:
 		if _grid_types[idx] == EMPTY:
 			return  # empty tiles cannot be rotated
 		_grid_rots[idx]                  = (_grid_rots[idx] + 1) % 4

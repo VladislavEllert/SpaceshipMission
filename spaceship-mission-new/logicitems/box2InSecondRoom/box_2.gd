@@ -48,7 +48,8 @@ func _open_chest() -> void:
 
 	var main_game := get_tree().get_first_node_in_group("MainGame")
 	if main_game:
-		main_game.on_chest2_solved()   
+		main_game.on_chest2_solved()
+		main_game.inventory.add_item("battery")
 
 	await get_tree().create_timer(0.7).timeout
 	_close_chest()

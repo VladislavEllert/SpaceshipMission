@@ -53,10 +53,10 @@ offset_bottom = 178.0
 
 [node name="ResumeButton" type="TextureButton" parent="Background"]
 layout_mode = 0
-offset_left = 1123.0
+offset_left = 1121.0
 offset_top = 335.0
 offset_right = 1174.0
-offset_bottom = 388.0
+offset_bottom = 385.0
 texture_normal = ExtResource("2_b37t8")
 
 [node name="ResetButton" type="Button" parent="Background"]

@@ -94,9 +94,24 @@ func _init_grid() -> void:
 func _input(event: InputEvent) -> void:
 	if _win_overlay.visible:
 		return
-	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
+	# Начало касания / нажатие мыши
+	if event is InputEventScreenTouch:
 		if event.pressed:
-			var cell : Vector2i = _cell_at(event.position)
+			var cell := _cell_at(event.position)
+			if cell.x < 0:
+				return
+			var dot_c : int = _dot_grid[cell.y][cell.x]
+			if dot_c != 0:
+				_start_draw(cell, dot_c)
+		else:
+			_stop_draw()
+	elif event is InputEventScreenDrag:
+		var cell := _cell_at(event.position)
+		if cell.x >= 0:
+			_extend_draw(cell)
+	elif event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
+		if event.pressed:
+			var cell := _cell_at(event.position)
 			if cell.x < 0:
 				return
 			var dot_c : int = _dot_grid[cell.y][cell.x]
@@ -105,7 +120,7 @@ func _input(event: InputEvent) -> void:
 		else:
 			_stop_draw()
 	elif event is InputEventMouseMotion and _drawing:
-		var cell : Vector2i = _cell_at(event.position)
+		var cell := _cell_at(event.position)
 		if cell.x >= 0:
 			_extend_draw(cell)
 

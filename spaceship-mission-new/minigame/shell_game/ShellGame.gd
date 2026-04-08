@@ -144,7 +144,7 @@ func _create_ui() -> void:
 
 	# START button — bottom-right corner
 	start_btn = _make_button("START", 30)
-	start_btn.custom_minimum_size = Vector2(160, 55)
+	start_btn.custom_minimum_size = Vector2(160, 80)
 	start_btn.set_anchor_and_offset(SIDE_LEFT,   1.0, -180.0)
 	start_btn.set_anchor_and_offset(SIDE_RIGHT,  1.0,  -10.0)
 	start_btn.set_anchor_and_offset(SIDE_TOP,    1.0,  -65.0)
@@ -165,7 +165,7 @@ func _make_button(text: String, font_size: int) -> Button:
 	var btn := Button.new()
 	btn.text = text
 	btn.add_theme_font_size_override("font_size", font_size)
-	btn.custom_minimum_size = Vector2(130, 50)
+	btn.custom_minimum_size = Vector2(130, 80)
 	return btn
 
 # ─────────────────────────────────────────────────────────────────────────────
