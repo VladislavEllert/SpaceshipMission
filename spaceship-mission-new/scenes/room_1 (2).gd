@@ -110,9 +110,11 @@ func _ready() -> void:
 # -------------------------------------------------------
 
 func _on_left_pressed() -> void:
+	AudioManager.play_click()
 	emit_signal("go_left")
 
 func _on_right_pressed() -> void:
+	AudioManager.play_click()
 	emit_signal("go_right")
 
 # --- Переключение фона ---
@@ -247,6 +249,7 @@ func _type_next_char(char_idx: int) -> void:
 	_type_next_char(char_idx + 1)
 
 func _on_next_pressed(dialog: Panel) -> void:
+	AudioManager.play_click()
 	if is_typing:
 		is_typing = false
 		active_label.text = full_text

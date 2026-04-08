@@ -34,6 +34,7 @@ func _fly_away() -> void:
 	await get_tree().create_timer(3.0).timeout
 	var menu := preload("res://scenes/PauseMenu.tscn").instantiate()
 	add_child(menu)
+	menu.get_node("Background/ResumeButton").visible = false
 
 # ── Варп-вспышка ──────────────────────────────────────────────────────────────
 func _show_flash(pos: Vector2) -> void:

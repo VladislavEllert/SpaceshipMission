@@ -41,9 +41,11 @@ func _ready() -> void:
 	# (SolvedBannerDoor удалён из сцены)
 
 func _on_left_pressed() -> void:
+	AudioManager.play_click()
 	emit_signal("go_left")
 
 func _on_right_pressed() -> void:
+	AudioManager.play_click()
 	emit_signal("go_right")
 
 func _on_door_unlock_pressed() -> void:
@@ -105,6 +107,7 @@ func _type_next_char(char_idx: int) -> void:
 	_type_next_char(char_idx + 1)
 
 func _on_next_pressed() -> void:
+	AudioManager.play_click()
 	if is_typing:
 		is_typing = false
 		dialog_label.text = full_text

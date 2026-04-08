@@ -19,6 +19,7 @@ config/icon="uid://n8aoi0b2b0f4"
 [autoload]
 
 GameState="*res://scenes/GameState.gd"
+AudioManager="*res://scenes/AudioManager.tscn"
 
 [display]
 

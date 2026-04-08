@@ -45,4 +45,5 @@ func _close_message() -> void:
 		main_game.close_message4()
 
 func _on_BackButton_pressed() -> void:
+	AudioManager.play_click()
 	_close_message()

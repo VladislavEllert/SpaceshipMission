@@ -63,9 +63,11 @@ func _ready() -> void:
 		reactor_place.visible = false
  
 func _on_left_pressed() -> void:
+	AudioManager.play_click()
 	emit_signal("go_left")
- 
+
 func _on_right_pressed() -> void:
+	AudioManager.play_click()
 	emit_signal("go_right")
  
 # --- Нажатие на слот реактора ---
@@ -119,6 +121,7 @@ func _type_next_char(char_idx: int) -> void:
 	_type_next_char(char_idx + 1)
  
 func _on_next_pressed() -> void:
+	AudioManager.play_click()
 	if is_typing:
 		is_typing = false
 		dialog_label.text = full_text
@@ -129,7 +132,7 @@ func _on_next_pressed() -> void:
 		dialog_panel.visible = false
 		return
 	_show_message(current_index)
- 
+
 # -------------------------------------------------------
  
 func _on_puzzle_button_pressed() -> void:

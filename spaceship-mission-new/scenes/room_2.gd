@@ -8,9 +8,11 @@ func _ready() -> void:
 	$RightArrow.pressed.connect(_on_right_pressed)
 
 func _on_left_pressed() -> void:
+	AudioManager.play_click()
 	emit_signal("go_left")
 
 func _on_right_pressed() -> void:
+	AudioManager.play_click()
 	emit_signal("go_right")
 	
 func _on_box1_pressed() -> void:
