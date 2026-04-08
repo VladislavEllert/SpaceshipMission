@@ -34,8 +34,8 @@ func _ready() -> void:
 	team_label.visible   = true
 	team_next_btn.visible = true
 
-	cap_label.text  = "Ты смог открыть дверь и восстановить питание корабля."
-	team_label.text = "Как хорошо, что я успел, вас спасти "
+	cap_label.text  = "Мы уже потеряли всю надежду! Кислорода оставалось на считанные минуты!"
+	team_label.text = "Я устранил поломку - мы спасены."
 
 	cap_next_btn.pressed.connect(_on_cap_next_pressed)
 	team_next_btn.pressed.connect(_on_team_next_pressed)
