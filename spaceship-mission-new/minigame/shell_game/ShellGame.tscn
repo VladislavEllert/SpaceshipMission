@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://bshellgame001"]
 
-[ext_resource type="Script" uid="uid://bla458yqrac3j" path="res://minigame/shell_game/ShellGame.gd" id="1_script"]
+[ext_resource type="Script" uid="uid://bdhd1jy28fenq" path="res://minigame/shell_game/ShellGame.gd" id="1_script"]
 
 [node name="ShellGame" type="Node2D"]
 script = ExtResource("1_script")
