@@ -35,7 +35,7 @@ func _show_message(index: int) -> void:
 	full_text = messages[index]
 	dialog_label.text = full_text
 	dialog_label.visible_characters = 0
-	next_button.visible = false
+	next_button.visible = true
 	is_typing = true
 	_type_next_char()
 

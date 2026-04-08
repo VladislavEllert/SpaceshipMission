@@ -77,7 +77,7 @@ func _open_dialog(messages: Array[String]) -> void:
 func _show_message(index: int) -> void:
 	full_text = current_messages[index]
 	dialog_label.text = ""
-	next_button.visible = false
+	next_button.visible = true
 	is_typing = true
 	_type_next_char(0)
 
