@@ -28,7 +28,8 @@ func _type_next_char() -> void:
 
 
 func _on_start_button_pressed() -> void:
-	get_tree().change_scene_to_file("res://scenes/MainGame.tscn")  # твоя игровая сцена
+	GameState.load_save()  # загружаем сохранение (если есть)
+	get_tree().change_scene_to_file("res://scenes/MainGame.tscn")
 
 
 func _on_quit_button_pressed() -> void:

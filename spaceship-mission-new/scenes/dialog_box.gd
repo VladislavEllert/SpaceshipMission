@@ -21,7 +21,8 @@ signal dialog_finished
 
 func _ready() -> void:
 	next_button.texture_normal = NEXT_ARROW
-	next_button.pressed.connect(_on_next_pressed)
+	if not next_button.pressed.is_connected(_on_next_pressed):
+		next_button.pressed.connect(_on_next_pressed)
 	next_button.visible = false
 	dialog_label.text = ""
 	visible = false

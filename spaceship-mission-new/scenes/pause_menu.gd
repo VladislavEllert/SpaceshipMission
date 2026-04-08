@@ -15,11 +15,11 @@ func _on_resume_pressed() -> void:
 	queue_free()
 
 func _on_reset_pressed() -> void:
-	GameState.current_room = 1
-	GameState.intro_finished = false
+	GameState.reset()
 	get_tree().change_scene_to_file("res://scenes/StartMenu.tscn")
 
 func _on_quit_pressed() -> void:
+	GameState.save()
 	get_tree().quit()
 
 func _input(event: InputEvent) -> void:

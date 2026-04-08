@@ -44,7 +44,8 @@ func _ready() -> void:
 	# Прячем инвентарь за верхний край при старте
 	position.y = -INVENTORY_HEIGHT
 	toggle_button.texture_normal = ARROW_DOWN
-	toggle_button.pressed.connect(_on_toggle_button_pressed)
+	if not toggle_button.pressed.is_connected(_on_toggle_button_pressed):
+		toggle_button.pressed.connect(_on_toggle_button_pressed)
 
 	# Слоты
 	for i in range(slots.size()):
@@ -84,8 +85,7 @@ func add_item(id: String) -> void:
 	items.append(id)
 	print("Items now:", items)
 	selected_index = items.size() - 1
-	#if selected_index == -1:
-		#selected_index = items.size() - 1
+	GameState.inventory_items = items.duplicate()
 	_update_slots()
 
 func remove_item(id: String) -> void:
@@ -96,6 +96,7 @@ func remove_item(id: String) -> void:
 			selected_index = -1
 		elif selected_index > idx:
 			selected_index -= 1
+		GameState.inventory_items = items.duplicate()
 		_update_slots()
 
 func has_item(id: String) -> bool:

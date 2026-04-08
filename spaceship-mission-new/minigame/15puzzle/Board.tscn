@@ -31,7 +31,6 @@ offset_bottom = 616.0
 grow_horizontal = 2
 grow_vertical = 2
 
-
 [node name="Exit" type="Button" parent="."]
 layout_mode = 0
 offset_left = 108.0
