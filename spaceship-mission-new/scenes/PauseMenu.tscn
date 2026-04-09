@@ -94,11 +94,12 @@ theme_override_font_sizes/font_size = 24
 text = "Музыка"
 
 [node name="MusicSlider" type="HSlider" parent="Background"]
+custom_minimum_size = Vector2(0, 48)
 layout_mode = 0
 offset_left = 504.0
-offset_top = 488.0
+offset_top = 478.0
 offset_right = 798.0
-offset_bottom = 516.0
+offset_bottom = 526.0
 max_value = 1.0
 step = 0.01
 value = 0.8
@@ -114,11 +115,12 @@ theme_override_font_sizes/font_size = 24
 text = "Звуки"
 
 [node name="SFXSlider" type="HSlider" parent="Background"]
+custom_minimum_size = Vector2(0, 48)
 layout_mode = 0
 offset_left = 504.0
-offset_top = 573.0
+offset_top = 563.0
 offset_right = 798.0
-offset_bottom = 601.0
+offset_bottom = 611.0
 max_value = 1.0
 step = 0.01
 value = 0.8

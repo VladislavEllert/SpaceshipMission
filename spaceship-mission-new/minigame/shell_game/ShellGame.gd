@@ -81,9 +81,9 @@ func _on_exit_pressed() -> void:
 		get_tree().change_scene_to_file("res://scenes/Room3.tscn")
 
 func _init_slot_positions() -> void:
-	# 2×2 grid centred at (640, 320)
-	var cx := 640.0
-	var cy := 320.0
+	var vp_size := get_viewport_rect().size
+	var cx := vp_size.x / 2.0
+	var cy := vp_size.y * 0.44
 	var hw  := (CONTAINER_SIZE.x + GRID_GAP_X) * 0.5   # half total width
 	var hh  := (CONTAINER_SIZE.y + GRID_GAP_Y) * 0.5   # half total height
 	slot_positions = [
@@ -310,20 +310,21 @@ func _draw() -> void:
 # ── Background ────────────────────────────────────────────────────────────────
 
 func _draw_bg() -> void:
+	var vp_size := get_viewport_rect().size
 	if tex_bg:
-		draw_texture_rect(tex_bg, Rect2(Vector2.ZERO, Vector2(1280.0, 720.0)), false)
+		draw_texture_rect(tex_bg, Rect2(Vector2.ZERO, vp_size), false)
 		return
 	# Fallback: dark cyberpunk floor
-	draw_rect(Rect2(Vector2.ZERO, Vector2(1280.0, 720.0)), Color(0.04, 0.04, 0.06))
+	draw_rect(Rect2(Vector2.ZERO, vp_size), Color(0.04, 0.04, 0.06))
 	var gc := Color(0.0, 1.0, 1.0, 0.04)
-	for x in range(0, 1281, 40):
-		draw_line(Vector2(x, 0.0), Vector2(x, 720.0), gc, 1.0)
-	for y in range(0, 721, 40):
-		draw_line(Vector2(0.0, y), Vector2(1280.0, y), gc, 1.0)
+	for x in range(0, int(vp_size.x) + 1, 40):
+		draw_line(Vector2(x, 0.0), Vector2(x, vp_size.y), gc, 1.0)
+	for y in range(0, int(vp_size.y) + 1, 40):
+		draw_line(Vector2(0.0, y), Vector2(vp_size.x, y), gc, 1.0)
 	# Surface glow strips
 	for k in range(6):
 		var alpha := 0.06 * (6.0 - float(k))
-		draw_rect(Rect2(0.0, 700.0 - float(k) * 10.0, 1280.0, 10.0), Color(0.0, 0.5, 1.0, alpha))
+		draw_rect(Rect2(0.0, vp_size.y - 20.0 - float(k) * 10.0, vp_size.x, 10.0), Color(0.0, 0.5, 1.0, alpha))
 
 # ── Chip ──────────────────────────────────────────────────────────────────────
 

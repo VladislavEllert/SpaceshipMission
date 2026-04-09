@@ -33,10 +33,10 @@ grow_vertical = 2
 
 [node name="Exit" type="Button" parent="."]
 layout_mode = 0
-offset_left = 108.0
-offset_top = 344.0
-offset_right = 156.0
-offset_bottom = 392.0
+offset_left = 98.0
+offset_top = 333.0
+offset_right = 168.0
+offset_bottom = 403.0
 icon = ExtResource("3_3hini")
 flat = true
 

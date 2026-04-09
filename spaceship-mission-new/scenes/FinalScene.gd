@@ -12,7 +12,8 @@ func _ready() -> void:
 
 # ── Полёт ─────────────────────────────────────────────────────────────────────
 func _fly_away() -> void:
-	var target_pos   := Vector2(ship.position.x, 150.0)
+	var vp_size := get_viewport_rect().size
+	var target_pos   := Vector2(ship.position.x, vp_size.y * 0.21)
 	var target_scale := ship.scale * 0.012
 
 	var tw := create_tween()

@@ -20,11 +20,11 @@ const CORRECT_RIGHT: int = 70
 const STEP: int = 10
 const MAX_VAL: int = 180
 
-# --- Константы второй мини-игры ---
-const SCREEN_LEFT: float = 455.0
-const SCREEN_TOP: float = 130.0
-const SCREEN_WIDTH: float = 490.0
-const SCREEN_HEIGHT: float = 400.0
+# --- Константы второй мини-игры (вычисляются в _ready) ---
+var SCREEN_LEFT: float = 455.0
+var SCREEN_TOP: float = 130.0
+var SCREEN_WIDTH: float = 490.0
+var SCREEN_HEIGHT: float = 400.0
 
 const ARROW_SPEED: float = 220.0
 const DOT_SPEED_START: float = 110.0   # начальная скорость мяча
@@ -78,6 +78,11 @@ var joy_input: Vector2 = Vector2.ZERO
 @onready var grid: Node2D = $ScreenArea/Grid
 
 func _ready() -> void:
+	var vp_size := get_viewport_rect().size
+	SCREEN_WIDTH = vp_size.x * 0.383
+	SCREEN_HEIGHT = vp_size.y * 0.556
+	SCREEN_LEFT = (vp_size.x - SCREEN_WIDTH) / 2.0
+	SCREEN_TOP = (vp_size.y - SCREEN_HEIGHT) / 2.0 - 30.0
 	if not left_plus.pressed.is_connected(_on_left_plus):
 		left_plus.pressed.connect(_on_left_plus)
 	if not left_minus.pressed.is_connected(_on_left_minus):

@@ -6,8 +6,8 @@ signal puzzle_exit
 const GRID_COLS : int = 5
 const GRID_ROWS : int = 5
 const CELL_SIZE : int = 100
-const GRID_OFFSET_X : int = 390
-const GRID_OFFSET_Y : int = 110
+var GRID_OFFSET_X : int = 390
+var GRID_OFFSET_Y : int = 110
 
 const COLOR_NONE   : int = 0
 const COLOR_RED    : int = 1
@@ -45,6 +45,9 @@ var _exit_button : TextureButton = null
 # ── Инициализация ──────────────────────────────────────────────────────────────
 
 func _ready() -> void:
+	var vp_size := get_viewport_rect().size
+	GRID_OFFSET_X = int((vp_size.x - GRID_COLS * CELL_SIZE) / 2.0)
+	GRID_OFFSET_Y = int((vp_size.y - GRID_ROWS * CELL_SIZE) / 2.0)
 	_build_ui()
 	_init_grid()
 
@@ -53,17 +56,18 @@ func _build_ui() -> void:
 	_exit_button = TextureButton.new()
 	_exit_button.texture_normal = load("res://items/left-arrow.png")
 	_exit_button.position = Vector2(105, 327)
-	_exit_button.size = Vector2(50, 58)
+	_exit_button.size = Vector2(70, 70)
 	_exit_button.ignore_texture_size = true
 	_exit_button.stretch_mode = TextureButton.STRETCH_KEEP_ASPECT_CENTERED
 	_exit_button.pressed.connect(_on_exit_pressed)
 	add_child(_exit_button)
 
 	# Заголовок
+	var vp_size := get_viewport_rect().size
 	var title := Label.new()
 	title.text = "ВОССТАНОВЛЕНИЕ ЭНЕРГОЦЕПЕЙ"
-	title.position = Vector2(330, 25)
-	title.size = Vector2(620, 50)
+	title.position = Vector2(vp_size.x * 0.26, 25)
+	title.size = Vector2(vp_size.x * 0.48, 50)
 	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	title.add_theme_font_size_override("font_size", 28)
 	title.add_theme_color_override("font_color", Color(0.6, 0.82, 1.0))
@@ -258,7 +262,7 @@ func _draw() -> void:
 	var go : Vector2 = Vector2(GRID_OFFSET_X, GRID_OFFSET_Y)
 
 	# Фон
-	draw_rect(Rect2(Vector2.ZERO, Vector2(1280, 720)), Color(0.04, 0.06, 0.11))
+	draw_rect(Rect2(Vector2.ZERO, get_viewport_rect().size), Color(0.04, 0.06, 0.11))
 
 	# Панель за сеткой
 	draw_rect(

@@ -61,10 +61,10 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="Exit" type="TextureButton" parent="HUD"]
-offset_left = 18.0
-offset_top = 317.0
-offset_right = 68.0
-offset_bottom = 367.0
+offset_left = 13.0
+offset_top = 312.0
+offset_right = 83.0
+offset_bottom = 382.0
 texture_normal = ExtResource("3_scwe8")
 
 [node name="GameOver" type="CanvasLayer" parent="."]

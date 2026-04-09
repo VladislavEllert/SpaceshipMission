@@ -1,6 +1,6 @@
 [gd_scene load_steps=13 format=3 uid="uid://lqwo3aoiphos"]
 
-[ext_resource type="Script" uid="uid://bh2w7tdyqtbb5" path="res://scenes/main_game (9).gd" id="1_7f7ne"]
+[ext_resource type="Script" uid="uid://5neu0xnxqb4x" path="res://scenes/main_game (9).gd" id="1_7f7ne"]
 [ext_resource type="PackedScene" uid="uid://b8le3fmn8kbgs" path="res://scenes/InventoryRoot.tscn" id="2_xej52"]
 [ext_resource type="Script" uid="uid://bqapxbqcmqmc3" path="res://scenes/dialog_box.gd" id="3_p73vr"]
 [ext_resource type="Texture2D" uid="uid://ch4kncjxv2o5" path="res://items/right-arrow.png" id="4_x628s"]
@@ -10,7 +10,7 @@
 [ext_resource type="Texture2D" uid="uid://b4q8vctdwf4vl" path="res://items/card1box.png" id="8_7f7ne"]
 [ext_resource type="Texture2D" uid="uid://jejls1h06xkx" path="res://items/setting.png" id="9_7f7ne"]
 [ext_resource type="Texture2D" uid="uid://c4dlqwql8ioaj" path="res://items/paperbig.png" id="10_rtryj"]
-[ext_resource type="Script" uid="uid://dbe8iar4q56l0" path="res://scenes/card_viewer_2.gd" id="10_vs82q"]
+[ext_resource type="Script" uid="uid://r75voyoo8lgi" path="res://scenes/card_viewer_2.gd" id="10_vs82q"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xej52"]
 bg_color = Color(0.310617, 0.310617, 0.310617, 1)
@@ -59,10 +59,10 @@ script = ExtResource("3_p73vr")
 
 [node name="NextButton" type="TextureButton" parent="UILayer/DialogBox"]
 layout_mode = 0
-offset_left = 1074.0
-offset_top = 82.0
-offset_right = 1124.0
-offset_bottom = 132.0
+offset_left = 1064.0
+offset_top = 72.0
+offset_right = 1134.0
+offset_bottom = 142.0
 texture_normal = ExtResource("4_x628s")
 
 [node name="DialogLabel" type="RichTextLabel" parent="UILayer/DialogBox"]
@@ -104,17 +104,17 @@ texture = ExtResource("8_7f7ne")
 
 [node name="CloseButton" type="TextureButton" parent="UILayer/CardViewer"]
 layout_mode = 0
-offset_left = 1006.0
-offset_top = 307.0
-offset_right = 1056.0
-offset_bottom = 357.0
+offset_left = 996.0
+offset_top = 297.0
+offset_right = 1066.0
+offset_bottom = 367.0
 texture_normal = ExtResource("4_x628s")
 
 [node name="MenuButton" type="TextureButton" parent="UILayer"]
-offset_left = 1203.0
-offset_top = 12.0
-offset_right = 1263.0
-offset_bottom = 72.0
+offset_left = 1193.0
+offset_top = 7.0
+offset_right = 1273.0
+offset_bottom = 87.0
 texture_normal = ExtResource("9_7f7ne")
 
 [node name="CardViewer2" type="Control" parent="UILayer"]
@@ -135,10 +135,10 @@ texture = ExtResource("10_rtryj")
 
 [node name="CloseButton" type="TextureButton" parent="UILayer/CardViewer2"]
 layout_mode = 0
-offset_left = 1006.0
-offset_top = 307.0
-offset_right = 1056.0
-offset_bottom = 357.0
+offset_left = 996.0
+offset_top = 297.0
+offset_right = 1066.0
+offset_bottom = 367.0
 texture_normal = ExtResource("4_x628s")
 
 [node name="Label" type="Label" parent="UILayer/CardViewer2"]

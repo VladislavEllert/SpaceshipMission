@@ -13,8 +13,8 @@ const CELL_GAP  := 4
 const STEP      := 104          # CELL_SIZE + CELL_GAP
 const GRID_COLS := 6
 const GRID_ROWS := 5
-const GRID_OX   := 330          # (1280 - 6*104 + 4) / 2 = 330
-const GRID_OY   := 110
+var GRID_OX   : int = 330
+var GRID_OY   : int = 110
 const MAX_STEPS := 80
 
 # ── Типы ячеек ────────────────────────────────────────────────────────────────
@@ -41,6 +41,9 @@ var _source_pos := Vector2i(0, 0)  # x = col, y = row
 
 # ────────────────────────────────────────────────────────────────────────────
 func _ready() -> void:
+	var vp_size := get_viewport_rect().size
+	GRID_OX = int((vp_size.x - GRID_COLS * STEP + CELL_GAP) / 2.0)
+	GRID_OY = int((vp_size.y - GRID_ROWS * STEP + CELL_GAP) / 2.0)
 	_setup_puzzle()              # 1. данные пазла
 	_build_laser_lines()         # 2. Line2D (Node2D, не Control)
 	_build_ui()                  # 3. фон, лейблы, win_panel
@@ -175,10 +178,11 @@ func _cell_center(col: int, row: int) -> Vector2:
 ## Фон рисуется в _draw() — до рендера дочерних узлов
 func _build_ui() -> void:
 	# Заголовок
+	var vp_size := get_viewport_rect().size
 	var title := Label.new()
 	title.text = "ПЕРЕНАПРАВЬТЕ ЛУЧ К ЦЕЛИ"
-	title.position = Vector2(290, 20)
-	title.size = Vector2(700, 40)
+	title.position = Vector2(vp_size.x * 0.22, 20)
+	title.size = Vector2(vp_size.x * 0.56, 40)
 	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	title.add_theme_font_size_override("font_size", 26)
 	title.add_theme_color_override("font_color", Color(0.0, 1.0, 1.0, 1.0))
@@ -188,8 +192,8 @@ func _build_ui() -> void:
 	# Подсказка
 	var hint := Label.new()
 	hint.text = "Нажми на зеркало со светлой рамкой, чтобы повернуть его"
-	hint.position = Vector2(240, 62)
-	hint.size = Vector2(800, 30)
+	hint.position = Vector2(vp_size.x * 0.19, 62)
+	hint.size = Vector2(vp_size.x * 0.62, 30)
 	hint.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	hint.add_theme_font_size_override("font_size", 18)
 	hint.add_theme_color_override("font_color", Color(0.6, 0.85, 1.0, 1.0))
@@ -257,7 +261,7 @@ func _on_exit() -> void:
 ## _draw() вызывается ДО рендера дочерних узлов (Labels, Buttons) — они будут поверх.
 func _draw() -> void:
 	# Фон сцены
-	draw_rect(Rect2(0, 0, 1280, 720), Color(0.039, 0.055, 0.102, 1.0))
+	draw_rect(Rect2(Vector2.ZERO, get_viewport_rect().size), Color(0.039, 0.055, 0.102, 1.0))
 
 	# Рамка вокруг всей сетки
 	var grid_w := GRID_COLS * STEP - CELL_GAP
