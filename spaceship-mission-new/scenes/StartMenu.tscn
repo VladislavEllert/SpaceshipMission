@@ -62,6 +62,9 @@ offset_top = 312.0
 offset_right = 670.0
 offset_bottom = 392.0
 icon = ExtResource("3_kcs48")
+flat = true
+icon_alignment = 1
+expand_icon = true
 script = ExtResource("4_kcs48")
 
 [node name="RichTextLabel" type="RichTextLabel" parent="."]

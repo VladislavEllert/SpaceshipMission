@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://banro37ru41co"
-path="res://.godot/imported/result_finalroomhappy.png-c36a6516cfad6bd564c12e65e18a4bad.ctex"
+uid="uid://dgqiidfs7us5u"
+path="res://.godot/imported/cap.png-05c4a8c9897abaa0e33fb7eedb9a6e68.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://ImagesBackground/result_finalroomhappy.png"
-dest_files=["res://.godot/imported/result_finalroomhappy.png-c36a6516cfad6bd564c12e65e18a4bad.ctex"]
+source_file="res://items/cap.png"
+dest_files=["res://.godot/imported/cap.png-05c4a8c9897abaa0e33fb7eedb9a6e68.ctex"]
 
 [params]
 

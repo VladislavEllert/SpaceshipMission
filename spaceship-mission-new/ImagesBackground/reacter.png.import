@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://banro37ru41co"
-path="res://.godot/imported/result_finalroomhappy.png-c36a6516cfad6bd564c12e65e18a4bad.ctex"
+uid="uid://dytly2140dgbf"
+path="res://.godot/imported/reacter.png-924142230c76a9bba12be12bfaf6a522.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://ImagesBackground/result_finalroomhappy.png"
-dest_files=["res://.godot/imported/result_finalroomhappy.png-c36a6516cfad6bd564c12e65e18a4bad.ctex"]
+source_file="res://ImagesBackground/reacter.png"
+dest_files=["res://.godot/imported/reacter.png-924142230c76a9bba12be12bfaf6a522.ctex"]
 
 [params]
 
