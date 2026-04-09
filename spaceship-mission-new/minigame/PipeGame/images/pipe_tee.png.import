@@ -3,19 +3,21 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://dly4iymsoq0wa"
-path="res://.godot/imported/pipe_tee.png-d9316b32754b73324b9e411cfe0dbc35.ctex"
+path.s3tc="res://.godot/imported/pipe_tee.png-d9316b32754b73324b9e411cfe0dbc35.s3tc.ctex"
+path.etc2="res://.godot/imported/pipe_tee.png-d9316b32754b73324b9e411cfe0dbc35.etc2.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
+"vram_texture": true
 }
 
 [deps]
 
 source_file="res://minigame/PipeGame/images/pipe_tee.png"
-dest_files=["res://.godot/imported/pipe_tee.png-d9316b32754b73324b9e411cfe0dbc35.ctex"]
+dest_files=["res://.godot/imported/pipe_tee.png-d9316b32754b73324b9e411cfe0dbc35.s3tc.ctex", "res://.godot/imported/pipe_tee.png-d9316b32754b73324b9e411cfe0dbc35.etc2.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/hdr_compression=1

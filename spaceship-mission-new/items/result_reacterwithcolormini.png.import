@@ -3,19 +3,21 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://ctt26vtko2qn1"
-path="res://.godot/imported/result_reacterwithcolormini.png-4a9800cf0c0158bda9ba547c36f84e09.ctex"
+path.s3tc="res://.godot/imported/result_reacterwithcolormini.png-4a9800cf0c0158bda9ba547c36f84e09.s3tc.ctex"
+path.etc2="res://.godot/imported/result_reacterwithcolormini.png-4a9800cf0c0158bda9ba547c36f84e09.etc2.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
+"vram_texture": true
 }
 
 [deps]
 
 source_file="res://items/result_reacterwithcolormini.png"
-dest_files=["res://.godot/imported/result_reacterwithcolormini.png-4a9800cf0c0158bda9ba547c36f84e09.ctex"]
+dest_files=["res://.godot/imported/result_reacterwithcolormini.png-4a9800cf0c0158bda9ba547c36f84e09.s3tc.ctex", "res://.godot/imported/result_reacterwithcolormini.png-4a9800cf0c0158bda9ba547c36f84e09.etc2.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/hdr_compression=1

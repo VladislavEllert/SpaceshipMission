@@ -3,19 +3,21 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://cyspqjswuhbs8"
-path="res://.godot/imported/hidden_chip.png-cb180c9a9047b517c406130ec461948c.ctex"
+path.s3tc="res://.godot/imported/hidden_chip.png-cb180c9a9047b517c406130ec461948c.s3tc.ctex"
+path.etc2="res://.godot/imported/hidden_chip.png-cb180c9a9047b517c406130ec461948c.etc2.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
+"vram_texture": true
 }
 
 [deps]
 
 source_file="res://minigame/shell_game/assets/hidden_chip.png"
-dest_files=["res://.godot/imported/hidden_chip.png-cb180c9a9047b517c406130ec461948c.ctex"]
+dest_files=["res://.godot/imported/hidden_chip.png-cb180c9a9047b517c406130ec461948c.s3tc.ctex", "res://.godot/imported/hidden_chip.png-cb180c9a9047b517c406130ec461948c.etc2.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/hdr_compression=1

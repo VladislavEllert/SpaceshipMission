@@ -12,9 +12,7 @@ func _ready() -> void:
 		queue_free()
 		return
 
-	input_event.connect(_on_input_event)
-
-func _on_input_event(viewport, event: InputEvent, shape_idx: int) -> void:
+func _on_input_event(_viewport, event: InputEvent, _shape_idx: int) -> void:
 	if event is InputEventMouseButton:
 		if not (event.button_index == MOUSE_BUTTON_LEFT and event.pressed):
 			return

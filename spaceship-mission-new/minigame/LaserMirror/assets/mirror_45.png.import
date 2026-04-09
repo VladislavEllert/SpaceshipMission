@@ -3,19 +3,21 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://ptj2lqvqaoxy"
-path="res://.godot/imported/mirror_45.png-9f9fb8223fb8cfa1898bf1c1b2f9efe5.ctex"
+path.s3tc="res://.godot/imported/mirror_45.png-9f9fb8223fb8cfa1898bf1c1b2f9efe5.s3tc.ctex"
+path.etc2="res://.godot/imported/mirror_45.png-9f9fb8223fb8cfa1898bf1c1b2f9efe5.etc2.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
+"vram_texture": true
 }
 
 [deps]
 
 source_file="res://minigame/LaserMirror/assets/mirror_45.png"
-dest_files=["res://.godot/imported/mirror_45.png-9f9fb8223fb8cfa1898bf1c1b2f9efe5.ctex"]
+dest_files=["res://.godot/imported/mirror_45.png-9f9fb8223fb8cfa1898bf1c1b2f9efe5.s3tc.ctex", "res://.godot/imported/mirror_45.png-9f9fb8223fb8cfa1898bf1c1b2f9efe5.etc2.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/hdr_compression=1

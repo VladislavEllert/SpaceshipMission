@@ -4,8 +4,7 @@ signal go_left
 signal go_right
 
 func _ready() -> void:
-	$LeftArrow.pressed.connect(_on_left_pressed)
-	$RightArrow.pressed.connect(_on_right_pressed)
+	pass
 
 func _on_left_pressed() -> void:
 	AudioManager.play_click()

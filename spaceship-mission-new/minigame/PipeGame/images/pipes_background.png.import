@@ -3,19 +3,21 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://bs166owg0q5gj"
-path="res://.godot/imported/pipes_background.png-72215b192537a30e590eec1a40d5937c.ctex"
+path.s3tc="res://.godot/imported/pipes_background.png-72215b192537a30e590eec1a40d5937c.s3tc.ctex"
+path.etc2="res://.godot/imported/pipes_background.png-72215b192537a30e590eec1a40d5937c.etc2.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
+"vram_texture": true
 }
 
 [deps]
 
 source_file="res://minigame/PipeGame/images/pipes_background.png"
-dest_files=["res://.godot/imported/pipes_background.png-72215b192537a30e590eec1a40d5937c.ctex"]
+dest_files=["res://.godot/imported/pipes_background.png-72215b192537a30e590eec1a40d5937c.s3tc.ctex", "res://.godot/imported/pipes_background.png-72215b192537a30e590eec1a40d5937c.etc2.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/hdr_compression=1

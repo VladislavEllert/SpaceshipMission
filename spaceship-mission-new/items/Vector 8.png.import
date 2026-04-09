@@ -3,19 +3,21 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://dfwntev7qk7h1"
-path="res://.godot/imported/Vector 8.png-01f3f7843d5f854e90ff40e50dafb646.ctex"
+path.s3tc="res://.godot/imported/Vector 8.png-01f3f7843d5f854e90ff40e50dafb646.s3tc.ctex"
+path.etc2="res://.godot/imported/Vector 8.png-01f3f7843d5f854e90ff40e50dafb646.etc2.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
+"vram_texture": true
 }
 
 [deps]
 
 source_file="res://items/Vector 8.png"
-dest_files=["res://.godot/imported/Vector 8.png-01f3f7843d5f854e90ff40e50dafb646.ctex"]
+dest_files=["res://.godot/imported/Vector 8.png-01f3f7843d5f854e90ff40e50dafb646.s3tc.ctex", "res://.godot/imported/Vector 8.png-01f3f7843d5f854e90ff40e50dafb646.etc2.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/hdr_compression=1

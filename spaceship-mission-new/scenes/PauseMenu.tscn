@@ -73,6 +73,7 @@ theme_override_styles/normal = SubResource("StyleBoxFlat_fb63t")
 text = "Выйти"
 
 [node name="ResumeButton" type="Button" parent="Background"]
+layout_mode = 0
 offset_left = 504.0
 offset_top = 128.0
 offset_right = 798.0

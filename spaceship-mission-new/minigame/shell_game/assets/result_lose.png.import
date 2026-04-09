@@ -3,19 +3,21 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://cnnlupuybi27f"
-path="res://.godot/imported/result_lose.png-e785757da5ce5257e8681822773e9fb0.ctex"
+path.s3tc="res://.godot/imported/result_lose.png-e785757da5ce5257e8681822773e9fb0.s3tc.ctex"
+path.etc2="res://.godot/imported/result_lose.png-e785757da5ce5257e8681822773e9fb0.etc2.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
+"vram_texture": true
 }
 
 [deps]
 
 source_file="res://minigame/shell_game/assets/result_lose.png"
-dest_files=["res://.godot/imported/result_lose.png-e785757da5ce5257e8681822773e9fb0.ctex"]
+dest_files=["res://.godot/imported/result_lose.png-e785757da5ce5257e8681822773e9fb0.s3tc.ctex", "res://.godot/imported/result_lose.png-e785757da5ce5257e8681822773e9fb0.etc2.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/hdr_compression=1

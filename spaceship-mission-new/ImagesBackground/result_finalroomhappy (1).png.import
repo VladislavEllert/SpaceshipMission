@@ -3,19 +3,21 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://dfuhs0vgenq4c"
-path="res://.godot/imported/result_finalroomhappy (1).png-7fbae3489538dc528dcf971d02649d3e.ctex"
+path.s3tc="res://.godot/imported/result_finalroomhappy (1).png-7fbae3489538dc528dcf971d02649d3e.s3tc.ctex"
+path.etc2="res://.godot/imported/result_finalroomhappy (1).png-7fbae3489538dc528dcf971d02649d3e.etc2.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
+"vram_texture": true
 }
 
 [deps]
 
 source_file="res://ImagesBackground/result_finalroomhappy (1).png"
-dest_files=["res://.godot/imported/result_finalroomhappy (1).png-7fbae3489538dc528dcf971d02649d3e.ctex"]
+dest_files=["res://.godot/imported/result_finalroomhappy (1).png-7fbae3489538dc528dcf971d02649d3e.s3tc.ctex", "res://.godot/imported/result_finalroomhappy (1).png-7fbae3489538dc528dcf971d02649d3e.etc2.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/hdr_compression=1

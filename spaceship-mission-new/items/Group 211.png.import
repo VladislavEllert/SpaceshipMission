@@ -3,19 +3,21 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://xrhunkufh8hc"
-path="res://.godot/imported/Group 211.png-49e18f5f1385e17a6c366419e6c9a2b9.ctex"
+path.s3tc="res://.godot/imported/Group 211.png-49e18f5f1385e17a6c366419e6c9a2b9.s3tc.ctex"
+path.etc2="res://.godot/imported/Group 211.png-49e18f5f1385e17a6c366419e6c9a2b9.etc2.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
+"vram_texture": true
 }
 
 [deps]
 
 source_file="res://items/Group 211.png"
-dest_files=["res://.godot/imported/Group 211.png-49e18f5f1385e17a6c366419e6c9a2b9.ctex"]
+dest_files=["res://.godot/imported/Group 211.png-49e18f5f1385e17a6c366419e6c9a2b9.s3tc.ctex", "res://.godot/imported/Group 211.png-49e18f5f1385e17a6c366419e6c9a2b9.etc2.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/hdr_compression=1

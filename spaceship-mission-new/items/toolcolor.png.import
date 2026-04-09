@@ -3,19 +3,21 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://wphsptl4jlec"
-path="res://.godot/imported/toolcolor.png-006b8cd72f42d887376b00e691e75694.ctex"
+path.s3tc="res://.godot/imported/toolcolor.png-006b8cd72f42d887376b00e691e75694.s3tc.ctex"
+path.etc2="res://.godot/imported/toolcolor.png-006b8cd72f42d887376b00e691e75694.etc2.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
+"vram_texture": true
 }
 
 [deps]
 
 source_file="res://items/toolcolor.png"
-dest_files=["res://.godot/imported/toolcolor.png-006b8cd72f42d887376b00e691e75694.ctex"]
+dest_files=["res://.godot/imported/toolcolor.png-006b8cd72f42d887376b00e691e75694.s3tc.ctex", "res://.godot/imported/toolcolor.png-006b8cd72f42d887376b00e691e75694.etc2.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/hdr_compression=1
