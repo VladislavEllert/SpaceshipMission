@@ -45,13 +45,18 @@ var messages_screen_solved: Array[String] = [
 ]
 
 func _ready() -> void:
-	$LeftArrow.pressed.connect(_on_left_pressed)
-	$RightArrow.pressed.connect(_on_right_pressed)
+	if not $LeftArrow.pressed.is_connected(_on_left_pressed):
+		$LeftArrow.pressed.connect(_on_left_pressed)
+	if not $RightArrow.pressed.is_connected(_on_right_pressed):
+		$RightArrow.pressed.connect(_on_right_pressed)
 
-	reactor_button.pressed.connect(_on_reactor_button_pressed)
-	screen_button.pressed.connect(_on_screen_button_pressed)
+	if not reactor_button.pressed.is_connected(_on_reactor_button_pressed):
+		reactor_button.pressed.connect(_on_reactor_button_pressed)
+	if not screen_button.pressed.is_connected(_on_screen_button_pressed):
+		screen_button.pressed.connect(_on_screen_button_pressed)
 	dialog_panel.visible = false
-	next_button.pressed.connect(_on_next_pressed)
+	if not next_button.pressed.is_connected(_on_next_pressed):
+		next_button.pressed.connect(_on_next_pressed)
  
 	# Восстанавливаем состояние реактора из GameState
 	if GameState.reactor_installed:

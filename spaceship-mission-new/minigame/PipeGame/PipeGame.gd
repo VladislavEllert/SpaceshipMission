@@ -97,9 +97,11 @@ var _red_flash: ColorRect
 # ── Life-cycle ─────────────────────────────────────────────────────────────────
 func _ready() -> void:
 	_win_overlay.z_index = 10  # draw above TextureRect background
-	_win_overlay.size = get_viewport().get_visible_rect().size
-	_exit_button.pressed.connect(_on_exit_pressed)
-	_check_button.pressed.connect(_on_check_pressed)
+	_win_overlay.set_deferred("size", get_viewport().get_visible_rect().size)
+	if not _exit_button.pressed.is_connected(_on_exit_pressed):
+		_exit_button.pressed.connect(_on_exit_pressed)
+	if not _check_button.pressed.is_connected(_on_check_pressed):
+		_check_button.pressed.connect(_on_check_pressed)
 	_style_check_button()
 	_style_win_panel()
 	_load_textures()

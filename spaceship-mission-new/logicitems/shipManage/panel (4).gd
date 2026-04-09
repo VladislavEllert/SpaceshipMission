@@ -78,11 +78,16 @@ var joy_input: Vector2 = Vector2.ZERO
 @onready var grid: Node2D = $ScreenArea/Grid
 
 func _ready() -> void:
-	left_plus.pressed.connect(_on_left_plus)
-	left_minus.pressed.connect(_on_left_minus)
-	right_plus.pressed.connect(_on_right_plus)
-	right_minus.pressed.connect(_on_right_minus)
-	back_button.pressed.connect(_on_back_pressed)
+	if not left_plus.pressed.is_connected(_on_left_plus):
+		left_plus.pressed.connect(_on_left_plus)
+	if not left_minus.pressed.is_connected(_on_left_minus):
+		left_minus.pressed.connect(_on_left_minus)
+	if not right_plus.pressed.is_connected(_on_right_plus):
+		right_plus.pressed.connect(_on_right_plus)
+	if not right_minus.pressed.is_connected(_on_right_minus):
+		right_minus.pressed.connect(_on_right_minus)
+	if not back_button.pressed.is_connected(_on_back_pressed):
+		back_button.pressed.connect(_on_back_pressed)
 	left_screen.visible = false
 	right_screen.visible = false
 	_update_labels()
@@ -118,7 +123,8 @@ func _ready() -> void:
 		game_won = true
 		dialog_box.visible = false
 		return  # ← диалог не показываем, игра не запускается заново
-	next_button.pressed.connect(_on_dialog_next)
+	if not next_button.pressed.is_connected(_on_dialog_next):
+		next_button.pressed.connect(_on_dialog_next)
 	next_button.visible = false
 	dialog_label.text = ""
 	dialog_box.visible = true

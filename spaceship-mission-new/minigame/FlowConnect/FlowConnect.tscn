@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3]
 
-[ext_resource type="Script" uid="uid://xcor8amppygn" path="res://minigame/FlowConnect/FlowConnect.gd" id="1_fc"]
+[ext_resource type="Script" uid="uid://cauhcfkbev7dm" path="res://minigame/FlowConnect/FlowConnect.gd" id="1_fc"]
 [ext_resource type="Texture2D" uid="uid://c13a6h4iv6bw4" path="res://items/left-arrow.png" id="2_fc"]
 
 [node name="FlowConnect" type="Node2D"]

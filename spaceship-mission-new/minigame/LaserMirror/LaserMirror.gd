@@ -47,7 +47,8 @@ func _ready() -> void:
 	_redraw_laser()              # 4. лазер
 	queue_redraw()               # 5. перерисовка _draw()
 	_create_all_touch_buttons()  # 6. ПОСЛЕДНИМ — кнопки поверх всего
-	_exit_button.pressed.connect(_on_exit)
+	if not _exit_button.pressed.is_connected(_on_exit):
+		_exit_button.pressed.connect(_on_exit)
 
 
 # ── Инициализация пазла ───────────────────────────────────────────────────────

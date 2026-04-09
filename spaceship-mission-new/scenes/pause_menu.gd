@@ -1,14 +1,19 @@
 extends Control
 
 func _ready() -> void:
-	$Background/ResumeButton.pressed.connect(_on_resume_pressed)
-	$Background/ResetButton.pressed.connect(_on_reset_pressed)
-	$Background/QuitButton.pressed.connect(_on_quit_pressed)
+	if not $Background/ResumeButton.pressed.is_connected(_on_resume_pressed):
+		$Background/ResumeButton.pressed.connect(_on_resume_pressed)
+	if not $Background/ResetButton.pressed.is_connected(_on_reset_pressed):
+		$Background/ResetButton.pressed.connect(_on_reset_pressed)
+	if not $Background/QuitButton.pressed.is_connected(_on_quit_pressed):
+		$Background/QuitButton.pressed.connect(_on_quit_pressed)
 
 	$Background/MusicSlider.value = AudioManager.music_volume
 	$Background/SFXSlider.value = AudioManager.sfx_volume
-	$Background/MusicSlider.value_changed.connect(AudioManager.set_music_volume)
-	$Background/SFXSlider.value_changed.connect(AudioManager.set_sfx_volume)
+	if not $Background/MusicSlider.value_changed.is_connected(AudioManager.set_music_volume):
+		$Background/MusicSlider.value_changed.connect(AudioManager.set_music_volume)
+	if not $Background/SFXSlider.value_changed.is_connected(AudioManager.set_sfx_volume):
+		$Background/SFXSlider.value_changed.connect(AudioManager.set_sfx_volume)
 
 func _on_resume_pressed() -> void:
 	AudioManager.play_click()

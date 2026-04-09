@@ -13,8 +13,10 @@ var current_code: String = ""
 @onready var btn_check: Button = $ButtonCheak
 
 func _ready() -> void:
-	btn_clear.pressed.connect(_on_clear_pressed)
-	btn_check.pressed.connect(_on_check_pressed)
+	if not btn_clear.pressed.is_connected(_on_clear_pressed):
+		btn_clear.pressed.connect(_on_clear_pressed)
+	if not btn_check.pressed.is_connected(_on_check_pressed):
+		btn_check.pressed.connect(_on_check_pressed)
 	_update_display()
 
 func _on_digit_pressed(digit: String) -> void:

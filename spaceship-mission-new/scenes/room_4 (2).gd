@@ -30,11 +30,16 @@ const TYPE_SPEED: float = 0.015
 @onready var ball_button: TextureButton = $BallButton
 
 func _ready() -> void:
-	$LeftArrow.pressed.connect(_on_left_pressed)
-	$RightArrow.pressed.connect(_on_right_pressed)
-	robot_button.pressed.connect(_on_robot_pressed)
-	next_button.pressed.connect(_on_next_pressed)
-	ball_button.pressed.connect(_on_ball_button_pressed)
+	if not $LeftArrow.pressed.is_connected(_on_left_pressed):
+		$LeftArrow.pressed.connect(_on_left_pressed)
+	if not $RightArrow.pressed.is_connected(_on_right_pressed):
+		$RightArrow.pressed.connect(_on_right_pressed)
+	if not robot_button.pressed.is_connected(_on_robot_pressed):
+		robot_button.pressed.connect(_on_robot_pressed)
+	if not next_button.pressed.is_connected(_on_next_pressed):
+		next_button.pressed.connect(_on_next_pressed)
+	if not ball_button.pressed.is_connected(_on_ball_button_pressed):
+		ball_button.pressed.connect(_on_ball_button_pressed)
 	robot_dialog.visible = false
 	next_button.visible = false
 

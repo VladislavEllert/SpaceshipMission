@@ -13,7 +13,8 @@ func _ready() -> void:
 	var label := $NumberLabel
 	label.text = str(number)
 
-	pressed.connect(_on_pressed)
+	if not pressed.is_connected(_on_pressed):
+		pressed.connect(_on_pressed)
 
 func _on_pressed() -> void:
 	board.on_tile_pressed(self)

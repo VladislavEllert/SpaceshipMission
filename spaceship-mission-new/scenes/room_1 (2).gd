@@ -71,26 +71,30 @@ var active_next: TextureButton = null
 @onready var door_button: TextureButton      = $Door
 
 func _ready() -> void:
-	$LeftArrow.pressed.connect(_on_left_pressed)
-	$RightArrow.pressed.connect(_on_right_pressed)
-
-	screen_button.pressed.connect(_on_screen_pressed)
+	if not $LeftArrow.pressed.is_connected(_on_left_pressed):
+		$LeftArrow.pressed.connect(_on_left_pressed)
+	if not $RightArrow.pressed.is_connected(_on_right_pressed):
+		$RightArrow.pressed.connect(_on_right_pressed)
+	if not screen_button.pressed.is_connected(_on_screen_pressed):
+		screen_button.pressed.connect(_on_screen_pressed)
 	screen_next.pressed.connect(func(): _on_next_pressed(screen_dialog))
-	screen_dialog.visible = false
 	screen_next.visible = true
-
-	stars_button.pressed.connect(_on_stars_pressed)
+	if not stars_button.pressed.is_connected(_on_stars_pressed):
+		stars_button.pressed.connect(_on_stars_pressed)
 	stars_next.pressed.connect(func(): _on_next_pressed(stars_dialog))
-	stars_dialog.visible = false
 	stars_next.visible = true
+	if not bg_toggle_button.pressed.is_connected(_on_bg_toggle_pressed):
+		bg_toggle_button.pressed.connect(_on_bg_toggle_pressed)
+	if not hidden_button.pressed.is_connected(_on_hidden_button_pressed):
+		hidden_button.pressed.connect(_on_hidden_button_pressed)
+	if not reactor_button.pressed.is_connected(_on_reactor_pressed):
+		reactor_button.pressed.connect(_on_reactor_pressed)
+	if not door_button.pressed.is_connected(_on_door_pressed):
+		door_button.pressed.connect(_on_door_pressed)
 
-	bg_toggle_button.pressed.connect(_on_bg_toggle_pressed)
-
+	screen_dialog.visible = false
+	stars_dialog.visible = false
 	hidden_button.visible = false
-	hidden_button.pressed.connect(_on_hidden_button_pressed)
-
-	reactor_button.pressed.connect(_on_reactor_pressed)
-	door_button.pressed.connect(_on_door_pressed)
 
 	# Если дверь открыта — меняем фон
 	if GameState.room1_door_opened:

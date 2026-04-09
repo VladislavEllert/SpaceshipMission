@@ -71,7 +71,8 @@ var screen_unlocked: bool = false
 
 func _ready() -> void:
 	menu_button.texture_normal = preload("res://items/setting.png")
-	menu_button.pressed.connect(_on_menu_button_pressed)
+	if not menu_button.pressed.is_connected(_on_menu_button_pressed):
+		menu_button.pressed.connect(_on_menu_button_pressed)
 
 	# Загружаем состояние мини-игр из GameState
 	puzzle_solved_15    = GameState.puzzle_solved_15

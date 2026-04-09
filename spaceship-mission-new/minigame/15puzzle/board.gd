@@ -23,7 +23,7 @@ func _init_board() -> void:
 
 
 func index_to_rc(index: int) -> Vector2i:
-	
+	@warning_ignore("integer_division")
 	return Vector2i(index / SIZE, index % SIZE)
 
 
@@ -81,17 +81,14 @@ func move_tile(tile_index: int) -> bool:
 		return false
 
 	var tile_number: int = board[tile_index]
-
+	var old_empty: int = empty_index
 
 	board[empty_index] = tile_number
 	board[tile_index] = 0
-
-	
 	empty_index = tile_index
 
-
 	var tile: Node = tiles_by_number[tile_number]
-	tile.index_in_board = empty_index
+	tile.index_in_board = old_empty
 
 	return true
 

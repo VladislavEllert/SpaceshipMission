@@ -21,9 +21,12 @@ const TYPE_SPEED: float = 0.015
 @onready var riddle_label: Label = $RiddleLabel
 
 func _ready() -> void:
-	ball_button.pressed.connect(_on_ball_pressed)
-	next_button.pressed.connect(_on_next_pressed)
-	back_button.pressed.connect(_on_back_pressed)
+	if not ball_button.pressed.is_connected(_on_ball_pressed):
+		ball_button.pressed.connect(_on_ball_pressed)
+	if not next_button.pressed.is_connected(_on_next_pressed):
+		next_button.pressed.connect(_on_next_pressed)
+	if not back_button.pressed.is_connected(_on_back_pressed):
+		back_button.pressed.connect(_on_back_pressed)
 	ball_dialog.visible = false
 	next_button.visible = false
 	riddle_label.visible = false

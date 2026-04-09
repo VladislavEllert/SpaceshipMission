@@ -70,7 +70,8 @@ func _ready() -> void:
 	_init_slot_positions()
 	container_positions = slot_positions.duplicate()
 	_load_textures()
-	exit_btn.pressed.connect(_on_exit_pressed)
+	if not exit_btn.pressed.is_connected(_on_exit_pressed):
+		exit_btn.pressed.connect(_on_exit_pressed)
 
 func _on_exit_pressed() -> void:
 	var main_game := get_tree().get_first_node_in_group("MainGame")
