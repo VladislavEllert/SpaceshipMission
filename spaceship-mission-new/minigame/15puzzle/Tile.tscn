@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=3 uid="uid://qm3kxqql20dv"]
 
-[ext_resource type="Texture2D" uid="uid://ddumumu31o42o" path="res://items/tile background.png" id="1_7jg1a"]
+[ext_resource type="Texture2D" uid="uid://ddumumu31o42o" path="res://items/tile_background.png" id="1_7jg1a"]
 [ext_resource type="Script" uid="uid://c0klu0kxvt1gd" path="res://minigame/15puzzle/tile.gd" id="1_hpd3s"]
 [ext_resource type="FontFile" uid="uid://b7dduljs7hlra" path="res://Iceberg-Regular.ttf" id="2_hpd3s"]
 

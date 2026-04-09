@@ -2,9 +2,9 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://l4uafo4cw0tn"
-path.s3tc="res://.godot/imported/Vector 7.png-21fd7096d9128071d71f19d6f7908683.s3tc.ctex"
-path.etc2="res://.godot/imported/Vector 7.png-21fd7096d9128071d71f19d6f7908683.etc2.ctex"
+uid="uid://bpjld5to2lgks"
+path.s3tc="res://.godot/imported/Polygon_1.png-1e66a1df4b41ae8fcfc34f6e2cd22426.s3tc.ctex"
+path.etc2="res://.godot/imported/Polygon_1.png-1e66a1df4b41ae8fcfc34f6e2cd22426.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -12,8 +12,8 @@ metadata={
 
 [deps]
 
-source_file="res://items/Vector 7.png"
-dest_files=["res://.godot/imported/Vector 7.png-21fd7096d9128071d71f19d6f7908683.s3tc.ctex", "res://.godot/imported/Vector 7.png-21fd7096d9128071d71f19d6f7908683.etc2.ctex"]
+source_file="res://minigame/jumper/images/Polygon_1.png"
+dest_files=["res://.godot/imported/Polygon_1.png-1e66a1df4b41ae8fcfc34f6e2cd22426.s3tc.ctex", "res://.godot/imported/Polygon_1.png-1e66a1df4b41ae8fcfc34f6e2cd22426.etc2.ctex"]
 
 [params]
 

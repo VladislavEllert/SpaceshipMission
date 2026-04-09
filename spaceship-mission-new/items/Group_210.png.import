@@ -2,9 +2,9 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://d14j1ypfneb3c"
-path.s3tc="res://.godot/imported/down-arrow .png-9e9864b487d3efd1b98963c2dd125368.s3tc.ctex"
-path.etc2="res://.godot/imported/down-arrow .png-9e9864b487d3efd1b98963c2dd125368.etc2.ctex"
+uid="uid://le8tgcvrn0ea"
+path.s3tc="res://.godot/imported/Group_210.png-3e2ec3820197d4fa32ebde949f965c1d.s3tc.ctex"
+path.etc2="res://.godot/imported/Group_210.png-3e2ec3820197d4fa32ebde949f965c1d.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -12,8 +12,8 @@ metadata={
 
 [deps]
 
-source_file="res://items/down-arrow .png"
-dest_files=["res://.godot/imported/down-arrow .png-9e9864b487d3efd1b98963c2dd125368.s3tc.ctex", "res://.godot/imported/down-arrow .png-9e9864b487d3efd1b98963c2dd125368.etc2.ctex"]
+source_file="res://items/Group_210.png"
+dest_files=["res://.godot/imported/Group_210.png-3e2ec3820197d4fa32ebde949f965c1d.s3tc.ctex", "res://.godot/imported/Group_210.png-3e2ec3820197d4fa32ebde949f965c1d.etc2.ctex"]
 
 [params]
 

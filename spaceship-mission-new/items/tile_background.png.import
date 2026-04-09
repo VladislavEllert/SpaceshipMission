@@ -2,9 +2,9 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://b8hy11fthr435"
-path.s3tc="res://.godot/imported/Vector 9.png-61e7496bf77e85d6eccd3e8a9ba71c7b.s3tc.ctex"
-path.etc2="res://.godot/imported/Vector 9.png-61e7496bf77e85d6eccd3e8a9ba71c7b.etc2.ctex"
+uid="uid://ddumumu31o42o"
+path.s3tc="res://.godot/imported/tile_background.png-26160518ce35beb83930b2474d8af3c4.s3tc.ctex"
+path.etc2="res://.godot/imported/tile_background.png-26160518ce35beb83930b2474d8af3c4.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -12,8 +12,8 @@ metadata={
 
 [deps]
 
-source_file="res://items/Vector 9.png"
-dest_files=["res://.godot/imported/Vector 9.png-61e7496bf77e85d6eccd3e8a9ba71c7b.s3tc.ctex", "res://.godot/imported/Vector 9.png-61e7496bf77e85d6eccd3e8a9ba71c7b.etc2.ctex"]
+source_file="res://items/tile_background.png"
+dest_files=["res://.godot/imported/tile_background.png-26160518ce35beb83930b2474d8af3c4.s3tc.ctex", "res://.godot/imported/tile_background.png-26160518ce35beb83930b2474d8af3c4.etc2.ctex"]
 
 [params]
 

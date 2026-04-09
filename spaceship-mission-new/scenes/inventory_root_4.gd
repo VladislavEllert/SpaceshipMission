@@ -6,8 +6,8 @@ const MAX_SLOTS := 7
 const INVENTORY_HEIGHT: float = 130.0
 const TWEEN_DURATION: float = 0.35
 
-const ARROW_DOWN: Texture2D = preload("res://items/down-arrow .png")
-const ARROW_UP: Texture2D   = preload("res://items/up - arrow.png")
+const ARROW_DOWN: Texture2D = preload("res://items/down-arrow.png")
+const ARROW_UP: Texture2D   = preload("res://items/up-arrow.png")
 
 var is_open: bool = false
 var tween: Tween

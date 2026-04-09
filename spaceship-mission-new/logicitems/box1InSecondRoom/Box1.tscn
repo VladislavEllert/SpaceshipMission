@@ -5,7 +5,7 @@
 [ext_resource type="Texture2D" uid="uid://fyheymyxhhj2" path="res://items/openBox.png" id="2_1jmnf"]
 [ext_resource type="FontFile" uid="uid://b7dduljs7hlra" path="res://Iceberg-Regular.ttf" id="3_l0gkc"]
 [ext_resource type="Texture2D" uid="uid://l6h6crkveapg" path="res://items/newButBox.png" id="4_fhi7n"]
-[ext_resource type="Texture2D" uid="uid://bdya8o6bow1ai" path="res://items/clearButton .png" id="5_v2lfv"]
+[ext_resource type="Texture2D" uid="uid://bdya8o6bow1ai" path="res://items/clearButton.png" id="5_v2lfv"]
 [ext_resource type="Texture2D" uid="uid://uj0alpur3a6v" path="res://items/checkButton.png" id="6_uweek"]
 [ext_resource type="Texture2D" uid="uid://c13a6h4iv6bw4" path="res://items/left-arrow.png" id="8_yuqr0"]
 

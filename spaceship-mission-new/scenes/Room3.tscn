@@ -4,7 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://dou4rsjforjbf" path="res://ImagesBackground/result_Room3.png" id="1_ykapl"]
 [ext_resource type="Texture2D" uid="uid://c13a6h4iv6bw4" path="res://items/left-arrow.png" id="3_d6xrr"]
 [ext_resource type="Texture2D" uid="uid://ch4kncjxv2o5" path="res://items/right-arrow.png" id="4_dw1qw"]
-[ext_resource type="Texture2D" uid="uid://pk53wbvfckre" path="res://ImagesBackground/reacterwithcolor (1).png" id="5_dw1qw"]
+[ext_resource type="Texture2D" uid="uid://pk53wbvfckre" path="res://ImagesBackground/reacterwithcolor_1.png" id="5_dw1qw"]
 [ext_resource type="Texture2D" uid="uid://ck38uu1ima4b4" path="res://items/compface.png" id="6_s61je"]
 [ext_resource type="FontFile" uid="uid://b7dduljs7hlra" path="res://Iceberg-Regular.ttf" id="7_gn08f"]
 

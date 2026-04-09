@@ -2,9 +2,9 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bdya8o6bow1ai"
-path.s3tc="res://.godot/imported/clearButton .png-b7342e63869a3d7d4ce336483fba0c86.s3tc.ctex"
-path.etc2="res://.godot/imported/clearButton .png-b7342e63869a3d7d4ce336483fba0c86.etc2.ctex"
+uid="uid://5w6bt5u0iijm"
+path.s3tc="res://.godot/imported/button_start.png-d3bcce72f554308ec1356ef5a657d2da.s3tc.ctex"
+path.etc2="res://.godot/imported/button_start.png-d3bcce72f554308ec1356ef5a657d2da.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -12,8 +12,8 @@ metadata={
 
 [deps]
 
-source_file="res://items/clearButton .png"
-dest_files=["res://.godot/imported/clearButton .png-b7342e63869a3d7d4ce336483fba0c86.s3tc.ctex", "res://.godot/imported/clearButton .png-b7342e63869a3d7d4ce336483fba0c86.etc2.ctex"]
+source_file="res://items/button_start.png"
+dest_files=["res://.godot/imported/button_start.png-d3bcce72f554308ec1356ef5a657d2da.s3tc.ctex", "res://.godot/imported/button_start.png-d3bcce72f554308ec1356ef5a657d2da.etc2.ctex"]
 
 [params]
 

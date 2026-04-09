@@ -2,9 +2,9 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://iysdncnu6lfv"
-path.s3tc="res://.godot/imported/start background.png-1e63a634f9c9d16f70a9b1b1a3d43197.s3tc.ctex"
-path.etc2="res://.godot/imported/start background.png-1e63a634f9c9d16f70a9b1b1a3d43197.etc2.ctex"
+uid="uid://b8hy11fthr435"
+path.s3tc="res://.godot/imported/Vector_9.png-6e5025add850a3621a723fd51900f195.s3tc.ctex"
+path.etc2="res://.godot/imported/Vector_9.png-6e5025add850a3621a723fd51900f195.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -12,8 +12,8 @@ metadata={
 
 [deps]
 
-source_file="res://ImagesBackground/start background.png"
-dest_files=["res://.godot/imported/start background.png-1e63a634f9c9d16f70a9b1b1a3d43197.s3tc.ctex", "res://.godot/imported/start background.png-1e63a634f9c9d16f70a9b1b1a3d43197.etc2.ctex"]
+source_file="res://items/Vector_9.png"
+dest_files=["res://.godot/imported/Vector_9.png-6e5025add850a3621a723fd51900f195.s3tc.ctex", "res://.godot/imported/Vector_9.png-6e5025add850a3621a723fd51900f195.etc2.ctex"]
 
 [params]
 

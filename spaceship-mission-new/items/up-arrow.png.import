@@ -2,9 +2,9 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://b07f7ugyq4x6e"
-path.s3tc="res://.godot/imported/cap (1).png-5d09460a63a3ab69e905772502b61d4c.s3tc.ctex"
-path.etc2="res://.godot/imported/cap (1).png-5d09460a63a3ab69e905772502b61d4c.etc2.ctex"
+uid="uid://b38ckrtk1yyv3"
+path.s3tc="res://.godot/imported/up-arrow.png-d168b5b4c65f35d1fb1f069eeeab331a.s3tc.ctex"
+path.etc2="res://.godot/imported/up-arrow.png-d168b5b4c65f35d1fb1f069eeeab331a.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -12,8 +12,8 @@ metadata={
 
 [deps]
 
-source_file="res://items/cap (1).png"
-dest_files=["res://.godot/imported/cap (1).png-5d09460a63a3ab69e905772502b61d4c.s3tc.ctex", "res://.godot/imported/cap (1).png-5d09460a63a3ab69e905772502b61d4c.etc2.ctex"]
+source_file="res://items/up-arrow.png"
+dest_files=["res://.godot/imported/up-arrow.png-d168b5b4c65f35d1fb1f069eeeab331a.s3tc.ctex", "res://.godot/imported/up-arrow.png-d168b5b4c65f35d1fb1f069eeeab331a.etc2.ctex"]
 
 [params]
 

@@ -2,9 +2,9 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://xrhunkufh8hc"
-path.s3tc="res://.godot/imported/Group 211.png-49e18f5f1385e17a6c366419e6c9a2b9.s3tc.ctex"
-path.etc2="res://.godot/imported/Group 211.png-49e18f5f1385e17a6c366419e6c9a2b9.etc2.ctex"
+uid="uid://dfwntev7qk7h1"
+path.s3tc="res://.godot/imported/Vector_8.png-8d5d06a9e82f720f5ba17296c292ec47.s3tc.ctex"
+path.etc2="res://.godot/imported/Vector_8.png-8d5d06a9e82f720f5ba17296c292ec47.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -12,8 +12,8 @@ metadata={
 
 [deps]
 
-source_file="res://items/Group 211.png"
-dest_files=["res://.godot/imported/Group 211.png-49e18f5f1385e17a6c366419e6c9a2b9.s3tc.ctex", "res://.godot/imported/Group 211.png-49e18f5f1385e17a6c366419e6c9a2b9.etc2.ctex"]
+source_file="res://items/Vector_8.png"
+dest_files=["res://.godot/imported/Vector_8.png-8d5d06a9e82f720f5ba17296c292ec47.s3tc.ctex", "res://.godot/imported/Vector_8.png-8d5d06a9e82f720f5ba17296c292ec47.etc2.ctex"]
 
 [params]
 

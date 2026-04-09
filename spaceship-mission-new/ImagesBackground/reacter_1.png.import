@@ -2,9 +2,9 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bpv7dbsa74jlw"
-path.s3tc="res://.godot/imported/screen in 4 room.png-f162340eee657e71b86ab1b7c775a624.s3tc.ctex"
-path.etc2="res://.godot/imported/screen in 4 room.png-f162340eee657e71b86ab1b7c775a624.etc2.ctex"
+uid="uid://cgtlswg0a6xx1"
+path.s3tc="res://.godot/imported/reacter_1.png-3b345c3c2f3b612ad16b071d93f2b357.s3tc.ctex"
+path.etc2="res://.godot/imported/reacter_1.png-3b345c3c2f3b612ad16b071d93f2b357.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -12,8 +12,8 @@ metadata={
 
 [deps]
 
-source_file="res://ImagesBackground/screen in 4 room.png"
-dest_files=["res://.godot/imported/screen in 4 room.png-f162340eee657e71b86ab1b7c775a624.s3tc.ctex", "res://.godot/imported/screen in 4 room.png-f162340eee657e71b86ab1b7c775a624.etc2.ctex"]
+source_file="res://ImagesBackground/reacter_1.png"
+dest_files=["res://.godot/imported/reacter_1.png-3b345c3c2f3b612ad16b071d93f2b357.s3tc.ctex", "res://.godot/imported/reacter_1.png-3b345c3c2f3b612ad16b071d93f2b357.etc2.ctex"]
 
 [params]
 

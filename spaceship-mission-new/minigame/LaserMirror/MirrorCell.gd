@@ -145,8 +145,8 @@ func _draw() -> void:
 ## Обработка касания на зоне Area2D
 func _on_touch_area_input_event(_viewport: Node, event: InputEvent, _shape_idx: int) -> void:
 	# Принимаем и касание пальцем, и клик мышью (для отладки в редакторе)
-	var is_touch := event is InputEventScreenTouch and event.pressed
-	var is_click := event is InputEventMouseButton \
+	var is_touch: bool = event is InputEventScreenTouch and event.pressed
+	var is_click: bool = event is InputEventMouseButton \
 		and event.button_index == MOUSE_BUTTON_LEFT \
 		and event.pressed
 

@@ -2,9 +2,9 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://ddumumu31o42o"
-path.s3tc="res://.godot/imported/tile background.png-35a95e8498bf143d7ac10d23112cb734.s3tc.ctex"
-path.etc2="res://.godot/imported/tile background.png-35a95e8498bf143d7ac10d23112cb734.etc2.ctex"
+uid="uid://b07f7ugyq4x6e"
+path.s3tc="res://.godot/imported/cap_1.png-9e71aac881d0dcd776c840c9da6712a7.s3tc.ctex"
+path.etc2="res://.godot/imported/cap_1.png-9e71aac881d0dcd776c840c9da6712a7.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -12,8 +12,8 @@ metadata={
 
 [deps]
 
-source_file="res://items/tile background.png"
-dest_files=["res://.godot/imported/tile background.png-35a95e8498bf143d7ac10d23112cb734.s3tc.ctex", "res://.godot/imported/tile background.png-35a95e8498bf143d7ac10d23112cb734.etc2.ctex"]
+source_file="res://items/cap_1.png"
+dest_files=["res://.godot/imported/cap_1.png-9e71aac881d0dcd776c840c9da6712a7.s3tc.ctex", "res://.godot/imported/cap_1.png-9e71aac881d0dcd776c840c9da6712a7.etc2.ctex"]
 
 [params]
 

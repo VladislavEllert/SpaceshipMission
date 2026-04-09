@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://c2ayhbj28onb4" path="res://minigame/FlaskPuzzel/flask_puzzel.gd" id="1_8ecy7"]
 [ext_resource type="Texture2D" uid="uid://gmvjliy0oteg" path="res://items/backbotl.png" id="1_vykvq"]
-[ext_resource type="Texture2D" uid="uid://b2vsfrhct2pls" path="res://items/Group 1.png" id="3_7yi23"]
+[ext_resource type="Texture2D" uid="uid://b2vsfrhct2pls" path="res://items/Group_1.png" id="3_7yi23"]
 [ext_resource type="Texture2D" uid="uid://dddnekoaikhus" path="res://items/flask6.png" id="4_5mrnj"]
 [ext_resource type="Texture2D" uid="uid://du3v5duqghooc" path="res://items/flask_3099558.png" id="5_5lktb"]
 [ext_resource type="Texture2D" uid="uid://dtqx3kont88pj" path="res://minigame/FlaskPuzzel/curved-arrow_15603914.png" id="7_5lktb"]

@@ -3,8 +3,8 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://dj2eq6qivadmx"
-path.s3tc="res://.godot/imported/inventory1 .png-88fe81660ecb62c513e09cc101451c4c.s3tc.ctex"
-path.etc2="res://.godot/imported/inventory1 .png-88fe81660ecb62c513e09cc101451c4c.etc2.ctex"
+path.s3tc="res://.godot/imported/inventory1.png-c524a48329fde2fe1aa57392332d65e3.s3tc.ctex"
+path.etc2="res://.godot/imported/inventory1.png-c524a48329fde2fe1aa57392332d65e3.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -12,8 +12,8 @@ metadata={
 
 [deps]
 
-source_file="res://items/inventory1 .png"
-dest_files=["res://.godot/imported/inventory1 .png-88fe81660ecb62c513e09cc101451c4c.s3tc.ctex", "res://.godot/imported/inventory1 .png-88fe81660ecb62c513e09cc101451c4c.etc2.ctex"]
+source_file="res://items/inventory1.png"
+dest_files=["res://.godot/imported/inventory1.png-c524a48329fde2fe1aa57392332d65e3.s3tc.ctex", "res://.godot/imported/inventory1.png-c524a48329fde2fe1aa57392332d65e3.etc2.ctex"]
 
 [params]
 

@@ -2,9 +2,9 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dfwntev7qk7h1"
-path.s3tc="res://.godot/imported/Vector 8.png-01f3f7843d5f854e90ff40e50dafb646.s3tc.ctex"
-path.etc2="res://.godot/imported/Vector 8.png-01f3f7843d5f854e90ff40e50dafb646.etc2.ctex"
+uid="uid://ca38bxvnh5ncs"
+path.s3tc="res://.godot/imported/starship_2.png-7831abbbf8571f521aba9971128518b5.s3tc.ctex"
+path.etc2="res://.godot/imported/starship_2.png-7831abbbf8571f521aba9971128518b5.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -12,8 +12,8 @@ metadata={
 
 [deps]
 
-source_file="res://items/Vector 8.png"
-dest_files=["res://.godot/imported/Vector 8.png-01f3f7843d5f854e90ff40e50dafb646.s3tc.ctex", "res://.godot/imported/Vector 8.png-01f3f7843d5f854e90ff40e50dafb646.etc2.ctex"]
+source_file="res://items/starship_2.png"
+dest_files=["res://.godot/imported/starship_2.png-7831abbbf8571f521aba9971128518b5.s3tc.ctex", "res://.godot/imported/starship_2.png-7831abbbf8571f521aba9971128518b5.etc2.ctex"]
 
 [params]
 

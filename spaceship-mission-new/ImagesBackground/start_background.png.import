@@ -2,9 +2,9 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cjwhfuuv2ttds"
-path.s3tc="res://.godot/imported/spider puzzels background.png-ec3c6471eb3ca41550bbc24cc5b2402a.s3tc.ctex"
-path.etc2="res://.godot/imported/spider puzzels background.png-ec3c6471eb3ca41550bbc24cc5b2402a.etc2.ctex"
+uid="uid://iysdncnu6lfv"
+path.s3tc="res://.godot/imported/start_background.png-c2eb62d0efd386eef39f1375a7c97aef.s3tc.ctex"
+path.etc2="res://.godot/imported/start_background.png-c2eb62d0efd386eef39f1375a7c97aef.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -12,8 +12,8 @@ metadata={
 
 [deps]
 
-source_file="res://ImagesBackground/spider puzzels background.png"
-dest_files=["res://.godot/imported/spider puzzels background.png-ec3c6471eb3ca41550bbc24cc5b2402a.s3tc.ctex", "res://.godot/imported/spider puzzels background.png-ec3c6471eb3ca41550bbc24cc5b2402a.etc2.ctex"]
+source_file="res://ImagesBackground/start_background.png"
+dest_files=["res://.godot/imported/start_background.png-c2eb62d0efd386eef39f1375a7c97aef.s3tc.ctex", "res://.godot/imported/start_background.png-c2eb62d0efd386eef39f1375a7c97aef.etc2.ctex"]
 
 [params]
 

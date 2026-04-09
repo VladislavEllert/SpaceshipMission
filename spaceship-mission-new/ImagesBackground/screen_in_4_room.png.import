@@ -2,9 +2,9 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://c7ycfexwq6rg5"
-path.s3tc="res://.godot/imported/tile background.png-9e485eb5e4507fbf92f7c18da5fc723d.s3tc.ctex"
-path.etc2="res://.godot/imported/tile background.png-9e485eb5e4507fbf92f7c18da5fc723d.etc2.ctex"
+uid="uid://bpv7dbsa74jlw"
+path.s3tc="res://.godot/imported/screen_in_4_room.png-a14d085b508102a32a6cc31851a2ffdd.s3tc.ctex"
+path.etc2="res://.godot/imported/screen_in_4_room.png-a14d085b508102a32a6cc31851a2ffdd.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -12,8 +12,8 @@ metadata={
 
 [deps]
 
-source_file="res://ImagesBackground/tile background.png"
-dest_files=["res://.godot/imported/tile background.png-9e485eb5e4507fbf92f7c18da5fc723d.s3tc.ctex", "res://.godot/imported/tile background.png-9e485eb5e4507fbf92f7c18da5fc723d.etc2.ctex"]
+source_file="res://ImagesBackground/screen_in_4_room.png"
+dest_files=["res://.godot/imported/screen_in_4_room.png-a14d085b508102a32a6cc31851a2ffdd.s3tc.ctex", "res://.godot/imported/screen_in_4_room.png-a14d085b508102a32a6cc31851a2ffdd.etc2.ctex"]
 
 [params]
 

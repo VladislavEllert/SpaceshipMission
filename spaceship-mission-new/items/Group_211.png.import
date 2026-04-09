@@ -2,9 +2,9 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cgtlswg0a6xx1"
-path.s3tc="res://.godot/imported/reacter (1).png-a97327f4fe9fed1e2348e80d9b62aba0.s3tc.ctex"
-path.etc2="res://.godot/imported/reacter (1).png-a97327f4fe9fed1e2348e80d9b62aba0.etc2.ctex"
+uid="uid://xrhunkufh8hc"
+path.s3tc="res://.godot/imported/Group_211.png-bf83d3f20e24f7971baf2345aa0d16b1.s3tc.ctex"
+path.etc2="res://.godot/imported/Group_211.png-bf83d3f20e24f7971baf2345aa0d16b1.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -12,8 +12,8 @@ metadata={
 
 [deps]
 
-source_file="res://ImagesBackground/reacter (1).png"
-dest_files=["res://.godot/imported/reacter (1).png-a97327f4fe9fed1e2348e80d9b62aba0.s3tc.ctex", "res://.godot/imported/reacter (1).png-a97327f4fe9fed1e2348e80d9b62aba0.etc2.ctex"]
+source_file="res://items/Group_211.png"
+dest_files=["res://.godot/imported/Group_211.png-bf83d3f20e24f7971baf2345aa0d16b1.s3tc.ctex", "res://.godot/imported/Group_211.png-bf83d3f20e24f7971baf2345aa0d16b1.etc2.ctex"]
 
 [params]
 
