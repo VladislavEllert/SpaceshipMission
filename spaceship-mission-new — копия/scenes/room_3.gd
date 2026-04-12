@@ -1,0 +1,232 @@
+extends Node2D
+ 
+signal go_left
+signal go_right
+ 
+# --- Текстура реактора ---
+const REACTOR_TEXTURE := preload("res://items/newreactorsec.png")
+ 
+# --- Typewriter ---
+const TYPE_SPEED: float = 0.03
+var is_typing: bool = false
+var full_text: String = ""
+var current_index: int = 0
+var current_messages: Array[String] = []
+ 
+# --- Сообщения ---
+var messages_no_reactor: Array[String] = [
+	"Здесь нужно установить реактор. Найди его сначала.",
+]
+var messages_reactor_installed: Array[String] = [
+	"✅ Реактор успешно установлен! Ядро запущено" ,
+]
+ 
+var reactor_installed: bool = false
+ 
+@onready var reactor_button: TextureButton  = $ReactorButton
+@onready var reactor_place: Sprite2D        = $ReactorPlace
+@onready var reactor_glow: Polygon2D        = $ReactorGlow
+ 
+# Диалоговая панель — добавь в сцену узлы как описано ниже
+@onready var dialog_panel: Panel            = $DialogPanel
+@onready var dialog_label: RichTextLabel    = $DialogPanel/DialogLabel
+@onready var next_button: TextureButton     = $DialogPanel/NextButton
+@onready var screen_button: Button          = $ScreenButton
+
+# --- Сообщения для ScreenButton ---
+var messages_screen_no_reactor: Array[String] = [
+	"Реактор не установлен. Без источника энергии цепи не запустить.",
+]
+var messages_screen_locked: Array[String] = [
+	"Питание не восстановлено",
+]
+var messages_screen_solved: Array[String] = [
+	"✅ Энергоцепи восстановлены",
+]
+
+func _ready() -> void:
+	if not $LeftArrow.pressed.is_connected(_on_left_pressed):
+		$LeftArrow.pressed.connect(_on_left_pressed)
+	if not $RightArrow.pressed.is_connected(_on_right_pressed):
+		$RightArrow.pressed.connect(_on_right_pressed)
+
+	if not reactor_button.pressed.is_connected(_on_reactor_button_pressed):
+		reactor_button.pressed.connect(_on_reactor_button_pressed)
+	if not screen_button.pressed.is_connected(_on_screen_button_pressed):
+		screen_button.pressed.connect(_on_screen_button_pressed)
+	dialog_panel.visible = false
+	if not next_button.pressed.is_connected(_on_next_pressed):
+		next_button.pressed.connect(_on_next_pressed)
+ 
+	# Восстанавливаем состояние реактора из GameState
+	if GameState.reactor_installed:
+		reactor_installed = true
+		reactor_place.texture = REACTOR_TEXTURE
+		reactor_place.visible = true
+		reactor_glow.visible = true
+	else:
+		reactor_place.visible = false
+ 
+func _on_left_pressed() -> void:
+	AudioManager.play_click()
+	emit_signal("go_left")
+
+func _on_right_pressed() -> void:
+	AudioManager.play_click()
+	emit_signal("go_right")
+ 
+# --- Нажатие на слот реактора ---
+func _on_reactor_button_pressed() -> void:
+	if reactor_installed:
+		return
+ 
+	var main_game := get_tree().get_first_node_in_group("MainGame")
+	if main_game == null:
+		return
+ 
+	var inventory = main_game.get_node("UILayer/InventoryRoot")
+ 
+	if inventory.get_selected_item_id() == "reactor":
+		reactor_installed = true
+		GameState.reactor_installed = true  # сохраняем в глобальный стейт
+		reactor_place.texture = REACTOR_TEXTURE
+		reactor_place.visible = true
+		reactor_glow.visible = true
+		inventory.remove_item("reactor")
+		inventory.clear_selection()
+		_open_dialog(messages_reactor_installed)
+	else:
+		_open_dialog(messages_no_reactor)
+ 
+# --- Диалог с typewriter ---
+func _open_dialog(messages: Array[String]) -> void:
+	current_messages = messages
+	current_index = 0
+	dialog_panel.visible = true
+	_show_message(current_index)
+ 
+func _show_message(index: int) -> void:
+	full_text = current_messages[index]
+	dialog_label.text = full_text
+	dialog_label.visible_characters = 0
+	next_button.visible = true
+	is_typing = true
+	_type_next_char()
+
+func _type_next_char() -> void:
+	if not is_typing:
+		dialog_label.visible_characters = -1
+		next_button.visible = true
+		return
+	if dialog_label.visible_characters >= dialog_label.get_total_character_count():
+		is_typing = false
+		next_button.visible = true
+		return
+	dialog_label.visible_characters += 1
+	await get_tree().create_timer(TYPE_SPEED).timeout
+	_type_next_char()
+
+func _on_next_pressed() -> void:
+	AudioManager.play_click()
+	if is_typing:
+		is_typing = false
+		dialog_label.visible_characters = -1
+		next_button.visible = true
+		return
+	current_index += 1
+	if current_index >= current_messages.size():
+		dialog_panel.visible = false
+		return
+	_show_message(current_index)
+
+# -------------------------------------------------------
+ 
+func _on_puzzle_button_pressed() -> void:
+	var main_game := get_tree().get_first_node_in_group("MainGame")
+	if main_game == null:
+		return
+	if main_game.puzzle_solved_15:
+		return
+	main_game.open_board()
+ 
+func _on_flask_button_pressed() -> void:
+	var main_game := get_tree().get_first_node_in_group("MainGame")
+	if main_game == null:
+		return
+	if main_game.flask_solved:
+		return
+	main_game.open_flask()
+ 
+func _on_platformer_button_pressed() -> void:
+	var main_game := get_tree().get_first_node_in_group("MainGame")
+	if main_game == null:
+		return
+	if main_game.platformer_solved:
+		return
+	main_game.open_platformer()
+ 
+func _on_jumper_button_pressed() -> void:
+	var main_game := get_tree().get_first_node_in_group("MainGame")
+	if main_game == null:
+		return
+	if main_game.jumper_solved:
+		return
+	main_game.open_jumper()
+ 
+func _on_pipe_game_button_pressed() -> void:
+	var main_game := get_tree().get_first_node_in_group("MainGame")
+	if main_game == null:
+		return
+	if main_game.pipe_game_solved:
+		return
+	main_game.open_pipe_game()
+
+func _on_laser_mirror_button_pressed() -> void:
+	var main_game := get_tree().get_first_node_in_group("MainGame")
+	if main_game == null:
+		return
+	if main_game.laser_mirror_solved:
+		return
+	main_game.open_laser_mirror()
+
+func _on_shell_game_button_pressed() -> void:
+	var main_game := get_tree().get_first_node_in_group("MainGame")
+	if main_game == null:
+		return
+	if main_game.shell_game_solved:
+		return
+	main_game.open_shell_game()
+
+# -------------------------------------------------------
+
+func _on_screen_button_pressed() -> void:
+	var main_game := get_tree().get_first_node_in_group("MainGame")
+	if main_game == null:
+		return
+
+	# Если FlowConnect уже решён — показываем статус
+	if main_game.flow_connect_solved:
+		_open_dialog(messages_screen_solved)
+		return
+
+	# Реактор должен быть установлен
+	if not GameState.reactor_installed:
+		_open_dialog(messages_screen_no_reactor)
+		return
+
+	# Проверяем, решены ли все 6 мини-игр отсека
+	var all_solved: bool = (
+		main_game.puzzle_solved_15 and
+		main_game.flask_solved and
+		main_game.pipe_game_solved and
+		main_game.laser_mirror_solved and
+		main_game.shell_game_solved and
+		(main_game.jumper_solved or main_game.platformer_solved)
+	)
+
+	if not all_solved:
+		_open_dialog(messages_screen_locked)
+		return
+
+	# Все задания выполнены — открываем FlowConnect
+	main_game.open_flow_connect()

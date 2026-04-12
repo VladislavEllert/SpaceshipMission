@@ -1,0 +1,240 @@
+[gd_scene load_steps=9 format=3 uid="uid://qqo23l2ymka3"]
+
+[ext_resource type="Script" uid="uid://bc1ohm7t7d76n" path="res://scenes/room_3.gd" id="1_gn08f"]
+[ext_resource type="Texture2D" uid="uid://dou4rsjforjbf" path="res://ImagesBackground/result_Room3.png" id="1_ykapl"]
+[ext_resource type="Texture2D" uid="uid://c13a6h4iv6bw4" path="res://items/left-arrow.png" id="3_d6xrr"]
+[ext_resource type="Texture2D" uid="uid://ch4kncjxv2o5" path="res://items/right-arrow.png" id="4_dw1qw"]
+[ext_resource type="Texture2D" uid="uid://pk53wbvfckre" path="res://ImagesBackground/reacterwithcolor_1.png" id="5_dw1qw"]
+[ext_resource type="Texture2D" uid="uid://ck38uu1ima4b4" path="res://items/compface.png" id="6_s61je"]
+[ext_resource type="FontFile" uid="uid://b7dduljs7hlra" path="res://Iceberg-Regular.ttf" id="7_gn08f"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_784tl"]
+bg_color = Color(0.408329, 0.408329, 0.408329, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 15
+corner_radius_top_right = 15
+corner_radius_bottom_right = 15
+corner_radius_bottom_left = 15
+
+[node name="Room3" type="Node2D"]
+script = ExtResource("1_gn08f")
+
+[node name="RoomBackground" type="TextureRect" parent="."]
+offset_left = 1.0
+offset_top = -2.0
+offset_right = 1281.0
+offset_bottom = 718.0
+texture = ExtResource("1_ykapl")
+
+[node name="LeftArrow" type="Button" parent="."]
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_top = 331.5
+offset_right = 58.0
+offset_bottom = 389.5
+grow_vertical = 2
+icon = ExtResource("3_d6xrr")
+flat = true
+
+[node name="RightArrow" type="Button" parent="."]
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = 1223.0
+offset_top = 331.5
+offset_right = 1281.0
+offset_bottom = 389.5
+grow_horizontal = 0
+grow_vertical = 2
+icon = ExtResource("4_dw1qw")
+flat = true
+
+[node name="Minigame" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="15Puzzels" type="LinkButton" parent="Minigame"]
+layout_mode = 0
+offset_left = 80.0
+offset_top = 184.0
+offset_right = 177.0
+offset_bottom = 484.0
+rotation = 0.0296706
+
+[node name="SolvedBanner15" type="Polygon2D" parent="."]
+visible = false
+position = Vector2(83, 173)
+rotation = 0.136136
+color = Color(0.447059, 0.658824, 0.223529, 0.65098)
+polygon = PackedVector2Array(0.135712, 0.990753, 7.57285, 84.7564, 7.57285, 84.7564, 89.7642, 80.563, 89.7642, 80.563, 82.3813, 11.9299, 82.3813, 11.9299)
+
+[node name="Button" type="Button" parent="."]
+offset_left = 216.0
+offset_top = 204.0
+offset_right = 282.0
+offset_bottom = 452.0
+flat = true
+
+[node name="SolvedBannerFlask" type="Polygon2D" parent="."]
+visible = false
+color = Color(0.447059, 0.658824, 0.223529, 0.65098)
+polygon = PackedVector2Array(234, 207, 234, 270, 278, 273, 281, 250, 281, 222)
+
+[node name="Button2" type="Button" parent="."]
+offset_left = 316.0
+offset_top = 235.0
+offset_right = 358.0
+offset_bottom = 416.0
+flat = true
+
+[node name="SolvedBannerPlatformer" type="Polygon2D" parent="."]
+visible = false
+color = Color(0.447059, 0.658824, 0.223529, 0.65098)
+polygon = PackedVector2Array(326, 234, 324, 279, 356, 283, 357, 243)
+
+[node name="ButtonJumper" type="Button" parent="."]
+offset_left = 416.0
+offset_top = 235.0
+offset_right = 468.0
+offset_bottom = 416.0
+flat = true
+
+[node name="SolvedBannerJumper" type="Polygon2D" parent="."]
+visible = false
+position = Vector2(0, -1)
+color = Color(0.447059, 0.658824, 0.223529, 0.65098)
+polygon = PackedVector2Array(325, 232, 324.435, 257.997, 324, 281, 338, 285, 357, 283, 356, 242)
+
+[node name="MainReact" type="ColorRect" parent="."]
+visible = false
+offset_left = 607.0
+offset_top = 274.0
+offset_right = 671.0
+offset_bottom = 433.0
+color = Color(0.447059, 0.658824, 0.223529, 0.65098)
+
+[node name="ButtonPipeGame" type="Button" parent="."]
+offset_left = 1090.0
+offset_top = 160.0
+offset_right = 1215.0
+offset_bottom = 480.0
+flat = true
+
+[node name="SolvedBannerPipeGame" type="Polygon2D" parent="."]
+visible = false
+color = Color(0.447059, 0.658824, 0.223529, 0.65098)
+polygon = PackedVector2Array(1127, 192, 1128, 264, 1209, 256, 1210, 170)
+
+[node name="ReactorPlace" type="Sprite2D" parent="."]
+visible = false
+position = Vector2(642, 354)
+rotation = 1.5708
+scale = Vector2(0.160073, 0.121094)
+texture = ExtResource("5_dw1qw")
+
+[node name="ReactorButton" type="TextureButton" parent="."]
+offset_left = 578.0
+offset_top = 205.0
+offset_right = 698.0
+offset_bottom = 510.0
+
+[node name="DialogPanel" type="Panel" parent="."]
+visible = false
+offset_left = 60.0
+offset_top = 505.0
+offset_right = 1218.0
+offset_bottom = 678.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_784tl")
+
+[node name="DialogLabel" type="RichTextLabel" parent="DialogPanel"]
+layout_mode = 0
+offset_left = 228.0
+offset_top = 21.0
+offset_right = 1043.0
+offset_bottom = 152.0
+theme_override_fonts/normal_font = ExtResource("7_gn08f")
+theme_override_fonts/mono_font = ExtResource("7_gn08f")
+theme_override_fonts/italics_font = ExtResource("7_gn08f")
+theme_override_fonts/bold_italics_font = ExtResource("7_gn08f")
+theme_override_fonts/bold_font = ExtResource("7_gn08f")
+theme_override_font_sizes/bold_italics_font_size = 30
+theme_override_font_sizes/italics_font_size = 30
+theme_override_font_sizes/mono_font_size = 30
+theme_override_font_sizes/normal_font_size = 30
+theme_override_font_sizes/bold_font_size = 30
+
+[node name="NextButton" type="TextureButton" parent="DialogPanel"]
+layout_mode = 0
+offset_left = 1085.0
+offset_top = 59.0
+offset_right = 1135.0
+offset_bottom = 109.0
+texture_normal = ExtResource("4_dw1qw")
+
+[node name="Sprite2D" type="Sprite2D" parent="DialogPanel"]
+position = Vector2(119, 92)
+scale = Vector2(0.291788, 0.316406)
+texture = ExtResource("6_s61je")
+
+[node name="ReactorGlow" type="Polygon2D" parent="."]
+visible = false
+color = Color(0.447059, 0.658824, 0.223529, 0.65098)
+polygon = PackedVector2Array(609, 278, 612, 275, 615, 271, 618, 269, 663, 269, 666, 271, 668, 271, 672, 275, 674, 279, 675, 284, 675, 417, 673, 421, 669, 425, 664, 427, 658, 429, 653, 429, 621, 429, 617, 428, 613, 424, 609, 418, 608, 412)
+
+[node name="ScreenButton" type="Button" parent="."]
+offset_left = 740.0
+offset_top = 345.0
+offset_right = 794.0
+offset_bottom = 420.0
+flat = true
+
+[node name="SolvedBannerLaserMirror" type="Polygon2D" parent="."]
+visible = false
+position = Vector2(1009, 215)
+color = Color(0.447059, 0.658824, 0.223529, 0.65098)
+polygon = PackedVector2Array(-2, 7, 0, 59, 46, 53, 47, -5)
+
+[node name="SolvedBannerFlowConnect" type="Polygon2D" parent="."]
+visible = false
+position = Vector2(10, 214)
+color = Color(0.447059, 0.658824, 0.223529, 0.65098)
+polygon = PackedVector2Array(725, 135, 738, 198, 756.314, 195.376, 785, 196, 771, 136)
+
+[node name="ButtonLaserMirror" type="TextureButton" parent="."]
+offset_left = 1008.0
+offset_top = 211.0
+offset_right = 1066.0
+offset_bottom = 451.0
+
+[node name="SolvedBannerShellGame" type="Polygon2D" parent="."]
+visible = false
+color = Color(0.447059, 0.658824, 0.223529, 0.65098)
+polygon = PackedVector2Array(932, 244, 929, 282, 969, 279, 966, 234)
+
+[node name="ButtonShellGame" type="Button" parent="."]
+offset_left = 855.0
+offset_top = 155.0
+offset_right = 990.0
+offset_bottom = 490.0
+flat = true
+
+[connection signal="pressed" from="LeftArrow" to="." method="_on_left_pressed"]
+[connection signal="pressed" from="RightArrow" to="." method="_on_right_pressed"]
+[connection signal="pressed" from="Minigame/15Puzzels" to="." method="_on_puzzle_button_pressed"]
+[connection signal="pressed" from="Button" to="." method="_on_flask_button_pressed"]
+[connection signal="pressed" from="Button2" to="." method="_on_platformer_button_pressed"]
+[connection signal="pressed" from="ButtonJumper" to="." method="_on_jumper_button_pressed"]
+[connection signal="pressed" from="ButtonPipeGame" to="." method="_on_pipe_game_button_pressed"]
+[connection signal="pressed" from="ReactorButton" to="." method="_on_reactor_button_pressed"]
+[connection signal="pressed" from="ScreenButton" to="." method="_on_screen_button_pressed"]
+[connection signal="pressed" from="ButtonLaserMirror" to="." method="_on_laser_mirror_button_pressed"]
+[connection signal="pressed" from="ButtonShellGame" to="." method="_on_shell_game_button_pressed"]

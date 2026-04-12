@@ -7,6 +7,7 @@ enum Step { INITIAL, PERSON_SHOWN, BG_CHANGED, CAP_DIALOG, TEAM_DIALOG, CAP_DIAL
 
 var step: Step = Step.INITIAL
 var _flashing: bool = true   # блокирует клики пока идёт мигание
+var _last_tap_frame: int = -1
 
 @onready var background:       TextureRect   = $Background
 @onready var person:           Sprite2D      = $Person
@@ -82,6 +83,10 @@ func _unhandled_input(event: InputEvent) -> void:
 		tapped = true
 
 	if tapped:
+		var frame := Engine.get_process_frames()
+		if frame == _last_tap_frame:
+			return
+		_last_tap_frame = frame
 		if _flashing:
 			get_viewport().set_input_as_handled()
 			return

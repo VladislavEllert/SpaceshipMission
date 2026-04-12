@@ -29,6 +29,7 @@ var current_phase: Phase   = Phase.IDLE
 var hidden_index: int      = 0
 var is_animating: bool     = false
 var can_click: bool        = false
+var _last_tap_frame: int   = -1
 var chip_visible: bool     = false
 
 # slot_positions[slot]      = fixed world centre of that grid cell
@@ -283,6 +284,10 @@ func _unhandled_input(event: InputEvent) -> void:
 		fired     = true
 
 	if fired:
+		var frame := Engine.get_process_frames()
+		if frame == _last_tap_frame:
+			return
+		_last_tap_frame = frame
 		for i in range(4):
 			if _container_hit(i, touch_pos):
 				on_container_clicked(i)

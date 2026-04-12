@@ -1,14 +1,14 @@
 [gd_scene load_steps=13 format=3 uid="uid://34ohx67rdpnm"]
 
 [ext_resource type="Texture2D" uid="uid://1iynpty0ef3e" path="res://ImagesBackground/panelback.png" id="1_3ig1j"]
-[ext_resource type="Script" path="res://logicitems/shipManage/panel_4.gd" id="1_4y08j"]
+[ext_resource type="Script" uid="uid://bda782edw46cj" path="res://logicitems/shipManage/panel_4.gd" id="1_4y08j"]
 [ext_resource type="Texture2D" uid="uid://d14j1ypfneb3c" path="res://items/down-arrow.png" id="2_pd63f"]
 [ext_resource type="Texture2D" uid="uid://c1fq2kx5j4wx2" path="res://items/panelarrow1.png" id="3_pd63f"]
 [ext_resource type="FontFile" uid="uid://b7dduljs7hlra" path="res://Iceberg-Regular.ttf" id="4_4ua0v"]
 [ext_resource type="Texture2D" uid="uid://c556fjblcury3" path="res://items/gamepad_1865458.png" id="6_oeod8"]
 [ext_resource type="Texture2D" uid="uid://dphg4ypgpgbyh" path="res://items/triangle_7492921.png" id="7_4y08j"]
 [ext_resource type="Texture2D" uid="uid://df1l8nqclynxn" path="res://items/record_2221521.png" id="8_ru05u"]
-[ext_resource type="Script" path="res://logicitems/shipManage/grid_1.gd" id="9_ru05u"]
+[ext_resource type="Script" uid="uid://d1u5yf5o5kdol" path="res://logicitems/shipManage/grid_1.gd" id="9_ru05u"]
 [ext_resource type="Texture2D" uid="uid://ch4kncjxv2o5" path="res://items/right-arrow.png" id="10_ft7su"]
 [ext_resource type="Texture2D" uid="uid://dtssbgpdfm7wv" path="res://items/Rerson.png" id="11_vo2lf"]
 

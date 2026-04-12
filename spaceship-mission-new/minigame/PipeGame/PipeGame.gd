@@ -92,6 +92,7 @@ var _textures:   Dictionary = {}
 
 # Created in code so it always has a correct viewport-sized rect and sits on top.
 var _red_flash: ColorRect
+var _last_tap_frame: int = -1
 
 
 # ── Life-cycle ─────────────────────────────────────────────────────────────────
@@ -233,6 +234,10 @@ func _on_cell_input(event: InputEvent, idx: int) -> void:
 	elif event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
 		tapped = true
 	if tapped:
+		var frame := Engine.get_process_frames()
+		if frame == _last_tap_frame:
+			return
+		_last_tap_frame = frame
 		if _grid_types[idx] == EMPTY:
 			return  # empty tiles cannot be rotated
 		_grid_rots[idx]                  = (_grid_rots[idx] + 1) % 4

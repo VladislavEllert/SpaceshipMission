@@ -1,0 +1,28 @@
+extends Area2D
+
+@export var item_id: String = "card"
+@export var texture: Texture2D
+
+func _ready() -> void:
+	$Sprite2D.texture = texture
+
+	var main_game := get_tree().get_first_node_in_group("MainGame")
+	if main_game and main_game.is_item_collected(item_id):
+		# этот предмет уже брали ранее — сразу удаляем
+		queue_free()
+		return
+
+func _on_input_event(_viewport, event: InputEvent, _shape_idx: int) -> void:
+	if event is InputEventMouseButton:
+		if not (event.button_index == MOUSE_BUTTON_LEFT and event.pressed):
+			return
+	elif event is InputEventScreenTouch:
+		if not event.pressed:
+			return
+	else:
+		return
+	var main_game := get_tree().get_first_node_in_group("MainGame")
+	if main_game:
+		main_game.inventory.add_item(item_id)
+		main_game.mark_item_collected(item_id)
+	queue_free()

@@ -39,6 +39,7 @@ var item_textures := {
 ]
 
 var selected_index: int = -1
+var _last_tap_frame: int = -1
 
 func _ready() -> void:
 	# Прячем инвентарь за верхний край при старте
@@ -118,6 +119,10 @@ func _on_slot_gui_input(idx: int, event: InputEvent) -> void:
 	elif event is InputEventScreenTouch and event.pressed:
 		tapped = true
 	if tapped:
+		var frame := Engine.get_process_frames()
+		if frame == _last_tap_frame:
+			return
+		_last_tap_frame = frame
 		if idx >= items.size():
 			return
 		var was_selected := (selected_index == idx)
