@@ -62,6 +62,7 @@ var tex_lose:      Texture2D = null
 @onready var start_btn:      Button        = $UILayer/StartButton
 @onready var try_again_btn:  Button        = $UILayer/TryAgainButton
 @onready var exit_btn:       TextureButton = $Exit
+var _phase_bg: Panel = null
 
 # ─────────────────────────────────────────────────────────────────────────────
 # INIT
@@ -71,8 +72,29 @@ func _ready() -> void:
 	_init_slot_positions()
 	container_positions = slot_positions.duplicate()
 	_load_textures()
+	_build_phase_bg()
 	if not exit_btn.pressed.is_connected(_on_exit_pressed):
 		exit_btn.pressed.connect(_on_exit_pressed)
+
+func _build_phase_bg() -> void:
+	_phase_bg = Panel.new()
+	_phase_bg.set_anchors_preset(Control.PRESET_TOP_WIDE)
+	_phase_bg.offset_top    = 8.0
+	_phase_bg.offset_bottom = 82.0
+	_phase_bg.visible = false
+	_phase_bg.mouse_filter = Control.MOUSE_FILTER_IGNORE
+
+	var style := StyleBoxFlat.new()
+	style.bg_color            = Color(0.0, 0.06, 0.16, 0.88)
+	style.border_color        = Color(0.0, 0.85, 1.0, 0.75)
+	style.border_width_top    = 2
+	style.border_width_bottom = 2
+	style.border_width_left   = 0
+	style.border_width_right  = 0
+	_phase_bg.add_theme_stylebox_override("panel", style)
+
+	$UILayer.add_child(_phase_bg)
+	$UILayer.move_child(_phase_bg, 0)   # под PhaseLabel
 
 func _on_exit_pressed() -> void:
 	var main_game := get_tree().get_first_node_in_group("MainGame")
@@ -84,7 +106,7 @@ func _on_exit_pressed() -> void:
 func _init_slot_positions() -> void:
 	var vp_size := get_viewport_rect().size
 	var cx := vp_size.x / 2.0
-	var cy := vp_size.y * 0.44
+	var cy := vp_size.y * 0.52
 	var hw  := (CONTAINER_SIZE.x + GRID_GAP_X) * 0.5   # half total width
 	var hh  := (CONTAINER_SIZE.y + GRID_GAP_Y) * 0.5   # half total height
 	slot_positions = [
@@ -248,12 +270,7 @@ func _phase_reveal(correct: bool) -> void:
 		tw.tween_method(_lift_setter.bind(hidden_index), 0.0, LIFT_HEIGHT, LIFT_DUR)
 	await tw.finished
 
-	if correct:
-		phase_label.add_theme_color_override("font_color", Color(0.1, 1.0, 0.3))
-		phase_label.text = "ПОБЕДА"
-	else:
-		phase_label.add_theme_color_override("font_color", Color(1.0, 0.25, 0.25))
-		phase_label.text = "НЕПРАВИЛЬНО"
+	_flash_result(correct)
 	await get_tree().create_timer(2.5).timeout
 	minigame_completed.emit(correct, 1)
 	if correct:
@@ -413,6 +430,22 @@ func _draw_container_fallback(
 
 # ── Helpers ───────────────────────────────────────────────────────────────────
 
+func _flash_result(correct: bool) -> void:
+	var overlay := ColorRect.new()
+	overlay.set_anchors_preset(Control.PRESET_FULL_RECT)
+	overlay.color = Color(0.0, 0.7, 0.15, 0.0) if correct else Color(0.8, 0.05, 0.05, 0.0)
+	overlay.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	$UILayer.add_child(overlay)
+
+	var tw := create_tween()
+	tw.tween_property(overlay, "color:a", 0.55, 0.25)
+	tw.tween_property(overlay, "color:a", 0.0,  1.8)
+	await tw.finished
+	overlay.queue_free()
+
+
 func _set_phase_label(text: String) -> void:
 	if phase_label:
 		phase_label.text = text
+	if _phase_bg:
+		_phase_bg.visible = text != ""
