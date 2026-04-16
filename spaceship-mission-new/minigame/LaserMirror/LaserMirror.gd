@@ -36,11 +36,28 @@ var laser_glow: Line2D
 var _solved := false
 var _source_pos := Vector2i(0, 0)  # x = col, y = row
 
+# ── Текстуры ─────────────────────────────────────────────────────────────────
+var _tex_bg: Texture2D
+var _tex_cell_bg: Texture2D
+var _tex_source: Texture2D
+var _tex_target: Texture2D
+var _tex_mirror_45: Texture2D
+var _tex_mirror_135: Texture2D
+var _tex_wall: Texture2D
+
 @onready var _exit_button: TextureButton = $Exit
 
 
 # ────────────────────────────────────────────────────────────────────────────
 func _ready() -> void:
+	_tex_bg         = load("res://minigame/LaserMirror/assets/laser_game_bg.png")
+	_tex_cell_bg    = load("res://minigame/LaserMirror/assets/cell_bg.png")
+	_tex_source     = load("res://minigame/LaserMirror/assets/laser_source.png")
+	_tex_target     = load("res://minigame/LaserMirror/assets/laser_target.png")
+	_tex_mirror_45  = load("res://minigame/LaserMirror/assets/mirror_45.png")
+	_tex_mirror_135 = load("res://minigame/LaserMirror/assets/mirror_135.png")
+	_tex_wall       = load("res://minigame/LaserMirror/assets/wall.png")
+
 	var vp_size := get_viewport_rect().size
 	GRID_OX = int((vp_size.x - GRID_COLS * STEP + CELL_GAP) / 2.0)
 	GRID_OY = int((vp_size.y - GRID_ROWS * STEP + CELL_GAP) / 2.0)
@@ -174,32 +191,10 @@ func _cell_center(col: int, row: int) -> Vector2:
 
 # ── Интерфейс ─────────────────────────────────────────────────────────────────
 
-## Создаём заголовок, подсказку, кнопку выхода и панель победы
+## Создаём кнопку выхода и панель победы
 ## Фон рисуется в _draw() — до рендера дочерних узлов
 func _build_ui() -> void:
-	# Заголовок
-	var vp_size := get_viewport_rect().size
-	var title := Label.new()
-	title.text = "ПЕРЕНАПРАВЬТЕ ЛУЧ К ЦЕЛИ"
-	title.position = Vector2(vp_size.x * 0.22, 20)
-	title.size = Vector2(vp_size.x * 0.56, 40)
-	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	title.add_theme_font_size_override("font_size", 26)
-	title.add_theme_color_override("font_color", Color(0.0, 1.0, 1.0, 1.0))
-	title.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	add_child(title)
-
-	# Подсказка
-	var hint := Label.new()
-	hint.text = "Нажми на зеркало со светлой рамкой, чтобы повернуть его"
-	hint.position = Vector2(vp_size.x * 0.19, 62)
-	hint.size = Vector2(vp_size.x * 0.62, 30)
-	hint.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	hint.add_theme_font_size_override("font_size", 18)
-	hint.add_theme_color_override("font_color", Color(0.6, 0.85, 1.0, 1.0))
-	hint.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	add_child(hint)
-
+	pass
 	# win_panel убран — после решения сразу закрываемся как в других мини-играх
 
 
@@ -260,8 +255,12 @@ func _on_exit() -> void:
 ## Рисует фон сцены и все ячейки сетки.
 ## _draw() вызывается ДО рендера дочерних узлов (Labels, Buttons) — они будут поверх.
 func _draw() -> void:
-	# Фон сцены
-	draw_rect(Rect2(Vector2.ZERO, get_viewport_rect().size), Color(0.039, 0.055, 0.102, 1.0))
+	# Фон сцены — текстура
+	var vp_rect := Rect2(Vector2.ZERO, get_viewport_rect().size)
+	if _tex_bg:
+		draw_texture_rect(_tex_bg, vp_rect, false)
+	else:
+		draw_rect(vp_rect, Color(0.039, 0.055, 0.102, 1.0))
 
 	# Рамка вокруг всей сетки
 	var grid_w := GRID_COLS * STEP - CELL_GAP
@@ -283,31 +282,34 @@ func _draw_cell(col: int, row: int) -> void:
 	var center := tl + Vector2(CELL_SIZE * 0.5, CELL_SIZE * 0.5)
 	var ctype: int  = grid[row][col]
 	var is_rot: bool = rotatable.has(Vector2i(col, row))
+	var cell_rect := Rect2(tl, Vector2(CELL_SIZE, CELL_SIZE))
 
-	# Цвет фона ячейки
-	var bg_color: Color
-	match ctype:
-		CellType.SOURCE:
-			bg_color = Color(0.051, 0.180, 0.102, 1.0)
-		CellType.TARGET:
-			bg_color = Color(0.180, 0.086, 0.020, 1.0)
-		CellType.WALL:
-			bg_color = Color(0.180, 0.060, 0.060, 1.0)
-		CellType.MIRROR_45, CellType.MIRROR_135:
-			if is_rot:
-				bg_color = Color(0.051, 0.118, 0.220, 1.0)   # синеватый — вращаемое
-			else:
-				bg_color = Color(0.051, 0.086, 0.157, 1.0)   # обычный синий — фиксированное
-		_:
-			bg_color = Color(0.063, 0.086, 0.141, 1.0)
-
-	draw_rect(Rect2(tl, Vector2(CELL_SIZE, CELL_SIZE)), bg_color)
+	# Фон ячейки — текстура cell_bg для всех типов
+	if _tex_cell_bg:
+		draw_texture_rect(_tex_cell_bg, cell_rect, false)
+	else:
+		var bg_color: Color
+		match ctype:
+			CellType.SOURCE:
+				bg_color = Color(0.051, 0.180, 0.102, 1.0)
+			CellType.TARGET:
+				bg_color = Color(0.180, 0.086, 0.020, 1.0)
+			CellType.WALL:
+				bg_color = Color(0.180, 0.060, 0.060, 1.0)
+			CellType.MIRROR_45, CellType.MIRROR_135:
+				if is_rot:
+					bg_color = Color(0.051, 0.118, 0.220, 1.0)
+				else:
+					bg_color = Color(0.051, 0.086, 0.157, 1.0)
+			_:
+				bg_color = Color(0.063, 0.086, 0.141, 1.0)
+		draw_rect(cell_rect, bg_color)
 
 	# Рамка ячейки
 	if is_rot:
-		draw_rect(Rect2(tl, Vector2(CELL_SIZE, CELL_SIZE)), Color(0.0, 0.8, 1.0, 0.75), false, 3.0)
+		draw_rect(cell_rect, Color(0.0, 0.8, 1.0, 0.75), false, 3.0)
 	else:
-		draw_rect(Rect2(tl, Vector2(CELL_SIZE, CELL_SIZE)), Color(0.165, 0.251, 0.439, 1.0), false, 1.5)
+		draw_rect(cell_rect, Color(0.165, 0.251, 0.439, 1.0), false, 1.5)
 
 	# Содержимое
 	match ctype:
@@ -327,55 +329,64 @@ func _draw_cell(col: int, row: int) -> void:
 				_draw_rotate_icon(tl)
 
 
-## Стена: узор X
-func _draw_wall(_tl: Vector2, center: Vector2) -> void:
-	var half := 34.0
-	var c := Color(0.416, 0.188, 0.188, 1.0)
-	draw_line(center + Vector2(-half, -half), center + Vector2( half,  half), c, 5.0, true)
-	draw_line(center + Vector2( half, -half), center + Vector2(-half,  half), c, 5.0, true)
-
-
-## Источник лазера: светящийся круг + стрелка вправо
-func _draw_source(_tl: Vector2, center: Vector2) -> void:
-	draw_circle(center, 26.0, Color(0.0, 0.867, 0.267, 0.25))
-	draw_circle(center, 18.0, Color(0.0, 0.867, 0.267, 1.0))
-	draw_circle(center,  7.0, Color(0.8,  1.0,  0.8,  1.0))
-	# Стрелка вправо
-	var ax := center + Vector2(22.0, 0.0)
-	var bx := center + Vector2(36.0, 0.0)
-	draw_line(ax, bx, Color(1.0, 1.0, 1.0, 1.0), 3.0, true)
-	draw_line(bx, bx + Vector2(-7.0, -5.0), Color(1.0, 1.0, 1.0, 1.0), 2.5, true)
-	draw_line(bx, bx + Vector2(-7.0,  5.0), Color(1.0, 1.0, 1.0, 1.0), 2.5, true)
-
-
-## Цель: концентрические кольца (мишень)
-func _draw_target(_tl: Vector2, center: Vector2) -> void:
-	draw_circle(center, 34.0, Color(0.502, 0.188, 0.0,  1.0))
-	draw_circle(center, 24.0, Color(1.0,  0.267, 0.0,  1.0))
-	draw_circle(center, 15.0, Color(1.0,  0.400, 0.0,  1.0))
-	draw_circle(center,  6.0, Color(1.0,  0.733, 0.0,  1.0))
-
-
-## Зеркало: диагональная линия со свечением и бликом
-## is_45=true → "/" (MIRROR_45), is_45=false → "\" (MIRROR_135)
-func _draw_mirror(tl: Vector2, _center: Vector2, is_45: bool) -> void:
-	var pad := 15.0
-	var p1: Vector2
-	var p2: Vector2
-	if is_45:
-		p1 = tl + Vector2(pad,             CELL_SIZE - pad)   # нижний-левый
-		p2 = tl + Vector2(CELL_SIZE - pad, pad)               # верхний-правый
+## Стена: текстура wall.png
+func _draw_wall(tl: Vector2, center: Vector2) -> void:
+	if _tex_wall:
+		draw_texture_rect(_tex_wall, Rect2(tl, Vector2(CELL_SIZE, CELL_SIZE)), false)
 	else:
-		p1 = tl + Vector2(pad,             pad)               # верхний-левый
-		p2 = tl + Vector2(CELL_SIZE - pad, CELL_SIZE - pad)   # нижний-правый
+		var half := 34.0
+		var c := Color(0.416, 0.188, 0.188, 1.0)
+		draw_line(center + Vector2(-half, -half), center + Vector2( half,  half), c, 5.0, true)
+		draw_line(center + Vector2( half, -half), center + Vector2(-half,  half), c, 5.0, true)
 
-	draw_line(p1, p2, Color(0.533, 0.8, 1.0, 0.30), 10.0, true)   # свечение
-	draw_line(p1, p2, Color(0.533, 0.8, 1.0, 1.0),   5.0, true)   # основная линия
-	# Блик
-	var perp := (p2 - p1).normalized().rotated(PI * 0.5) * 2.5
-	var m1 := p1 + (p2 - p1) * 0.3 + perp
-	var m2 := p1 + (p2 - p1) * 0.7 + perp
-	draw_line(m1, m2, Color(1.0, 1.0, 1.0, 0.35), 2.0, true)
+
+## Источник лазера: текстура laser_source.png
+func _draw_source(tl: Vector2, center: Vector2) -> void:
+	if _tex_source:
+		draw_texture_rect(_tex_source, Rect2(tl, Vector2(CELL_SIZE, CELL_SIZE)), false)
+	else:
+		draw_circle(center, 26.0, Color(0.0, 0.867, 0.267, 0.25))
+		draw_circle(center, 18.0, Color(0.0, 0.867, 0.267, 1.0))
+		draw_circle(center,  7.0, Color(0.8,  1.0,  0.8,  1.0))
+		var ax := center + Vector2(22.0, 0.0)
+		var bx := center + Vector2(36.0, 0.0)
+		draw_line(ax, bx, Color(1.0, 1.0, 1.0, 1.0), 3.0, true)
+		draw_line(bx, bx + Vector2(-7.0, -5.0), Color(1.0, 1.0, 1.0, 1.0), 2.5, true)
+		draw_line(bx, bx + Vector2(-7.0,  5.0), Color(1.0, 1.0, 1.0, 1.0), 2.5, true)
+
+
+## Цель: текстура laser_target.png
+func _draw_target(tl: Vector2, center: Vector2) -> void:
+	if _tex_target:
+		draw_texture_rect(_tex_target, Rect2(tl, Vector2(CELL_SIZE, CELL_SIZE)), false)
+	else:
+		draw_circle(center, 34.0, Color(0.502, 0.188, 0.0,  1.0))
+		draw_circle(center, 24.0, Color(1.0,  0.267, 0.0,  1.0))
+		draw_circle(center, 15.0, Color(1.0,  0.400, 0.0,  1.0))
+		draw_circle(center,  6.0, Color(1.0,  0.733, 0.0,  1.0))
+
+
+## Зеркало: текстура mirror_45.png или mirror_135.png
+func _draw_mirror(tl: Vector2, center: Vector2, is_45: bool) -> void:
+	var tex := _tex_mirror_45 if is_45 else _tex_mirror_135
+	if tex:
+		draw_texture_rect(tex, Rect2(tl, Vector2(CELL_SIZE, CELL_SIZE)), false)
+	else:
+		var pad := 15.0
+		var p1: Vector2
+		var p2: Vector2
+		if is_45:
+			p1 = tl + Vector2(pad,             CELL_SIZE - pad)   # нижний-левый
+			p2 = tl + Vector2(CELL_SIZE - pad, pad)               # верхний-правый
+		else:
+			p1 = tl + Vector2(pad,             pad)               # верхний-левый
+			p2 = tl + Vector2(CELL_SIZE - pad, CELL_SIZE - pad)   # нижний-правый
+		draw_line(p1, p2, Color(0.533, 0.8, 1.0, 0.30), 10.0, true)
+		draw_line(p1, p2, Color(0.533, 0.8, 1.0, 1.0),   5.0, true)
+		var perp := (p2 - p1).normalized().rotated(PI * 0.5) * 2.5
+		var m1 := p1 + (p2 - p1) * 0.3 + perp
+		var m2 := p1 + (p2 - p1) * 0.7 + perp
+		draw_line(m1, m2, Color(1.0, 1.0, 1.0, 0.35), 2.0, true)
 
 
 ## Иконка «можно повернуть»: дуга со стрелкой в правом верхнем углу ячейки

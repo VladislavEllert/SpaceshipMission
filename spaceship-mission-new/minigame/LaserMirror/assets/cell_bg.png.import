@@ -2,22 +2,20 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://d1mu78key3pcu"
-path.s3tc="res://.godot/imported/cell_bg.png-2d8733e9fa25f539a810b0a75f804eef.s3tc.ctex"
-path.etc2="res://.godot/imported/cell_bg.png-2d8733e9fa25f539a810b0a75f804eef.etc2.ctex"
+uid="uid://ou2ecwhx204p"
+path="res://.godot/imported/cell_bg.png-2d8733e9fa25f539a810b0a75f804eef.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc", "etc2_astc"],
-"vram_texture": true
+"vram_texture": false
 }
 
 [deps]
 
 source_file="res://minigame/LaserMirror/assets/cell_bg.png"
-dest_files=["res://.godot/imported/cell_bg.png-2d8733e9fa25f539a810b0a75f804eef.s3tc.ctex", "res://.godot/imported/cell_bg.png-2d8733e9fa25f539a810b0a75f804eef.etc2.ctex"]
+dest_files=["res://.godot/imported/cell_bg.png-2d8733e9fa25f539a810b0a75f804eef.ctex"]
 
 [params]
 
-compress/mode=2
+compress/mode=0
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/hdr_compression=1
