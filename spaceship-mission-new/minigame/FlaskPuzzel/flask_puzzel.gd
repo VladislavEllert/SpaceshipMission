@@ -41,6 +41,8 @@ const TARGET_VOLUME := 8
 }
 
 var selected_flask := 0
+var glow_sprites := {}
+var glow_tweens := {}
 
 func _ready() -> void:
 	click_areas[1].pressed.connect(func(): _on_flask_clicked(1))
@@ -53,7 +55,20 @@ func _ready() -> void:
 		btn.add_theme_stylebox_override("pressed", StyleBoxEmpty.new())
 		btn.add_theme_stylebox_override("focus", StyleBoxEmpty.new())
 		btn.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
+	_setup_glow_sprites()
 	_update_all_flasks()
+
+func _setup_glow_sprites() -> void:
+	for i in outlines.keys():
+		var original: Sprite2D = outlines[i]
+		var glow := Sprite2D.new()
+		glow.texture = original.texture
+		glow.position = original.position
+		glow.scale = original.scale * 1.03
+		glow.modulate = Color(1, 1, 1, 0)
+		original.get_parent().add_child(glow)
+		original.get_parent().move_child(glow, original.get_index())
+		glow_sprites[i] = glow
 
 func _on_flask_clicked(index: int) -> void:
 	if selected_flask == 0:
@@ -130,11 +145,19 @@ func _update_flask_animated(index: int) -> void:
 		.set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
 
 func _highlight_flask(index: int, enable: bool) -> void:
-	var outline = outlines[index]
+	var glow: Sprite2D = glow_sprites[index]
+	if glow_tweens.has(index) and glow_tweens[index] != null:
+		glow_tweens[index].kill()
+		glow_tweens[index] = null
 	if enable:
-		outline.modulate = Color(1.0, 0.9, 0.2)
+		var tween := create_tween().set_loops()
+		tween.tween_property(glow, "modulate", Color(1, 1, 1, 0.9), 0.2)
+		tween.tween_property(glow, "modulate", Color(1, 1, 1, 0.3), 0.2)
+		glow_tweens[index] = tween
 	else:
-		outline.modulate = Color(1, 1, 1)
+		var tween := create_tween()
+		tween.tween_property(glow, "modulate", Color(1, 1, 1, 0), 0.15)
+		glow_tweens[index] = tween
 
 func _check_win() -> void:
 	if volume[1] == TARGET_VOLUME:
@@ -154,4 +177,3 @@ func _on_button_pressed() -> void:
 	var main_game := get_tree().get_first_node_in_group("MainGame")
 	if main_game:
 		main_game.on_flask_solved()
-	

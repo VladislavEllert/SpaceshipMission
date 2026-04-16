@@ -216,14 +216,17 @@ func _on_stars_pressed() -> void:
 	if main_game == null:
 		return
 	if not main_game.screen_unlocked:
-		_open_dialog(stars_dialog, stars_label, stars_next, messages_no_access)
+		_open_dialog(screen_dialog, screen_label, screen_next, messages_no_access)
 		return
 	if GameState.ship_fully_solved:
-		_open_dialog(stars_dialog, stars_label, stars_next, messages_panel_done)
+		_open_dialog(screen_dialog, screen_label, screen_next, messages_panel_done)
 		return
 	main_game.open_panel()
 
 func _open_dialog(dialog: Panel, label: RichTextLabel, next_btn: TextureButton, messages: Array[String]) -> void:
+	is_typing = false
+	screen_dialog.visible = false
+	stars_dialog.visible = false
 	active_dialog = dialog
 	active_label = label
 	active_next = next_btn
