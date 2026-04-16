@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://dnn0sc0gur4fk" path="res://minigame/PipeGame/PipeGame.gd" id="1_pipegm"]
 [ext_resource type="Texture2D" uid="uid://bs166owg0q5gj" path="res://minigame/PipeGame/images/pipes_background.png" id="2_w0irs"]
 [ext_resource type="Texture2D" uid="uid://c13a6h4iv6bw4" path="res://items/left-arrow.png" id="3_7f7ed"]
-[ext_resource type="Texture2D" uid="uid://be0ouwlfa86kc" path="res://items/redarrow.png" id="4_q3b6w"]
+[ext_resource type="Texture2D" uid="uid://01noms64b54k" path="res://items/redarrow.png" id="4_q3b6w"]
 
 [node name="PipeGame" type="Node2D"]
 script = ExtResource("1_pipegm")

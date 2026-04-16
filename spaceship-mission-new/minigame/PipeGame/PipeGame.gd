@@ -90,10 +90,47 @@ const LEVEL_2_LAYOUT := [
 const LEVEL_2_ENTRY := Vector2i(0, 0)
 const LEVEL_2_EXIT  := Vector2i(3, 3)
 
+# ── Level 3 ───────────────────────────────────────────────────────────────────
+# Full grid — all 16 cells filled. Complex network with CROSS intersections.
+# Entry (0,0) LEFT, Exit (3,3) RIGHT
+#
+# Connection map (every cell connects to its listed neighbours):
+#   (0,0) R→(1,0) B→(0,1)               = R|B|L(border)   = TEE rot0  (14)
+#   (1,0) L→(0,0) R→(2,0)               = L|R              = STRAIGHT rot0 (10)
+#   (2,0) L→(1,0) R→(3,0) B→(2,1)       = L|R|B            = TEE rot0  (14)
+#   (3,0) L→(2,0) B→(3,1)               = L|B              = BEND rot1 (12)
+#   (0,1) T→(0,0) R→(1,1) B→(0,2)       = T|R|B            = TEE rot3  (7)
+#   (1,1) L→(0,1) R→(2,1) B→(1,2)       = L|R|B            = TEE rot0  (14)
+#   (2,1) T→(2,0) L→(1,1) R→(3,1) B→(2,2)= all four        = CROSS     (15)
+#   (3,1) T→(3,0) L→(2,1) B→(3,2)       = T|L|B            = TEE rot1  (13)
+#   (0,2) T→(0,1) R→(1,2) B→(0,3)       = T|R|B            = TEE rot3  (7)
+#   (1,2) T→(1,1) L→(0,2) R→(2,2)       = T|L|R            = TEE rot2  (11)
+#   (2,2) T→(2,1) L→(1,2) R→(3,2) B→(2,3)= all four        = CROSS     (15)
+#   (3,2) T→(3,1) L→(2,2) B→(3,3)       = T|L|B            = TEE rot1  (13)
+#   (0,3) T→(0,2) R→(1,3)               = T|R              = BEND rot3 (3)
+#   (1,3) L→(0,3) R→(2,3)               = L|R              = STRAIGHT rot0 (10)
+#   (2,3) T→(2,2) L→(1,3) R→(3,3)       = T|L|R            = TEE rot2  (11)
+#   (3,3) T→(3,2) L→(2,3) R(border)     = T|L|R            = TEE rot2  (11)
+#
+# All 16 cells reachable by flood fill from (0,0), exit (3,3) reached.         ✓
+const LEVEL_3_LAYOUT := [
+	# row 0: TEE | STRAIGHT | TEE | BEND
+	[[2, 0, 2], [0, 0, 1], [2, 0, 3], [1, 1, 3]],
+	# row 1: TEE | TEE | CROSS | TEE
+	[[2, 3, 1], [2, 0, 3], [3, 0, 0], [2, 1, 3]],
+	# row 2: TEE | TEE | CROSS | TEE
+	[[2, 3, 0], [2, 2, 0], [3, 0, 0], [2, 1, 3]],
+	# row 3: BEND | STRAIGHT | TEE | TEE
+	[[1, 3, 1], [0, 0, 1], [2, 2, 0], [2, 2, 0]],
+]
+const LEVEL_3_ENTRY := Vector2i(0, 0)
+const LEVEL_3_EXIT  := Vector2i(3, 3)
+
 # ── All levels ────────────────────────────────────────────────────────────────
 const LEVELS := [
 	{ "layout": LEVEL_1_LAYOUT, "entry": LEVEL_1_ENTRY, "exit": LEVEL_1_EXIT },
 	{ "layout": LEVEL_2_LAYOUT, "entry": LEVEL_2_ENTRY, "exit": LEVEL_2_EXIT },
+	{ "layout": LEVEL_3_LAYOUT, "entry": LEVEL_3_ENTRY, "exit": LEVEL_3_EXIT },
 ]
 
 # ── State ──────────────────────────────────────────────────────────────────────
@@ -171,6 +208,7 @@ func _load_level(level_idx: int) -> void:
 	_clear_grid()
 	_setup_puzzle()
 	_build_grid()
+	_update_arrow_position()
 
 
 func _clear_grid() -> void:
@@ -239,6 +277,15 @@ func _create_red_flash() -> void:
 	var vp_size := get_viewport().get_visible_rect().size
 	_red_flash.position = Vector2.ZERO
 	_red_flash.size = vp_size
+
+
+# ── Red arrow position ─────────────────────────────────────────────────────────
+func _update_arrow_position() -> void:
+	if _red_arrow == null:
+		return
+	var grid_top := _grid_container.offset_top
+	var entry_y := grid_top + _entry_pos.y * TILE_SIZE + TILE_SIZE * 0.5
+	_red_arrow.position.y = entry_y
 
 
 # ── Red arrow idle animation ───────────────────────────────────────────────────
