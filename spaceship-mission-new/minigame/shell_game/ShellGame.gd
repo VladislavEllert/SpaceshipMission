@@ -67,8 +67,8 @@ var tex_lose:      Texture2D = null
 @onready var start_btn:     Button        = $UILayer/StartButton
 @onready var try_again_btn: Button        = $UILayer/TryAgainButton
 @onready var exit_btn:      TextureButton = $Exit
-var _phase_bg:    Panel = null
-var _level_label: Label = null
+var _phase_bg: Panel = null
+@onready var _level_label: Label = $UILayer/LevelLabel
 
 # ─────────────────────────────────────────────────────────────────────────────
 # INIT
@@ -81,7 +81,6 @@ func _ready() -> void:
 	_reset_arrays()
 	_load_textures()
 	_build_phase_bg()
-	_build_level_label()
 	if not exit_btn.pressed.is_connected(_on_exit_pressed):
 		exit_btn.pressed.connect(_on_exit_pressed)
 
@@ -113,50 +112,6 @@ func _build_phase_bg() -> void:
 
 	$UILayer.add_child(_phase_bg)
 	$UILayer.move_child(_phase_bg, 0)
-
-func _build_level_label() -> void:
-	# Плашка
-	var badge_bg := ColorRect.new()
-	badge_bg.color = Color(0.0, 0.08, 0.20, 0.88)
-	badge_bg.set_anchor_and_offset(SIDE_LEFT,   1.0, -175.0)
-	badge_bg.set_anchor_and_offset(SIDE_RIGHT,  1.0,  -10.0)
-	badge_bg.set_anchor_and_offset(SIDE_TOP,    0.0,   10.0)
-	badge_bg.set_anchor_and_offset(SIDE_BOTTOM, 0.0,   48.0)
-	badge_bg.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	$UILayer.add_child(badge_bg)
-
-	var badge_border := Panel.new()
-	badge_border.set_anchor_and_offset(SIDE_LEFT,   1.0, -175.0)
-	badge_border.set_anchor_and_offset(SIDE_RIGHT,  1.0,  -10.0)
-	badge_border.set_anchor_and_offset(SIDE_TOP,    0.0,   10.0)
-	badge_border.set_anchor_and_offset(SIDE_BOTTOM, 0.0,   48.0)
-	badge_border.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	var style := StyleBoxFlat.new()
-	style.bg_color = Color(0, 0, 0, 0)
-	style.border_color = Color(0.0, 0.85, 1.0, 0.8)
-	style.border_width_left   = 2
-	style.border_width_right  = 2
-	style.border_width_top    = 2
-	style.border_width_bottom = 2
-	style.corner_radius_top_left     = 5
-	style.corner_radius_top_right    = 5
-	style.corner_radius_bottom_left  = 5
-	style.corner_radius_bottom_right = 5
-	badge_border.add_theme_stylebox_override("panel", style)
-	$UILayer.add_child(badge_border)
-
-	_level_label = Label.new()
-	_level_label.text = _level_text()
-	_level_label.set_anchor_and_offset(SIDE_LEFT,   1.0, -175.0)
-	_level_label.set_anchor_and_offset(SIDE_RIGHT,  1.0,  -10.0)
-	_level_label.set_anchor_and_offset(SIDE_TOP,    0.0,   10.0)
-	_level_label.set_anchor_and_offset(SIDE_BOTTOM, 0.0,   48.0)
-	_level_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	_level_label.vertical_alignment   = VERTICAL_ALIGNMENT_CENTER
-	_level_label.add_theme_font_size_override("font_size", 18)
-	_level_label.add_theme_color_override("font_color", Color(0.0, 1.0, 1.0, 1.0))
-	_level_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	$UILayer.add_child(_level_label)
 
 func _level_text() -> String:
 	return "УРОВЕНЬ %d / 3" % _level
@@ -224,7 +179,6 @@ func start_game() -> void:
 
 	hidden_index  = randi() % container_count
 	current_phase = Phase.SHOW_ITEM
-	_set_phase_label("Запомни!")
 	_phase_show_item()
 
 # ── Phase: show chip ─────────────────────────────────────────────────────────
@@ -239,7 +193,6 @@ func _phase_show_item() -> void:
 	await get_tree().create_timer(1.5).timeout
 
 	current_phase = Phase.HIDE_ITEM
-	_set_phase_label("Следи!")
 
 	var tw2 := create_tween()
 	tw2.tween_method(_lift_setter.bind(hidden_index), LIFT_HEIGHT, 0.0, LIFT_DUR)
@@ -309,7 +262,6 @@ func _on_shuffle_done() -> void:
 	is_animating  = false
 	current_phase = Phase.WAIT_FOR_CLICK
 	can_click     = true
-	_set_phase_label("Выбирай!")
 
 # ── Lift helper ───────────────────────────────────────────────────────────────
 
