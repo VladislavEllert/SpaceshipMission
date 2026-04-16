@@ -5,6 +5,14 @@ extends Node2D
 @onready var dialog_box := $UILayer/DialogBox
 @onready var menu_button: TextureButton = $UILayer/MenuButton
 @onready var input_blocker := $InputBlocker
+@onready var emergency_tint: ColorRect = $EmergencyLightLayer/EmergencyTint
+
+# --- Аварийное освещение (мигает пока не установлен реактор) ---
+var _emergency_tween: Tween = null
+var _emergency_active: bool = false
+const EMERGENCY_ALPHA_LOW: float  = 0.10   # нижняя точка пульса
+const EMERGENCY_ALPHA_HIGH: float = 0.32   # верхняя точка — заметный красный оттенок
+const EMERGENCY_PERIOD: float     = 1.4    # чуть быстрее — ощущение тревоги, но не раздражает
 
 var pause_menu_scene := preload("res://scenes/PauseMenu.tscn")
 
@@ -106,6 +114,46 @@ func _ready() -> void:
 		input_blocker.visible = true
 		_play_wakeup_blink()
 		dialog_box.dialog_finished.connect(_on_intro_dialog_finished)
+
+	# Запускаем аварийное освещение, если реактор ещё не установлен
+	_update_emergency_light()
+
+# --- Аварийное освещение ---
+func _process(_delta: float) -> void:
+	# Если реактор установили — плавно гасим мигание
+	if _emergency_active and GameState.reactor_installed:
+		_stop_emergency_light()
+
+func _update_emergency_light() -> void:
+	if GameState.reactor_installed:
+		emergency_tint.color.a = 0.0
+		_emergency_active = false
+	else:
+		_start_emergency_light()
+
+func _start_emergency_light() -> void:
+	if _emergency_active:
+		return
+	_emergency_active = true
+	if _emergency_tween:
+		_emergency_tween.kill()
+	emergency_tint.color.a = EMERGENCY_ALPHA_LOW
+	_emergency_tween = create_tween()
+	_emergency_tween.set_loops()
+	_emergency_tween.set_ease(Tween.EASE_IN_OUT)
+	_emergency_tween.set_trans(Tween.TRANS_SINE)
+	_emergency_tween.tween_property(emergency_tint, "color:a", EMERGENCY_ALPHA_HIGH, EMERGENCY_PERIOD)
+	_emergency_tween.tween_property(emergency_tint, "color:a", EMERGENCY_ALPHA_LOW,  EMERGENCY_PERIOD)
+
+func _stop_emergency_light() -> void:
+	_emergency_active = false
+	if _emergency_tween:
+		_emergency_tween.kill()
+		_emergency_tween = null
+	var t := create_tween()
+	t.set_ease(Tween.EASE_OUT)
+	t.set_trans(Tween.TRANS_SINE)
+	t.tween_property(emergency_tint, "color:a", 0.0, 1.2)
 
 # --- Эффект пробуждения ---
 func _play_wakeup_blink() -> void:
