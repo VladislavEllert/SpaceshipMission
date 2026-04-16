@@ -218,7 +218,7 @@ offset_bottom = 451.0
 [node name="SolvedBannerShellGame" type="Polygon2D" parent="."]
 visible = false
 color = Color(0.447059, 0.658824, 0.223529, 0.65098)
-polygon = PackedVector2Array(932, 244, 929, 282, 969, 279, 966, 234)
+polygon = PackedVector2Array(934, 240, 934, 282, 965, 278, 965, 232)
 
 [node name="ButtonShellGame" type="Button" parent="."]
 offset_left = 855.0
