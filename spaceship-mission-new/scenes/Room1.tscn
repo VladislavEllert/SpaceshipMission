@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://c7wbs35qq4ugy"]
+[gd_scene load_steps=13 format=3 uid="uid://c7wbs35qq4ugy"]
 
 [ext_resource type="Script" uid="uid://bfwlw21vu00bw" path="res://scenes/room_1_2.gd" id="1_bc387"]
 [ext_resource type="Texture2D" uid="uid://bqpcwc6cvmjk5" path="res://ImagesBackground/result_newfirstroom.png" id="2_i1w2g"]
@@ -9,6 +9,7 @@
 [ext_resource type="FontFile" uid="uid://b7dduljs7hlra" path="res://Iceberg-Regular.ttf" id="7_bc387"]
 [ext_resource type="Texture2D" uid="uid://ck38uu1ima4b4" path="res://items/compface.png" id="7_hwyyj"]
 [ext_resource type="Texture2D" uid="uid://bb5nn8cxaouot" path="res://items/newreactorfirst.png" id="7_i1w2g"]
+[ext_resource type="PackedScene" path="res://scenes/StarfieldWindow.tscn" id="11_sfwin"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bc387"]
 bg_color = Color(0.408329, 0.408329, 0.408329, 1)
@@ -44,13 +45,17 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = 432.0
-offset_top = 119.0
-offset_right = 1712.0
-offset_bottom = 839.0
+offset_left = 431.0
+offset_top = 121.0
+offset_right = 1711.0
+offset_bottom = 841.0
 grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("2_i1w2g")
+
+[node name="StarfieldWindow" parent="." instance=ExtResource("11_sfwin")]
+position = Vector2(913, 422)
+polygon = PackedVector2Array(0, 0, 64, 0, 77, 13, 142, 13, 151, 0, 210, 1, 243, 96, 231, 108, 159, 110, 148, 100, 75.4338, 100, 66, 109, -14, 110, -25, 100)
 
 [node name="RightArrow" type="Button" parent="."]
 anchors_preset = 6

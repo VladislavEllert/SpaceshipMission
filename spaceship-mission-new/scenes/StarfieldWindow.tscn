@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3 uid="uid://bwxjh1aytaddv"]
+
+[ext_resource type="Script" path="res://scenes/starfield_window.gd" id="1_sfw01"]
+
+[node name="StarfieldWindow" type="Polygon2D"]
+color = Color(0.02, 0.03, 0.06, 1)
+polygon = PackedVector2Array(0, 0, 420, 0, 420, 240, 0, 240)
+
+[node name="Stars" type="Node2D" parent="."]
+script = ExtResource("1_sfw01")
