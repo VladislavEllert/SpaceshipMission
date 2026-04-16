@@ -8,7 +8,7 @@ const TILE_SIZE := 130
 
 # ── Pipe type IDs ──────────────────────────────────────────────────────────────
 const STRAIGHT := 0  # pipe_straight.png — LEFT | RIGHT          at rot 0
-const BEND     := 1  # pipe_bend.png     — TOP  | RIGHT          at rot 0
+const BEND     := 1  # pipe_bend.png     — RIGHT | BOTTOM        at rot 0
 const TEE      := 2  # pipe_tee.png      — RIGHT | BOTTOM | LEFT at rot 0
 const CROSS    := 3  # pipe_cross.png    — all four directions
 const EMPTY    := 4  # empty.png         — no connections, never rotates
@@ -36,49 +36,72 @@ const BASE_MASKS := {
 	EMPTY:     0,
 }
 
-# ── Hardcoded puzzle layout ────────────────────────────────────────────────────
+# ══════════════════════════════════════════════════════════════════════════════
+# LEVEL DEFINITIONS
 # Format per cell: [pipe_type, correct_rotation, start_rotation]
-# Empty cells use [4, 0, 0]. start_rotation must differ from correct_rotation
-# for every non-empty tile so the puzzle is not pre-solved.
-#
-# Pipeline path by (col, row):
-#   Entry (0,1) — left border, outward direction = LEFT
-#   (0,1)→(0,2)→(1,2)→(1,3)→(2,3)→(3,3)→(3,2)
-#   Exit  (3,2) — right border, outward direction = RIGHT
-#
-# Mask verification (BEND base=6=RIGHT|BOTTOM, rot CW each step):
-#   rot0=6  RIGHT|BOTTOM
-#   rot1=12 BOTTOM|LEFT
-#   rot2=9  TOP|LEFT
-#   rot3=3  TOP|RIGHT
-#
-#   (0,1) BEND rot1=12 BOTTOM|LEFT  → LEFT(border)+DOWN to (0,2)         ✓
-#   (0,2) BEND rot3= 3 TOP|RIGHT    → UP to (0,1)+RIGHT to (1,2)         ✓
-#   (1,2) BEND rot1=12 BOTTOM|LEFT  → LEFT to (0,2)+DOWN to (1,3)        ✓
-#   (1,3) BEND rot3= 3 TOP|RIGHT    → UP to (1,2)+RIGHT to (2,3)         ✓
-#   (2,3) STRAIGHT rot0=10 LEFT|RIGHT → LEFT to (1,3)+RIGHT to (3,3)     ✓
-#   (3,3) BEND rot2= 9 TOP|LEFT     → LEFT to (2,3)+UP to (3,2)          ✓
-#   (3,2) BEND rot0= 6 RIGHT|BOTTOM → RIGHT(border)+DOWN to (3,3)        ✓
-#
-# All 7 non-empty cells reachable by flood fill from entry, exit reached.  ✓
-const PUZZLE_LAYOUT := [
-	# row 0: all empty
+# ══════════════════════════════════════════════════════════════════════════════
+
+# ── Level 1 ───────────────────────────────────────────────────────────────────
+# Path (col,row): (0,1)→(0,2)→(1,2)→(1,3)→(2,3)→(3,3)→(3,2)
+# Entry (0,1) LEFT, Exit (3,2) RIGHT — 7 non-empty cells
+const LEVEL_1_LAYOUT := [
 	[[4, 0, 0], [4, 0, 0], [4, 0, 0], [4, 0, 0]],
-	# row 1: entry cell at col 0 (BEND correct=1 start=3), rest empty
 	[[1, 1, 3], [4, 0, 0], [4, 0, 0], [4, 0, 0]],
-	# row 2: BEND c=3 s=1 | BEND c=1 s=0 | empty | BEND c=0 s=2 (exit)
 	[[1, 3, 1], [1, 1, 0], [4, 0, 0], [1, 0, 2]],
-	# row 3: empty | BEND c=3 s=2 | STRAIGHT c=0 s=1 | BEND c=2 s=0
 	[[4, 0, 0], [1, 3, 2], [0, 0, 1], [1, 2, 0]],
 ]
+const LEVEL_1_ENTRY := Vector2i(0, 1)
+const LEVEL_1_EXIT  := Vector2i(3, 2)
 
-# Entry: col=0, row=1 — opens LEFT toward the left border.
-# Exit:  col=3, row=2 — opens RIGHT toward the right border.
-const ENTRY_POS := Vector2i(0, 1)
-const EXIT_POS  := Vector2i(3, 2)
+# ── Level 2 ───────────────────────────────────────────────────────────────────
+# Snake path (col,row):
+#   (0,0)→(1,0)→(2,0)→(3,0)→(3,1)→(2,1)→(1,1)→(0,1)→(0,2)→(1,2)→(2,2)→(3,2)→(3,3)
+#   Plus branch: (1,1)↓(1,2) and (1,2) receives from both (0,2) and (1,1)
+# Entry (0,0) LEFT, Exit (3,3) RIGHT — 13 non-empty cells, uses TEE pipes
+#
+# Mask verification:
+#   (0,0) STRAIGHT rot0=10 LEFT|RIGHT        → LEFT(border)+RIGHT to (1,0)    ✓
+#   (1,0) STRAIGHT rot0=10 LEFT|RIGHT        → LEFT to (0,0)+RIGHT to (2,0)   ✓
+#   (2,0) STRAIGHT rot0=10 LEFT|RIGHT        → LEFT to (1,0)+RIGHT to (3,0)   ✓
+#   (3,0) BEND rot1=12 BOTTOM|LEFT           → LEFT to (2,0)+DOWN to (3,1)    ✓
+#   (3,1) BEND rot2=9 TOP|LEFT               → UP to (3,0)+LEFT to (2,1)      ✓
+#   (2,1) STRAIGHT rot0=10 LEFT|RIGHT        → RIGHT to (3,1)+LEFT to (1,1)   ✓
+#   (1,1) TEE rot0=14 RIGHT|BOTTOM|LEFT      → RIGHT to (2,1)+LEFT to (0,1)
+#                                               +DOWN to (1,2)                 ✓
+#   (0,1) BEND rot0=6 RIGHT|BOTTOM           → RIGHT to (1,1)+DOWN to (0,2)   ✓
+#   (0,2) BEND rot3=3 TOP|RIGHT              → UP to (0,1)+RIGHT to (1,2)     ✓
+#   (1,2) TEE rot2=11 TOP|RIGHT|LEFT         → LEFT to (0,2)+RIGHT to (2,2)
+#                                               +UP to (1,1)                   ✓
+#   (2,2) STRAIGHT rot0=10 LEFT|RIGHT        → LEFT to (1,2)+RIGHT to (3,2)   ✓
+#   (3,2) BEND rot1=12 BOTTOM|LEFT           → LEFT to (2,2)+DOWN to (3,3)    ✓
+#   (3,3) BEND rot3=3 TOP|RIGHT              → UP to (3,2)+RIGHT(border)      ✓
+#
+# All 13 non-empty cells reachable by flood fill from entry, exit reached.     ✓
+const LEVEL_2_LAYOUT := [
+	# row 0: STRAIGHT | STRAIGHT | STRAIGHT | BEND
+	[[0, 0, 2], [0, 0, 1], [0, 0, 3], [1, 1, 3]],
+	# row 1: BEND | TEE | STRAIGHT | BEND
+	[[1, 0, 2], [2, 0, 2], [0, 0, 1], [1, 2, 0]],
+	# row 2: BEND | TEE | STRAIGHT | BEND
+	[[1, 3, 1], [2, 2, 0], [0, 0, 3], [1, 1, 3]],
+	# row 3: empty | empty | empty | BEND
+	[[4, 0, 0], [4, 0, 0], [4, 0, 0], [1, 3, 1]],
+]
+const LEVEL_2_ENTRY := Vector2i(0, 0)
+const LEVEL_2_EXIT  := Vector2i(3, 3)
+
+# ── All levels ────────────────────────────────────────────────────────────────
+const LEVELS := [
+	{ "layout": LEVEL_1_LAYOUT, "entry": LEVEL_1_ENTRY, "exit": LEVEL_1_EXIT },
+	{ "layout": LEVEL_2_LAYOUT, "entry": LEVEL_2_ENTRY, "exit": LEVEL_2_EXIT },
+]
 
 # ── State ──────────────────────────────────────────────────────────────────────
+var _current_level := 0
 var _won: bool = false
+var _entry_pos := Vector2i.ZERO
+var _exit_pos  := Vector2i.ZERO
+var _puzzle_layout: Array = []
 
 var _grid_types: Array = []
 var _grid_rots:  Array = []
@@ -89,6 +112,7 @@ var _textures:   Dictionary = {}
 @onready var _win_overlay:    Control       = $WinOverlay
 @onready var _exit_button:    TextureButton = $TextureButton
 @onready var _check_button:   Button        = $CheckButton
+@onready var _red_arrow: Node2D            = $RedArrow
 
 # Created in code so it always has a correct viewport-sized rect and sits on top.
 var _red_flash: ColorRect
@@ -106,9 +130,9 @@ func _ready() -> void:
 	_style_check_button()
 	_style_win_panel()
 	_load_textures()
-	_setup_puzzle()
-	_build_grid()
+	_load_level(_current_level)
 	_create_red_flash()
+	_animate_red_arrow()
 
 
 func _on_exit_pressed() -> void:
@@ -137,6 +161,26 @@ func _get_mask(pipe_type: int, steps: int) -> int:
 	return m
 
 
+# ── Level loading ─────────────────────────────────────────────────────────────
+func _load_level(level_idx: int) -> void:
+	_won = false
+	var level: Dictionary = LEVELS[level_idx]
+	_puzzle_layout = level["layout"]
+	_entry_pos = level["entry"]
+	_exit_pos = level["exit"]
+	_clear_grid()
+	_setup_puzzle()
+	_build_grid()
+
+
+func _clear_grid() -> void:
+	_grid_types.clear()
+	_grid_rots.clear()
+	_tex_rects.clear()
+	for child in _grid_container.get_children():
+		child.queue_free()
+
+
 # ── Puzzle setup ───────────────────────────────────────────────────────────────
 func _setup_puzzle() -> void:
 	var total := GRID_SIZE * GRID_SIZE
@@ -146,7 +190,7 @@ func _setup_puzzle() -> void:
 	for r in GRID_SIZE:
 		for c in GRID_SIZE:
 			var idx  := r * GRID_SIZE + c
-			var cell: Array = PUZZLE_LAYOUT[r][c]
+			var cell: Array = _puzzle_layout[r][c]
 			_grid_types[idx] = cell[0]  # pipe type
 			_grid_rots[idx]  = cell[2]  # start rotation (scrambled)
 
@@ -197,6 +241,18 @@ func _create_red_flash() -> void:
 	_red_flash.size = vp_size
 
 
+# ── Red arrow idle animation ───────────────────────────────────────────────────
+func _animate_red_arrow() -> void:
+	if _red_arrow == null:
+		return
+	var origin := _red_arrow.position
+	var tween := create_tween().set_loops()
+	tween.tween_property(_red_arrow, "position", origin + Vector2(8, 0), 0.5)\
+		.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+	tween.tween_property(_red_arrow, "position", origin, 0.5)\
+		.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+
+
 # ── Check button circular style ────────────────────────────────────────────────
 func _style_check_button() -> void:
 	var sn := StyleBoxFlat.new()
@@ -228,6 +284,8 @@ func _style_win_panel() -> void:
 
 # ── Input ──────────────────────────────────────────────────────────────────────
 func _on_cell_input(event: InputEvent, idx: int) -> void:
+	if _won:
+		return
 	var tapped := false
 	if event is InputEventScreenTouch and event.pressed:
 		tapped = true
@@ -250,29 +308,35 @@ func _on_check_pressed() -> void:
 		return
 	if _check_win_by_flow():
 		_won = true
-		_on_win()
+		if _current_level < LEVELS.size() - 1:
+			_advance_to_next_level()
+		else:
+			_on_win()
 	else:
 		_red_flash.show()
 		await get_tree().create_timer(1.0).timeout
 		_red_flash.hide()
 
 
+func _advance_to_next_level() -> void:
+	# Brief green flash to indicate level completed
+	var flash := ColorRect.new()
+	flash.color = Color(0, 1, 0, 0.35)
+	flash.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	flash.visible = true
+	add_child(flash)
+	var vp_size := get_viewport().get_visible_rect().size
+	flash.position = Vector2.ZERO
+	flash.size = vp_size
+	await get_tree().create_timer(0.6).timeout
+	flash.queue_free()
+	_current_level += 1
+	_load_level(_current_level)
+
+
 func _on_win() -> void:
 	set_process_input(false)
 	puzzle_solved.emit()
-
-
-# ── Win check: every non-empty tile must be at its correct rotation ───────────
-func _check_win_by_layout() -> bool:
-	for r in GRID_SIZE:
-		for c in GRID_SIZE:
-			var cell: Array = PUZZLE_LAYOUT[r][c]
-			if cell[0] == EMPTY:
-				continue
-			var idx := r * GRID_SIZE + c
-			if _get_mask(_grid_types[idx], _grid_rots[idx]) != _get_mask(cell[0], cell[1]):
-				return false
-	return true
 
 
 # ── Win check: flood-fill from the entry cell ─────────────────────────────────
@@ -282,7 +346,7 @@ func _check_win_by_layout() -> bool:
 #   • B's current rotated mask opens back in the direction toward A.
 #
 # Two conditions must both pass:
-#   1. The flood fill reaches EXIT_POS (the exit border cell).
+#   1. The flood fill reaches _exit_pos (the exit border cell).
 #   2. visited.size() == total number of non-empty tiles on the grid —
 #      guarantees no disconnected pipe segment exists anywhere.
 func _check_win_by_flow() -> bool:
@@ -294,8 +358,8 @@ func _check_win_by_flow() -> bool:
 
 	# Flood-fill from the entry cell.
 	var visited: Dictionary = {}
-	visited[ENTRY_POS] = true
-	var queue: Array = [ENTRY_POS]
+	visited[_entry_pos] = true
+	var queue: Array = [_entry_pos]
 
 	var steps := [
 		[Vector2i(0, -1), TOP,    BOTTOM],
@@ -332,7 +396,7 @@ func _check_win_by_flow() -> bool:
 			queue.append(nxt)
 
 	# Condition 1: the exit border cell must be reachable from the entry.
-	if not visited.has(EXIT_POS):
+	if not visited.has(_exit_pos):
 		return false
 
 	# Condition 2: every pipe tile must have been reached — no floating segments.
