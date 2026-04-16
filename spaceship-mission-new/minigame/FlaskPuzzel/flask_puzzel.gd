@@ -40,8 +40,15 @@ const TARGET_VOLUME := 8
 	3: $Board/Flask3/ClickArea,
 }
 
+@onready var flask_nodes := {
+	1: $Board/Flask1,
+	2: $Board/Flask2,
+	3: $Board/Flask3,
+}
+
 var selected_flask := 0
 var glow_tweens := {}
+var flask_origin_y := {}
 
 func _ready() -> void:
 	click_areas[1].pressed.connect(func(): _on_flask_clicked(1))
@@ -54,8 +61,7 @@ func _ready() -> void:
 		btn.add_theme_stylebox_override("pressed", StyleBoxEmpty.new())
 		btn.add_theme_stylebox_override("focus", StyleBoxEmpty.new())
 		btn.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
-	for i in outlines.keys():
-		outlines[i].modulate = Color(1, 1, 1, 0)
+		flask_origin_y[i] = flask_nodes[i].position.y
 	_update_all_flasks()
 
 func _on_flask_clicked(index: int) -> void:
@@ -133,18 +139,28 @@ func _update_flask_animated(index: int) -> void:
 		.set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
 
 func _highlight_flask(index: int, enable: bool) -> void:
-	var outline: Sprite2D = outlines[index]
+	var flask: Control = flask_nodes[index]
+	var water: ColorRect = waters[index]
+	var origin_y: float = flask_origin_y[index]
+
 	if glow_tweens.has(index) and glow_tweens[index] != null:
 		glow_tweens[index].kill()
 		glow_tweens[index] = null
+
 	if enable:
-		var tween := create_tween().set_loops()
-		tween.tween_property(outline, "modulate:a", 1.0, 0.2)
-		tween.tween_property(outline, "modulate:a", 0.3, 0.2)
+		# Подпрыгнуть вверх на 25px с небольшим покачиванием
+		var tween := create_tween()
+		tween.set_parallel(false)
+		tween.tween_property(flask, "position:y", origin_y - 25.0, 0.15)\
+			.set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+		tween.tween_property(flask, "position:y", origin_y - 18.0, 0.08)
+		tween.tween_property(flask, "position:y", origin_y - 22.0, 0.08)
 		glow_tweens[index] = tween
 	else:
+		# Плавно вернуть колбу на место
 		var tween := create_tween()
-		tween.tween_property(outline, "modulate:a", 0.0, 0.15)
+		tween.tween_property(flask, "position:y", origin_y, 0.2)\
+			.set_trans(Tween.TRANS_BOUNCE).set_ease(Tween.EASE_OUT)
 		glow_tweens[index] = tween
 
 func _check_win() -> void:
