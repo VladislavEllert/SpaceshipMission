@@ -1,5 +1,5 @@
 ## LaserMirror.gd
-## Мини-игра «Лазер и зеркала» — полностью процедурная отрисовка через _draw()
+## Мини-игра «Лазер и зеркала» — 3 уровня, процедурная отрисовка через _draw()
 ## Godot 4.4 | только касания (Button nodes) | landscape 1280×720
 extends Node2D
 
@@ -20,21 +20,22 @@ const MAX_STEPS := 80
 # ── Типы ячеек ────────────────────────────────────────────────────────────────
 enum CellType { EMPTY, WALL, SOURCE, TARGET, MIRROR_45, MIRROR_135 }
 
-# Направления луча (x = смещение по столбцу, y = смещение по строке)
+# Направления луча
 const DIR_RIGHT := Vector2i( 1,  0)
 const DIR_LEFT  := Vector2i(-1,  0)
 const DIR_DOWN  := Vector2i( 0,  1)
 const DIR_UP    := Vector2i( 0, -1)
-
-const SOURCE_DIR := Vector2i(1, 0)   # лазер из SOURCE стреляет вправо
+const SOURCE_DIR := Vector2i(1, 0)
 
 # ── Runtime-переменные ────────────────────────────────────────────────────────
-var grid: Array = []            # grid[row][col] → CellType int
-var rotatable: Dictionary = {}  # ключ Vector2i(col, row) → true
+var grid: Array = []
+var rotatable: Dictionary = {}
 var laser_line: Line2D
 var laser_glow: Line2D
 var _solved := false
-var _source_pos := Vector2i(0, 0)  # x = col, y = row
+var _source_pos := Vector2i(0, 0)
+var _current_level: int = 1
+var _level_label: Label
 
 # ── Текстуры ─────────────────────────────────────────────────────────────────
 var _tex_bg: Texture2D
@@ -61,25 +62,18 @@ func _ready() -> void:
 	var vp_size := get_viewport_rect().size
 	GRID_OX = int((vp_size.x - GRID_COLS * STEP + CELL_GAP) / 2.0)
 	GRID_OY = int((vp_size.y - GRID_ROWS * STEP + CELL_GAP) / 2.0)
-	_setup_puzzle()              # 1. данные пазла
-	_build_laser_lines()         # 2. Line2D (Node2D, не Control)
-	_build_ui()                  # 3. фон, лейблы, win_panel
-	_redraw_laser()              # 4. лазер
-	queue_redraw()               # 5. перерисовка _draw()
-	_create_all_touch_buttons()  # 6. ПОСЛЕДНИМ — кнопки поверх всего
+	_setup_puzzle()
+	_build_laser_lines()
+	_build_ui()
+	_redraw_laser()
+	queue_redraw()
+	_create_all_touch_buttons()
 	if not _exit_button.pressed.is_connected(_on_exit):
 		_exit_button.pressed.connect(_on_exit)
 
 
 # ── Инициализация пазла ───────────────────────────────────────────────────────
 
-## Заполняет сетку и словарь вращаемых зеркал.
-##
-## Маршрут решения (все вращаемые в MIRROR_135 "\"):
-##   SOURCE(0,0) →R→ \(2,0) ↓D→ \(2,2)fixed →R→ \(4,2) ↓D→ \(4,4) →R→ TARGET(5,4) ✓
-##
-## Начальное положение: все 3 вращаемых = MIRROR_45 "/"
-##   Лазер сразу уходит вверх из (2,0) и покидает поле — пазл не решён.
 func _setup_puzzle() -> void:
 	grid.clear()
 	for r in GRID_ROWS:
@@ -88,26 +82,106 @@ func _setup_puzzle() -> void:
 			row_arr.append(CellType.EMPTY)
 		grid.append(row_arr)
 
-	# Фиксированные ячейки
+	match _current_level:
+		1: _setup_level_1()
+		2: _setup_level_2()
+		3: _setup_level_3()
+
+
+## УРОВЕНЬ 1 (3 вращаемых зеркала, все одного типа)
+## Путь: SOURCE(0,0)→R→\(2,0)→D→\(2,2)→R→\(4,2)→D→\(4,4)→R→TARGET(5,4)
+func _setup_level_1() -> void:
 	grid[0][0] = CellType.SOURCE
 	_source_pos  = Vector2i(0, 0)
 
-	grid[1][1] = CellType.WALL           # декоративная стена, блокирует ложный путь
+	grid[1][1] = CellType.WALL
 
-	grid[2][2] = CellType.MIRROR_135     # фиксированное \ зеркало (не вращается)
+	grid[2][2] = CellType.MIRROR_135     # фиксированное \ — не вращается
 
 	grid[4][5] = CellType.TARGET
 
-	# Вращаемые зеркала — изначально в неправильном положении (MIRROR_45 "/")
-	var rot_positions := [Vector2i(2, 0), Vector2i(4, 2), Vector2i(4, 4)]
-	for key in rot_positions:
-		grid[key.y][key.x] = CellType.MIRROR_45   # key.x = col, key.y = row
+	# Вращаемые — изначально MIRROR_45 "/", нужно повернуть в \ все три
+	for key in [Vector2i(2, 0), Vector2i(4, 2), Vector2i(4, 4)]:
+		grid[key.y][key.x] = CellType.MIRROR_45
 		rotatable[key] = true
+
+
+## УРОВЕНЬ 2 (5 вращаемых зеркал, смешанные стартовые позиции)
+## Путь: SOURCE(0,0)→R→\(1,0)→D→\(1,2)→R→/(3,2)→U→/(3,1)→R→\(5,1)→D→TARGET(5,4)
+func _setup_level_2() -> void:
+	grid[0][0] = CellType.SOURCE
+	_source_pos  = Vector2i(0, 0)
+
+	grid[4][5] = CellType.TARGET
+
+	# Стены-заглушки (не на пути решения)
+	grid[0][2] = CellType.WALL
+	grid[2][0] = CellType.WALL
+	grid[0][4] = CellType.WALL
+
+	# Вращаемые зеркала:
+	# (col=1,row=0): нужно \, старт /
+	grid[0][1] = CellType.MIRROR_45
+	rotatable[Vector2i(1, 0)] = true
+
+	# (col=1,row=2): нужно \, старт /
+	grid[2][1] = CellType.MIRROR_45
+	rotatable[Vector2i(1, 2)] = true
+
+	# (col=3,row=2): нужно /, старт \
+	grid[2][3] = CellType.MIRROR_135
+	rotatable[Vector2i(3, 2)] = true
+
+	# (col=3,row=1): нужно /, старт \
+	grid[1][3] = CellType.MIRROR_135
+	rotatable[Vector2i(3, 1)] = true
+
+	# (col=5,row=1): нужно \, старт /
+	grid[1][5] = CellType.MIRROR_45
+	rotatable[Vector2i(5, 1)] = true
+
+
+## УРОВЕНЬ 3 (5 вращаемых + 2 фиксированных, сложный маршрут)
+## Путь: SOURCE(0,0)→R→fixed\(1,0)→D→\(1,3)→R→/(4,3)→U→/(4,1)→L→\(2,1)→U→fixed/(2,0)→R→\(5,0)→D→TARGET(5,4)
+func _setup_level_3() -> void:
+	grid[0][0] = CellType.SOURCE
+	_source_pos  = Vector2i(0, 0)
+
+	grid[4][5] = CellType.TARGET
+
+	# Фиксированные зеркала (не вращаются)
+	grid[0][1] = CellType.MIRROR_135   # fixed \
+	grid[0][2] = CellType.MIRROR_45    # fixed /
+
+	# Стены-заглушки
+	grid[3][0] = CellType.WALL
+	grid[4][0] = CellType.WALL
+	grid[4][3] = CellType.WALL
+
+	# Вращаемые зеркала:
+	# (col=1,row=3): нужно \, старт /
+	grid[3][1] = CellType.MIRROR_45
+	rotatable[Vector2i(1, 3)] = true
+
+	# (col=4,row=3): нужно /, старт \
+	grid[3][4] = CellType.MIRROR_135
+	rotatable[Vector2i(4, 3)] = true
+
+	# (col=4,row=1): нужно /, старт \
+	grid[1][4] = CellType.MIRROR_135
+	rotatable[Vector2i(4, 1)] = true
+
+	# (col=2,row=1): нужно \, старт /
+	grid[1][2] = CellType.MIRROR_45
+	rotatable[Vector2i(2, 1)] = true
+
+	# (col=5,row=0): нужно \, старт /
+	grid[0][5] = CellType.MIRROR_45
+	rotatable[Vector2i(5, 0)] = true
 
 
 # ── Лазер ─────────────────────────────────────────────────────────────────────
 
-## Создаём два Line2D: широкое свечение + тонкий яркий луч
 func _build_laser_lines() -> void:
 	laser_glow = Line2D.new()
 	laser_glow.name = "LaserGlow"
@@ -126,10 +200,9 @@ func _build_laser_lines() -> void:
 	add_child(laser_line)
 
 
-## Трассирует луч по текущему состоянию сетки и обновляет Line2D
 func _redraw_laser() -> void:
 	var points: Array[Vector2] = []
-	var cur := _source_pos   # x = col, y = row
+	var cur := _source_pos
 	var dir := SOURCE_DIR
 	var hit := false
 
@@ -139,7 +212,6 @@ func _redraw_laser() -> void:
 		var nc := cur.x + dir.x
 		var nr := cur.y + dir.y
 
-		# Луч вышел за пределы сетки
 		if nc < 0 or nc >= GRID_COLS or nr < 0 or nr >= GRID_ROWS:
 			points.append(_cell_center(nc, nr))
 			break
@@ -158,14 +230,12 @@ func _redraw_laser() -> void:
 				break
 
 			CellType.MIRROR_45:
-				# "/": RIGHT→UP, UP→RIGHT, LEFT→DOWN, DOWN→LEFT
 				if   dir == DIR_RIGHT: dir = DIR_UP
 				elif dir == DIR_UP:    dir = DIR_RIGHT
 				elif dir == DIR_LEFT:  dir = DIR_DOWN
 				elif dir == DIR_DOWN:  dir = DIR_LEFT
 
 			CellType.MIRROR_135:
-				# "\": RIGHT→DOWN, DOWN→RIGHT, LEFT→UP, UP→LEFT
 				if   dir == DIR_RIGHT: dir = DIR_DOWN
 				elif dir == DIR_DOWN:  dir = DIR_RIGHT
 				elif dir == DIR_LEFT:  dir = DIR_UP
@@ -181,7 +251,6 @@ func _redraw_laser() -> void:
 		_on_win()
 
 
-## Возвращает центр ячейки в мировых координатах
 func _cell_center(col: int, row: int) -> Vector2:
 	return Vector2(
 		GRID_OX + col * STEP + CELL_SIZE * 0.5,
@@ -191,15 +260,24 @@ func _cell_center(col: int, row: int) -> Vector2:
 
 # ── Интерфейс ─────────────────────────────────────────────────────────────────
 
-## Создаём кнопку выхода и панель победы
-## Фон рисуется в _draw() — до рендера дочерних узлов
 func _build_ui() -> void:
-	pass
-	# win_panel убран — после решения сразу закрываемся как в других мини-играх
+	var vp_size := get_viewport_rect().size
+
+	_level_label = Label.new()
+	_level_label.text = _level_text()
+	_level_label.position = Vector2(0.0, 20.0)
+	_level_label.size = Vector2(vp_size.x, 36)
+	_level_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	_level_label.add_theme_font_size_override("font_size", 22)
+	_level_label.add_theme_color_override("font_color", Color(0.0, 1.0, 1.0, 0.9))
+	_level_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	add_child(_level_label)
 
 
-## Создаём невидимые Button-узлы поверх каждой вращаемой ячейки.
-## Вызывается ПОСЛЕДНИМ в _ready() — кнопки должны быть поверх всех других узлов.
+func _level_text() -> String:
+	return "УРОВЕНЬ  %d / 3" % _current_level
+
+
 func _create_all_touch_buttons() -> void:
 	for pos2i in rotatable.keys():
 		var col: int = pos2i.x
@@ -208,7 +286,7 @@ func _create_all_touch_buttons() -> void:
 		btn.position = Vector2(GRID_OX + col * STEP, GRID_OY + row * STEP)
 		btn.size = Vector2(CELL_SIZE, CELL_SIZE)
 		btn.flat = true
-		btn.modulate.a = 0.0                        # полностью прозрачная
+		btn.modulate.a = 0.0
 		btn.mouse_filter = Control.MOUSE_FILTER_STOP
 		btn.pressed.connect(_on_cell_tapped.bind(col, row))
 		add_child(btn)
@@ -216,7 +294,6 @@ func _create_all_touch_buttons() -> void:
 
 # ── Обработка нажатий ─────────────────────────────────────────────────────────
 
-## Переключаем зеркало и перерисовываем
 func _on_cell_tapped(col: int, row: int) -> void:
 	if _solved:
 		return
@@ -231,9 +308,8 @@ func _on_cell_tapped(col: int, row: int) -> void:
 	_redraw_laser()
 
 
-# ── Победа и выход ────────────────────────────────────────────────────────────
+# ── Победа и переход между уровнями ──────────────────────────────────────────
 
-## Вспышка лазера → короткая пауза → закрываем мини-игру как в других пазлах
 func _on_win() -> void:
 	_solved = true
 	var tw := create_tween()
@@ -242,27 +318,52 @@ func _on_win() -> void:
 	await get_tree().create_timer(0.6).timeout
 	if not is_inside_tree():
 		return
-	emit_signal("puzzle_solved")
+
+	if _current_level < 3:
+		_current_level += 1
+		_load_next_level()
+	else:
+		emit_signal("puzzle_solved")
 
 
-## Закрывает мини-игру (кнопка ✕ и кнопка «Закрыть»)
+## Переход на следующий уровень без перезапуска сцены
+func _load_next_level() -> void:
+	_solved = false
+
+	# Удаляем кнопки текущего уровня
+	for child in get_children():
+		if child is Button:
+			child.queue_free()
+
+	# Сбрасываем данные
+	rotatable.clear()
+	_setup_puzzle()
+
+	# Обновляем метку уровня
+	if _level_label:
+		_level_label.text = _level_text()
+
+	# Ждём один кадр (чтобы queue_free отработал)
+	await get_tree().process_frame
+
+	_redraw_laser()
+	queue_redraw()
+	_create_all_touch_buttons()
+
+
 func _on_exit() -> void:
 	emit_signal("minigame_closed")
 
 
 # ── Процедурная отрисовка ─────────────────────────────────────────────────────
 
-## Рисует фон сцены и все ячейки сетки.
-## _draw() вызывается ДО рендера дочерних узлов (Labels, Buttons) — они будут поверх.
 func _draw() -> void:
-	# Фон сцены — текстура
 	var vp_rect := Rect2(Vector2.ZERO, get_viewport_rect().size)
 	if _tex_bg:
 		draw_texture_rect(_tex_bg, vp_rect, false)
 	else:
 		draw_rect(vp_rect, Color(0.039, 0.055, 0.102, 1.0))
 
-	# Рамка вокруг всей сетки
 	var grid_w := GRID_COLS * STEP - CELL_GAP
 	var grid_h := GRID_ROWS * STEP - CELL_GAP
 	draw_rect(
@@ -276,7 +377,6 @@ func _draw() -> void:
 			_draw_cell(col, row)
 
 
-## Рисует одну ячейку: фон, рамку и содержимое
 func _draw_cell(col: int, row: int) -> void:
 	var tl     := Vector2(GRID_OX + col * STEP, GRID_OY + row * STEP)
 	var center := tl + Vector2(CELL_SIZE * 0.5, CELL_SIZE * 0.5)
@@ -284,7 +384,6 @@ func _draw_cell(col: int, row: int) -> void:
 	var is_rot: bool = rotatable.has(Vector2i(col, row))
 	var cell_rect := Rect2(tl, Vector2(CELL_SIZE, CELL_SIZE))
 
-	# Фон ячейки — текстура cell_bg для всех типов
 	if _tex_cell_bg:
 		draw_texture_rect(_tex_cell_bg, cell_rect, false)
 	else:
@@ -305,13 +404,11 @@ func _draw_cell(col: int, row: int) -> void:
 				bg_color = Color(0.063, 0.086, 0.141, 1.0)
 		draw_rect(cell_rect, bg_color)
 
-	# Рамка ячейки
 	if is_rot:
 		draw_rect(cell_rect, Color(0.0, 0.8, 1.0, 0.75), false, 3.0)
 	else:
 		draw_rect(cell_rect, Color(0.165, 0.251, 0.439, 1.0), false, 1.5)
 
-	# Содержимое
 	match ctype:
 		CellType.WALL:
 			_draw_wall(tl, center)
@@ -329,7 +426,6 @@ func _draw_cell(col: int, row: int) -> void:
 				_draw_rotate_icon(tl)
 
 
-## Стена: текстура wall.png
 func _draw_wall(tl: Vector2, center: Vector2) -> void:
 	if _tex_wall:
 		draw_texture_rect(_tex_wall, Rect2(tl, Vector2(CELL_SIZE, CELL_SIZE)), false)
@@ -340,7 +436,6 @@ func _draw_wall(tl: Vector2, center: Vector2) -> void:
 		draw_line(center + Vector2( half, -half), center + Vector2(-half,  half), c, 5.0, true)
 
 
-## Источник лазера: текстура laser_source.png
 func _draw_source(tl: Vector2, center: Vector2) -> void:
 	if _tex_source:
 		draw_texture_rect(_tex_source, Rect2(tl, Vector2(CELL_SIZE, CELL_SIZE)), false)
@@ -355,7 +450,6 @@ func _draw_source(tl: Vector2, center: Vector2) -> void:
 		draw_line(bx, bx + Vector2(-7.0,  5.0), Color(1.0, 1.0, 1.0, 1.0), 2.5, true)
 
 
-## Цель: текстура laser_target.png
 func _draw_target(tl: Vector2, center: Vector2) -> void:
 	if _tex_target:
 		draw_texture_rect(_tex_target, Rect2(tl, Vector2(CELL_SIZE, CELL_SIZE)), false)
@@ -366,7 +460,6 @@ func _draw_target(tl: Vector2, center: Vector2) -> void:
 		draw_circle(center,  6.0, Color(1.0,  0.733, 0.0,  1.0))
 
 
-## Зеркало: текстура mirror_45.png или mirror_135.png
 func _draw_mirror(tl: Vector2, center: Vector2, is_45: bool) -> void:
 	var tex := _tex_mirror_45 if is_45 else _tex_mirror_135
 	if tex:
@@ -376,11 +469,11 @@ func _draw_mirror(tl: Vector2, center: Vector2, is_45: bool) -> void:
 		var p1: Vector2
 		var p2: Vector2
 		if is_45:
-			p1 = tl + Vector2(pad,             CELL_SIZE - pad)   # нижний-левый
-			p2 = tl + Vector2(CELL_SIZE - pad, pad)               # верхний-правый
+			p1 = tl + Vector2(pad,             CELL_SIZE - pad)
+			p2 = tl + Vector2(CELL_SIZE - pad, pad)
 		else:
-			p1 = tl + Vector2(pad,             pad)               # верхний-левый
-			p2 = tl + Vector2(CELL_SIZE - pad, CELL_SIZE - pad)   # нижний-правый
+			p1 = tl + Vector2(pad,             pad)
+			p2 = tl + Vector2(CELL_SIZE - pad, CELL_SIZE - pad)
 		draw_line(p1, p2, Color(0.533, 0.8, 1.0, 0.30), 10.0, true)
 		draw_line(p1, p2, Color(0.533, 0.8, 1.0, 1.0),   5.0, true)
 		var perp := (p2 - p1).normalized().rotated(PI * 0.5) * 2.5
@@ -389,13 +482,11 @@ func _draw_mirror(tl: Vector2, center: Vector2, is_45: bool) -> void:
 		draw_line(m1, m2, Color(1.0, 1.0, 1.0, 0.35), 2.0, true)
 
 
-## Иконка «можно повернуть»: дуга со стрелкой в правом верхнем углу ячейки
 func _draw_rotate_icon(tl: Vector2) -> void:
 	var ic := tl + Vector2(CELL_SIZE - 14.0, 14.0)
 	var r := 7.0
 	var color := Color(0.0, 0.8, 1.0, 0.9)
 	draw_arc(ic, r, 0.5, TAU - 0.4, 18, color, 2.0)
-	# Стрелка на конце дуги
 	var end_a := TAU - 0.4
 	var ep    := ic + Vector2(cos(end_a), sin(end_a)) * r
 	var tang  := Vector2(-sin(end_a), cos(end_a)).normalized() * 5.0
