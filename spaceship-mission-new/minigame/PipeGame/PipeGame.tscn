@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://dwhrn3uncfeqq"]
 
-[ext_resource type="Script" uid="uid://dnn0sc0gur4fk" path="res://minigame/PipeGame/PipeGame.gd" id="1_pipegm"]
+[ext_resource type="Script" uid="uid://c2tavi04k8aqv" path="res://minigame/PipeGame/PipeGame.gd" id="1_pipegm"]
 [ext_resource type="Texture2D" uid="uid://bs166owg0q5gj" path="res://minigame/PipeGame/images/pipes_background.png" id="2_w0irs"]
 [ext_resource type="Texture2D" uid="uid://c13a6h4iv6bw4" path="res://items/left-arrow.png" id="3_7f7ed"]
 [ext_resource type="Texture2D" uid="uid://01noms64b54k" path="res://items/redarrow.png" id="4_q3b6w"]
