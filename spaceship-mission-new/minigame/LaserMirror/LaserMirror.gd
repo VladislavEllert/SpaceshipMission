@@ -263,13 +263,45 @@ func _cell_center(col: int, row: int) -> Vector2:
 func _build_ui() -> void:
 	var vp_size := get_viewport_rect().size
 
+	# Плашка под надпись с уровнем
+	var badge_w := 240.0
+	var badge_h := 44.0
+	var badge_x := (vp_size.x - badge_w) / 2.0
+	var badge_y := 12.0
+
+	var badge_bg := ColorRect.new()
+	badge_bg.color = Color(0.0, 0.08, 0.20, 0.88)
+	badge_bg.position = Vector2(badge_x, badge_y)
+	badge_bg.size = Vector2(badge_w, badge_h)
+	badge_bg.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	add_child(badge_bg)
+
+	# Рамка плашки через Panel + StyleBoxFlat
+	var badge_border := Panel.new()
+	badge_border.position = Vector2(badge_x, badge_y)
+	badge_border.size = Vector2(badge_w, badge_h)
+	badge_border.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	var style := StyleBoxFlat.new()
+	style.bg_color = Color(0, 0, 0, 0)
+	style.border_color = Color(0.0, 0.85, 1.0, 0.85)
+	style.border_width_left   = 2
+	style.border_width_right  = 2
+	style.border_width_top    = 2
+	style.border_width_bottom = 2
+	style.corner_radius_top_left     = 6
+	style.corner_radius_top_right    = 6
+	style.corner_radius_bottom_left  = 6
+	style.corner_radius_bottom_right = 6
+	badge_border.add_theme_stylebox_override("panel", style)
+	add_child(badge_border)
+
 	_level_label = Label.new()
 	_level_label.text = _level_text()
-	_level_label.position = Vector2(0.0, 20.0)
-	_level_label.size = Vector2(vp_size.x, 36)
+	_level_label.position = Vector2(badge_x, badge_y + 4.0)
+	_level_label.size = Vector2(badge_w, badge_h - 4.0)
 	_level_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	_level_label.add_theme_font_size_override("font_size", 22)
-	_level_label.add_theme_color_override("font_color", Color(0.0, 1.0, 1.0, 0.9))
+	_level_label.add_theme_color_override("font_color", Color(0.0, 1.0, 1.0, 1.0))
 	_level_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(_level_label)
 
