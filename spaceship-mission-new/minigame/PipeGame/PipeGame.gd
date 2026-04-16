@@ -292,11 +292,11 @@ func _update_arrow_position() -> void:
 func _animate_red_arrow() -> void:
 	if _red_arrow == null:
 		return
-	var origin := _red_arrow.position
+	var origin_x := _red_arrow.position.x
 	var tween := create_tween().set_loops()
-	tween.tween_property(_red_arrow, "position", origin + Vector2(8, 0), 0.5)\
+	tween.tween_property(_red_arrow, "position:x", origin_x + 8.0, 0.5)\
 		.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
-	tween.tween_property(_red_arrow, "position", origin, 0.5)\
+	tween.tween_property(_red_arrow, "position:x", origin_x, 0.5)\
 		.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
 
 
