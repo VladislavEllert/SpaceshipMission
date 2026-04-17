@@ -9,7 +9,7 @@
 [ext_resource type="FontFile" uid="uid://b7dduljs7hlra" path="res://Iceberg-Regular.ttf" id="7_bc387"]
 [ext_resource type="Texture2D" uid="uid://ck38uu1ima4b4" path="res://items/compface.png" id="7_hwyyj"]
 [ext_resource type="Texture2D" uid="uid://bb5nn8cxaouot" path="res://items/newreactorfirst.png" id="7_i1w2g"]
-[ext_resource type="PackedScene" path="res://scenes/StarfieldWindow.tscn" id="11_sfwin"]
+[ext_resource type="PackedScene" uid="uid://bwxjh1aytaddv" path="res://scenes/StarfieldWindow.tscn" id="11_sfwin"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bc387"]
 bg_color = Color(0.408329, 0.408329, 0.408329, 1)
@@ -55,7 +55,7 @@ texture = ExtResource("2_i1w2g")
 
 [node name="StarfieldWindow" parent="." instance=ExtResource("11_sfwin")]
 position = Vector2(913, 422)
-polygon = PackedVector2Array(0, 0, 64, 0, 77, 13, 142, 13, 151, 0, 210, 1, 243, 96, 231, 108, 159, 110, 148, 100, 75.4338, 100, 66, 109, -14, 110, -25, 100)
+polygon = PackedVector2Array(3, 1, 33, 1, 64, 2, 77, 13, 142, 13, 151, 0, 209, 1, 243, 96, 232, 109, 159, 110, 150, 99, 75.4338, 100, 66, 109, -14, 110, -25, 100)
 
 [node name="RightArrow" type="Button" parent="."]
 anchors_preset = 6

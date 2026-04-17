@@ -156,15 +156,6 @@ text = "(100;30)
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="EmergencyLightLayer" type="CanvasLayer" parent="."]
-layer = 0
-
-[node name="EmergencyTint" type="ColorRect" parent="EmergencyLightLayer"]
-offset_right = 1280.0
-offset_bottom = 720.0
-mouse_filter = 2
-color = Color(1, 0.25, 0.15, 0)
-
 [node name="MiniGameLayer" type="CanvasLayer" parent="."]
 layer = 0
 
