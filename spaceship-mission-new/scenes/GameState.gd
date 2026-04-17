@@ -45,6 +45,9 @@ var screen_unlocked: bool = false
 var collected_items: Array = []
 var inventory_items: Array = []
 
+# Подсказки (мигающие полигоны-хинты)
+var room4_polygon_clicked: bool = false
+
 # -------------------------------------------------------
 const SAVE_PATH := "user://save_game.cfg"
 
@@ -81,6 +84,7 @@ func save() -> void:
 	cfg.set_value("progress", "screen_unlocked",    screen_unlocked)
 	cfg.set_value("progress", "collected_items",    collected_items)
 	cfg.set_value("progress", "inventory_items",    inventory_items)
+	cfg.set_value("progress", "room4_polygon_clicked", room4_polygon_clicked)
 	cfg.save(SAVE_PATH)
 
 func load_save() -> bool:
@@ -115,6 +119,7 @@ func load_save() -> bool:
 	screen_unlocked    = cfg.get_value("progress", "screen_unlocked",    false)
 	collected_items    = cfg.get_value("progress", "collected_items",    [])
 	inventory_items    = cfg.get_value("progress", "inventory_items",    [])
+	room4_polygon_clicked = cfg.get_value("progress", "room4_polygon_clicked", false)
 	return true
 
 func reset() -> void:
@@ -152,3 +157,4 @@ func reset() -> void:
 	screen_unlocked     = false
 	collected_items     = []
 	inventory_items     = []
+	room4_polygon_clicked = false
