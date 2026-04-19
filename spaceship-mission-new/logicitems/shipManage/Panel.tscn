@@ -5,7 +5,7 @@
 [ext_resource type="Texture2D" uid="uid://d14j1ypfneb3c" path="res://items/down-arrow.png" id="2_pd63f"]
 [ext_resource type="Texture2D" uid="uid://c1fq2kx5j4wx2" path="res://items/panelarrow1.png" id="3_pd63f"]
 [ext_resource type="FontFile" uid="uid://b7dduljs7hlra" path="res://Iceberg-Regular.ttf" id="4_4ua0v"]
-[ext_resource type="Texture2D" uid="uid://c556fjblcury3" path="res://items/gamepad_1865458.png" id="6_oeod8"]
+[ext_resource type="Texture2D" uid="uid://7b485gfxgny7" path="res://items/up.png" id="6_ft7su"]
 [ext_resource type="Texture2D" uid="uid://dphg4ypgpgbyh" path="res://items/triangle_7492921.png" id="7_4y08j"]
 [ext_resource type="Texture2D" uid="uid://df1l8nqclynxn" path="res://items/record_2221521.png" id="8_ru05u"]
 [ext_resource type="Script" uid="uid://d1u5yf5o5kdol" path="res://logicitems/shipManage/grid_1.gd" id="9_ru05u"]
@@ -28,10 +28,8 @@ corner_radius_bottom_left = 15
 script = ExtResource("1_4y08j")
 
 [node name="Background" type="TextureRect" parent="."]
-offset_left = 1.0
-offset_top = 1.0
-offset_right = 1281.0
-offset_bottom = 721.0
+offset_right = 1280.0
+offset_bottom = 720.0
 texture = ExtResource("1_3ig1j")
 
 [node name="BackButton" type="TextureButton" parent="."]
@@ -114,33 +112,40 @@ texture_normal = ExtResource("3_pd63f")
 [node name="Joystick" type="Node2D" parent="."]
 
 [node name="JoyUp" type="TextureButton" parent="Joystick"]
-offset_left = 164.0
-offset_top = 446.0
-offset_right = 209.0
-offset_bottom = 497.0
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 128.0
+offset_top = 392.0
+offset_right = 248.0
+offset_bottom = 512.0
+grow_horizontal = 2
+grow_vertical = 2
+texture_normal = ExtResource("6_ft7su")
 
 [node name="JoyDown" type="TextureButton" parent="Joystick"]
-offset_left = 163.0
-offset_top = 562.0
-offset_right = 221.0
-offset_bottom = 621.0
+offset_left = 248.0
+offset_top = 640.0
+offset_right = 368.0
+offset_bottom = 760.0
+rotation = 3.14159
+texture_normal = ExtResource("6_ft7su")
 
 [node name="JoyLeft" type="TextureButton" parent="Joystick"]
-offset_left = 92.0
-offset_top = 513.0
-offset_right = 153.0
-offset_bottom = 560.0
+offset_left = 976.0
+offset_top = 576.0
+offset_right = 1096.0
+offset_bottom = 696.0
+rotation = 4.71239
+texture_normal = ExtResource("6_ft7su")
 
 [node name="JoyRight" type="TextureButton" parent="Joystick"]
-offset_left = 231.0
-offset_top = 511.0
-offset_right = 281.0
-offset_bottom = 561.0
-
-[node name="Joy" type="Sprite2D" parent="Joystick"]
-position = Vector2(187, 535)
-scale = Vector2(0.416016, 0.404297)
-texture = ExtResource("6_oeod8")
+offset_left = 1216.0
+offset_top = 456.0
+offset_right = 1336.0
+offset_bottom = 576.0
+rotation = 1.5708
+texture_normal = ExtResource("6_ft7su")
 
 [node name="ScreenArea" type="Node2D" parent="."]
 
@@ -166,6 +171,7 @@ position = Vector2(400, 147)
 script = ExtResource("9_ru05u")
 
 [node name="DialogBox" type="Panel" parent="."]
+visible = false
 offset_left = 42.0
 offset_top = 476.0
 offset_right = 1246.0

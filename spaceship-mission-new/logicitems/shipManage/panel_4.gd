@@ -78,11 +78,14 @@ var joy_input: Vector2 = Vector2.ZERO
 @onready var grid: Node2D = $ScreenArea/Grid
 
 func _ready() -> void:
-	var vp_size := get_viewport_rect().size
-	SCREEN_WIDTH = vp_size.x * 0.383
-	SCREEN_HEIGHT = vp_size.y * 0.556
-	SCREEN_LEFT = (vp_size.x - SCREEN_WIDTH) / 2.0
-	SCREEN_TOP = (vp_size.y - SCREEN_HEIGHT) / 2.0 - 30.0
+	# Размер и позиция экрана берутся из ColorRect screen_bg — он выставлен
+	# в редакторе под видимую область экрана на текстуре фона панели.
+	SCREEN_LEFT = screen_bg.position.x
+	SCREEN_TOP = screen_bg.position.y
+	SCREEN_WIDTH = screen_bg.size.x
+	SCREEN_HEIGHT = screen_bg.size.y
+	grid.position = screen_bg.position
+	grid.set_grid_size(SCREEN_WIDTH, SCREEN_HEIGHT)
 	if not left_plus.pressed.is_connected(_on_left_plus):
 		left_plus.pressed.connect(_on_left_plus)
 	if not left_minus.pressed.is_connected(_on_left_minus):
