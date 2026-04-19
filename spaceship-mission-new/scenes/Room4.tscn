@@ -6,7 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://c13a6h4iv6bw4" path="res://items/left-arrow.png" id="4_ey0fo"]
 [ext_resource type="Texture2D" uid="uid://cb6d26nydhix7" path="res://items/RobotPath.png" id="5_ey0fo"]
 [ext_resource type="FontFile" uid="uid://b7dduljs7hlra" path="res://Iceberg-Regular.ttf" id="5_xsx8e"]
-[ext_resource type="Script" path="res://scenes/blink_polygon_hint.gd" id="6_blinkhint"]
+[ext_resource type="Script" uid="uid://dcep1vj7t6n87" path="res://scenes/blink_polygon_hint.gd" id="6_blinkhint"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xsx8e"]
 bg_color = Color(0.270222, 0.270222, 0.270222, 1)
@@ -25,7 +25,7 @@ script = ExtResource("1_xsx8e")
 
 [node name="Polygon2D" type="Polygon2D" parent="."]
 z_index = 10
-polygon = PackedVector2Array(359, 204, 375, 189, 896, 189, 911, 207, 913, 389, 897, 408, 374, 407, 361, 389)
+polygon = PackedVector2Array(360, 205, 375, 189, 896, 189, 911, 207, 913, 389, 897, 408, 375, 407, 361, 390)
 script = ExtResource("6_blinkhint")
 
 [node name="RoomBackground" type="TextureRect" parent="."]

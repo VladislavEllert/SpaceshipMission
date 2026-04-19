@@ -83,9 +83,9 @@ mouse_filter = 0
 [node name="ToggleButton" type="TextureButton" parent="."]
 layout_mode = 0
 offset_left = 602.0
-offset_top = 130.0
+offset_top = 140.0
 offset_right = 672.0
-offset_bottom = 200.0
+offset_bottom = 210.0
 texture_normal = ExtResource("3_ptwqu")
 
 [connection signal="pressed" from="ToggleButton" to="." method="_on_toggle_button_pressed"]

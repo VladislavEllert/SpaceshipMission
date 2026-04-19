@@ -89,6 +89,8 @@ func _on_reactor_button_pressed() -> void:
 	if inventory.get_selected_item_id() == "reactor":
 		reactor_installed = true
 		GameState.reactor_installed = true  # сохраняем в глобальный стейт
+		if GameState.power_solved and GameState.ship_fully_solved:
+			GameState.door_unlocked = true
 		reactor_place.texture = REACTOR_TEXTURE
 		reactor_place.visible = true
 		reactor_glow.visible = true
