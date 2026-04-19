@@ -53,6 +53,13 @@ var catch_count: int = 0
 var catch_cooldown_timer: float = 0.0  # таймер кулдауна касания
 var game_won: bool = false
 var joy_input: Vector2 = Vector2.ZERO
+# Карта активных касаний: touch_index → позиция на экране.
+# Нужна для мультитача — стандартная Control-система в Godot 4
+# отслеживает только одно нажатие, из-за чего диагонали на мобильном
+# не работали. Читаем события напрямую и смотрим, какие кнопки
+# накрыли пальцы прямо сейчас.
+var _active_touches: Dictionary = {}
+const _MOUSE_TOUCH_ID: int = -1   # «индекс» для эмуляции мышью
 
 # --- Ноды первой игры ---
 @onready var left_screen: ColorRect = $LeftScreen
@@ -104,14 +111,9 @@ func _ready() -> void:
 	screen_area.visible = false
 	screen_bg.visible = false
 
-	joy_up.button_down.connect(func(): joy_input.y = -1)
-	joy_up.button_up.connect(func(): if joy_input.y < 0: joy_input.y = 0)
-	joy_down.button_down.connect(func(): joy_input.y = 1)
-	joy_down.button_up.connect(func(): if joy_input.y > 0: joy_input.y = 0)
-	joy_left.button_down.connect(func(): joy_input.x = -1)
-	joy_left.button_up.connect(func(): if joy_input.x < 0: joy_input.x = 0)
-	joy_right.button_down.connect(func(): joy_input.x = 1)
-	joy_right.button_up.connect(func(): if joy_input.x > 0: joy_input.x = 0)
+	# Сигналы button_down/button_up намеренно не подключаем — многопальцевые
+	# нажатия через них не проходят. Вся логика направления собирается из
+	# _active_touches в _input / _refresh_joy_input.
 
 	# Подключаемся к карт-вьюеру starmap — скрываем кнопку выхода пока открыта карта
 	var main_game := get_tree().get_first_node_in_group("MainGame")
@@ -151,6 +153,62 @@ func _set_buttons_disabled(value: bool) -> void:
 	joy_down.disabled = value
 	joy_left.disabled = value
 	joy_right.disabled = value
+
+func _input(event: InputEvent) -> void:
+	if not joystick_active or game_won:
+		return
+
+	# Собираем активные касания в Dictionary, чтобы потом проверить,
+	# какие D-pad кнопки сейчас прижаты (учитывая все пальцы сразу).
+	if event is InputEventScreenTouch:
+		if event.pressed:
+			_active_touches[event.index] = event.position
+		else:
+			_active_touches.erase(event.index)
+		_refresh_joy_input()
+	elif event is InputEventScreenDrag:
+		_active_touches[event.index] = event.position
+		_refresh_joy_input()
+	elif event is InputEventMouseButton:
+		if event.button_index == MOUSE_BUTTON_LEFT:
+			if event.pressed:
+				_active_touches[_MOUSE_TOUCH_ID] = event.position
+			else:
+				_active_touches.erase(_MOUSE_TOUCH_ID)
+			_refresh_joy_input()
+	elif event is InputEventMouseMotion:
+		if _active_touches.has(_MOUSE_TOUCH_ID):
+			_active_touches[_MOUSE_TOUCH_ID] = event.position
+			_refresh_joy_input()
+
+# Пересчитывает joy_input по всем активным касаниям. Один палец на Up + второй
+# на Right даёт (1, -1) → диагональ.
+func _refresh_joy_input() -> void:
+	var new_input := Vector2.ZERO
+	for pos in _active_touches.values():
+		if _button_touched(joy_up, pos):
+			new_input.y = -1
+		if _button_touched(joy_down, pos):
+			new_input.y = 1
+		if _button_touched(joy_left, pos):
+			new_input.x = -1
+		if _button_touched(joy_right, pos):
+			new_input.x = 1
+	joy_input = new_input
+
+func _button_touched(btn: TextureButton, pos: Vector2) -> bool:
+	if btn == null or btn.disabled or not btn.visible:
+		return false
+	# get_global_rect() не учитывает поворот узла (JoyDown/Left/Right повёрнуты),
+	# а у JoyUp стоит anchors_preset=Full Rect, из-за чего её size растянут почти
+	# на весь экран. Решаем обе проблемы: переводим касание в локальные координаты
+	# кнопки (это снимает поворот), и для размера берём размер текстуры, а не
+	# раздутый size.
+	var local := btn.get_global_transform_with_canvas().affine_inverse() * pos
+	var hit_size := btn.size
+	if btn.texture_normal != null:
+		hit_size = btn.texture_normal.get_size()
+	return Rect2(Vector2.ZERO, hit_size).has_point(local)
 
 func _process(delta: float) -> void:
 	if not joystick_active or game_won:
@@ -267,6 +325,8 @@ func _start_joystick_game() -> void:
 	joystick.visible = true
 	screen_area.visible = true
 	joystick_active = true
+	_active_touches.clear()
+	joy_input = Vector2.ZERO
 
 	var center := Vector2(SCREEN_LEFT + SCREEN_WIDTH / 2.0, SCREEN_TOP + SCREEN_HEIGHT / 2.0)
 	arrow_pos = center
