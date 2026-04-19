@@ -56,24 +56,39 @@ func _start_red_flash() -> void:
 	rect.color    = Color(1.0, 0.0, 0.0, 0.0)
 	rect.position = Vector2.ZERO
 	rect.size     = vp
+	# На мобильном Control перехватывает касания, даже когда прозрачный —
+	# обязательно отключаем, иначе тапы не долетают до _unhandled_input.
+	rect.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	layer.add_child(rect)
 
+	var flash_up   := 0.18
+	var flash_down := 0.28
+	var cycles     := 3
+
 	var tw := create_tween()
-	# 3 вспышки подряд (set_loops не используем — 0 = бесконечно в Godot 4)
-	for _i in range(3):
-		tw.tween_property(rect, "color:a", 0.45, 0.18) \
+	for _i in range(cycles):
+		tw.tween_property(rect, "color:a", 0.45, flash_up) \
 			.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN)
-		tw.tween_property(rect, "color:a", 0.0,  0.28) \
+		tw.tween_property(rect, "color:a", 0.0,  flash_down) \
 			.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
 
-	await tw.finished
-	layer.queue_free()
+	# SceneTreeTimer — надёжнее, чем await tw.finished: на мобильных
+	# при смене сцены ожидание tween иногда не возвращается, и тогда
+	# _flashing остаётся true, а CanvasLayer так и висит сверху.
+	var total := cycles * (flash_up + flash_down) + 0.05
+	await get_tree().create_timer(total).timeout
+	if is_instance_valid(layer):
+		layer.queue_free()
 	_flashing = false
 
 # ── Клик по экрану продвигает сюжет на шагах 0-2 ─────────────────────────────
-func _unhandled_input(event: InputEvent) -> void:
+# Используем _input, а не _unhandled_input: на мобильном касание иногда
+# не долетает до unhandled-фазы, если поверх лежит Control (даже прозрачный).
+# _input срабатывает гарантированно, а конфликта с кнопками нет — после шага
+# CAP_DIALOG мы сразу выходим и клики проходят к TextureButton'ам панелей.
+func _input(event: InputEvent) -> void:
 	if step >= Step.CAP_DIALOG:
-		return   # после открытия панели экранные клики уже не нужны
+		return   # дальше всё кликается через кнопки панелей
 
 	var tapped := false
 	if event is InputEventScreenTouch and event.pressed:
@@ -82,16 +97,20 @@ func _unhandled_input(event: InputEvent) -> void:
 			and event.button_index == MOUSE_BUTTON_LEFT:
 		tapped = true
 
-	if tapped:
-		var frame := Engine.get_process_frames()
-		if frame == _last_tap_frame:
-			return
-		_last_tap_frame = frame
-		if _flashing:
-			get_viewport().set_input_as_handled()
-			return
-		_advance()
+	if not tapped:
+		return
+
+	var frame := Engine.get_process_frames()
+	if frame == _last_tap_frame:
+		return
+	_last_tap_frame = frame
+
+	if _flashing:
 		get_viewport().set_input_as_handled()
+		return
+
+	_advance()
+	get_viewport().set_input_as_handled()
 
 func _advance() -> void:
 	match step:

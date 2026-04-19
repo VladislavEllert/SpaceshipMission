@@ -81,6 +81,10 @@ func _process(delta: float) -> void:
 				obstacles.erase(obs)
 	if is_instance_valid(_flag_node):
 		_flag_node.position.x -= spd * delta
+		# Если игрок перепрыгнул флажок по воздуху, body_entered не сработает —
+		# засчитываем победу, как только флаг ушёл за спину игрока.
+		if _flag_node.position.x < player.position.x:
+			_on_flag_reached(player)
 
 func _unhandled_input(event: InputEvent) -> void:
 	var tapped := false
@@ -108,7 +112,11 @@ func _restart_game() -> void:
 	new_game()
 	call_deferred("_start_game")
 
+const FLAG_CLEAR_GAP: float = 100.0   # минимальный зазор по X между флагом и препятствиями
+
 func _spawn_obstacle() -> void:
+	if _flag_blocks_spawn(1400.0):
+		return
 	var obs = obstacle_scene.instantiate()
 	obs.position = Vector2(1400, 585)
 	obs.body_entered.connect(_on_obstacle_hit)
@@ -117,12 +125,21 @@ func _spawn_obstacle() -> void:
 
 func _spawn_obstacle_group() -> void:
 	var count := randi_range(1, 3)
+	var group_right := 1400.0 + (count - 1) * 45.0
+	if _flag_blocks_spawn(1400.0) or _flag_blocks_spawn(group_right):
+		return
 	for i in count:
 		var obs = obstacle_scene.instantiate()
 		obs.position = Vector2(1400 + i * 45.0, 585)
 		obs.body_entered.connect(_on_obstacle_hit)
 		add_child(obs)
 		obstacles.append(obs)
+
+# Флаг рядом со спавн-точкой? Тогда препятствие в эту точку ставить нельзя.
+func _flag_blocks_spawn(x: float) -> bool:
+	if not is_instance_valid(_flag_node):
+		return false
+	return abs(_flag_node.position.x - x) < FLAG_CLEAR_GAP
 
 func _on_obstacle_hit(body: Node) -> void:
 	if body == player:
@@ -138,6 +155,12 @@ func _game_over() -> void:
 
 func _spawn_flag() -> void:
 	_flag_spawned = true
+	# Находим самое правое существующее препятствие и, если оно близко к точке
+	# спавна флага, сдвигаем флаг правее — чтобы они не оказались в одной точке.
+	var flag_x := 1400.0
+	for obs in obstacles:
+		if is_instance_valid(obs):
+			flag_x = max(flag_x, obs.position.x + FLAG_CLEAR_GAP)
 	var flag := Area2D.new()
 
 	var sprite := Sprite2D.new()
@@ -155,7 +178,7 @@ func _spawn_flag() -> void:
 	shape.position = Vector2(0, -27.5)
 	flag.add_child(shape)
 
-	flag.position = Vector2(1400, 612)
+	flag.position = Vector2(flag_x, 612)
 	flag.body_entered.connect(_on_flag_reached)
 	add_child(flag)
 	_flag_node = flag
@@ -163,6 +186,8 @@ func _spawn_flag() -> void:
 func _on_flag_reached(body: Node) -> void:
 	if body != player:
 		return
+	if not game_running:
+		return   # защита от повторного срабатывания (касание + перепрыг)
 	game_running = false
 	emit_signal("game_won")
 
