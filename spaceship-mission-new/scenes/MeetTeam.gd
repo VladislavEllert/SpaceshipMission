@@ -57,7 +57,7 @@ func _start_red_flash() -> void:
 	rect.position = Vector2.ZERO
 	rect.size     = vp
 	# На мобильном Control перехватывает касания, даже когда прозрачный —
-	# обязательно отключаем, иначе тапы не долетают до _unhandled_input.
+	# обязательно отключаем, иначе тапы не долетают до _input.
 	rect.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	layer.add_child(rect)
 
@@ -72,14 +72,17 @@ func _start_red_flash() -> void:
 		tw.tween_property(rect, "color:a", 0.0,  flash_down) \
 			.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
 
-	# SceneTreeTimer — надёжнее, чем await tw.finished: на мобильных
-	# при смене сцены ожидание tween иногда не возвращается, и тогда
-	# _flashing остаётся true, а CanvasLayer так и висит сверху.
+	# На Android после change_scene_to_file корутина с await иногда
+	# не планируется вовсе — ни tween не стартует, ни _flashing не
+	# сбрасывается. Поэтому вместо await вешаем очистку на сигнал
+	# SceneTreeTimer: сам таймер тикает независимо от корутин.
 	var total := cycles * (flash_up + flash_down) + 0.05
-	await get_tree().create_timer(total).timeout
-	if is_instance_valid(layer):
-		layer.queue_free()
-	_flashing = false
+	get_tree().create_timer(total).timeout.connect(
+		func() -> void:
+			if is_instance_valid(layer):
+				layer.queue_free()
+			_flashing = false
+	)
 
 # ── Клик по экрану продвигает сюжет на шагах 0-2 ─────────────────────────────
 # Используем _input, а не _unhandled_input: на мобильном касание иногда
