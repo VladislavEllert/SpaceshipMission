@@ -6,8 +6,8 @@ extends Node2D
 
 const TYPE_SPEED: float = 0.035
 var dialog_messages: Array[String] = [
-	"Навигация корабля сбита",
-	"Придеться откалибровать полет вручную...",
+	"Навигация корабля сбита.",
+	"Придется откалибровать полет вручную...",
 ]
 var dialog_index: int = 0
 var is_typing: bool = false
