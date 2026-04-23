@@ -57,13 +57,15 @@ func _create_tiles() -> void:
 		tiles_by_number[number] = tile
 
 
-func on_tile_pressed(tile: Node) -> void:
-	var tile_index: int = tile.index_in_board
-
-	if move_tile(tile_index):
-		update_tiles_visual()
-		if is_solved():
-			_on_puzzle_solved()
+func on_tile_swiped(tile: Node, dir: Vector2i) -> void:
+	var t_rc := index_to_rc(tile.index_in_board)
+	var e_rc := index_to_rc(empty_index)
+	# dir.x = column delta, dir.y = row delta
+	if e_rc.x == t_rc.x + dir.y and e_rc.y == t_rc.y + dir.x:
+		if move_tile(tile.index_in_board):
+			update_tiles_visual()
+			if is_solved():
+				_on_puzzle_solved()
 
 
 func can_move(tile_index: int) -> bool:
