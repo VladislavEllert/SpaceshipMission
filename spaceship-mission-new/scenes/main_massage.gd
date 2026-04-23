@@ -6,6 +6,7 @@ extends Control
 var full_text: String = ""
 var char_index: int = 0
 var type_speed: float = 0.02
+var is_typing: bool = false
 
 func _ready() -> void:
 	# Строки статуса — меняются в зависимости от прогресса
@@ -28,14 +29,23 @@ func _ready() -> void:
 func start_typing() -> void:
 	story_label.text = full_text
 	story_label.visible_characters = 0
+	is_typing = true
 	_type_next_char()
 
 func _type_next_char() -> void:
+	if not is_typing:
+		return
 	if story_label.visible_characters >= story_label.get_total_character_count():
+		is_typing = false
 		return
 	story_label.visible_characters += 1
 	await get_tree().create_timer(type_speed).timeout
 	_type_next_char()
+
+func _input(event: InputEvent) -> void:
+	if is_typing and event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
+		is_typing = false
+		story_label.visible_characters = -1
 
 func _close_message() -> void:
 	var main_game := get_tree().get_first_node_in_group("MainGame")
