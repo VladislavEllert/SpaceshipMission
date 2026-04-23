@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=3 uid="uid://bshellgame001"]
 
-[ext_resource type="Script" uid="uid://bla458yqrac3j" path="res://minigame/shell_game/ShellGame.gd" id="1_script"]
+[ext_resource type="Script" uid="uid://bdhd1jy28fenq" path="res://minigame/shell_game/ShellGame.gd" id="1_script"]
 [ext_resource type="Texture2D" uid="uid://c13a6h4iv6bw4" path="res://items/left-arrow.png" id="2_p1t4o"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_badge"]
