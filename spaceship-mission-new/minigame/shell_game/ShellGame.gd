@@ -16,11 +16,11 @@ const SWAP_COUNTS      := [8, 12, 16]
 const CONTAINER_COUNTS := [4,  5,  6]
 const SWAP_DURATION: float = 0.35
 
-const CONTAINER_SIZE := Vector2(200.0, 220.0)
-const CONTAINER_HALF := Vector2(100.0, 110.0)
+const CONTAINER_SIZE := Vector2(360.0, 220.0)
+const CONTAINER_HALF := Vector2(180.0, 110.0)
 const CHIP_SIZE      := Vector2(100.0,  80.0)
-const GRID_GAP_X     := 60.0
-const GRID_GAP_Y     := 60.0
+const GRID_GAP_X     := 28.0
+const GRID_GAP_Y     := 40.0
 const ARC_HEIGHT     := 80.0
 const LIFT_HEIGHT    := -90.0
 const LIFT_DUR       := 0.4
