@@ -1,6 +1,6 @@
 [gd_scene load_steps=13 format=3 uid="uid://c7wbs35qq4ugy"]
 
-[ext_resource type="Script" uid="uid://b6557re21lvf3" path="res://scenes/room_1_2.gd" id="1_bc387"]
+[ext_resource type="Script" uid="uid://bfwlw21vu00bw" path="res://scenes/room_1_2.gd" id="1_bc387"]
 [ext_resource type="Texture2D" uid="uid://bqpcwc6cvmjk5" path="res://ImagesBackground/result_newfirstroom.png" id="2_i1w2g"]
 [ext_resource type="Texture2D" uid="uid://ch4kncjxv2o5" path="res://items/right-arrow.png" id="3_sf7up"]
 [ext_resource type="Texture2D" uid="uid://c13a6h4iv6bw4" path="res://items/left-arrow.png" id="4_xhlaj"]
@@ -9,7 +9,7 @@
 [ext_resource type="FontFile" uid="uid://b7dduljs7hlra" path="res://Iceberg-Regular.ttf" id="7_bc387"]
 [ext_resource type="Texture2D" uid="uid://ck38uu1ima4b4" path="res://items/compface.png" id="7_hwyyj"]
 [ext_resource type="Texture2D" uid="uid://bb5nn8cxaouot" path="res://items/newreactorfirst.png" id="7_i1w2g"]
-[ext_resource type="PackedScene" path="res://scenes/StarfieldWindow.tscn" id="11_sfwin"]
+[ext_resource type="PackedScene" uid="uid://bwxjh1aytaddv" path="res://scenes/StarfieldWindow.tscn" id="11_sfwin"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bc387"]
 bg_color = Color(0.408329, 0.408329, 0.408329, 1)
