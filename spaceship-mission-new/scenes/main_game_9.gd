@@ -420,6 +420,32 @@ func close_ball() -> void:
 	var inv = $UILayer/InventoryRoot
 	if inv.is_open:
 		inv._on_toggle_button_pressed()
+# -------- MeetTeam (финальная сцена встречи с командой) --------
+# Загружаем как инстанс в MiniGameLayer — точно так же, как мини-игры.
+# change_scene_to_file на мобилке (AuroraOS) после входа во вторую сцену
+# ломает обработку инпута, тапы перестают доходить до Button'ов.
+# Работа в виде инстанса внутри MainGame этой проблемы не имеет —
+# все мини-игры уже доказали, что инпут так доходит надёжно.
+var meet_team_scene: PackedScene = null
+var meet_team_instance: Node = null
+
+func open_meet_team() -> void:
+	if meet_team_instance != null:
+		return
+	if meet_team_scene == null:
+		meet_team_scene = load("res://scenes/MeetTeam.tscn")
+	meet_team_instance = meet_team_scene.instantiate()
+	$MiniGameLayer.add_child(meet_team_instance)
+	$UILayer.visible = false
+	_hide_current_room()
+
+func close_meet_team() -> void:
+	if is_instance_valid(meet_team_instance):
+		$MiniGameLayer.remove_child(meet_team_instance)
+		meet_team_instance.queue_free()
+		meet_team_instance = null
+	$UILayer.visible = true
+
 # -------- ship panel (Room1) --------
 var panel_scene: PackedScene = null
 var panel_instance: Node = null

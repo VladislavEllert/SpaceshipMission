@@ -209,6 +209,16 @@ offset_top = 315.0
 offset_right = 1614.0
 offset_bottom = 665.0
 
+[node name="SkipAllButton" type="Button" parent="."]
+offset_left = 950.0
+offset_top = 140.0
+offset_right = 1230.0
+offset_bottom = 200.0
+theme_override_fonts/font = ExtResource("7_bc387")
+theme_override_font_sizes/font_size = 24
+text = "ПРОПУСТИТЬ ВСЁ"
+
 [connection signal="pressed" from="RightArrow" to="." method="_on_right_pressed"]
 [connection signal="pressed" from="LeftArrow" to="." method="_on_left_pressed"]
 [connection signal="pressed" from="Door" to="." method="_on_door_pressed"]
+[connection signal="pressed" from="SkipAllButton" to="." method="_on_skip_all_pressed"]

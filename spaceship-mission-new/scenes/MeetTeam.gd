@@ -1,15 +1,38 @@
 ## MeetTeam.gd
-## Финальная сцена встречи с командой
-## Порядок: красное мигание → фон → Person → смена фона → DialogPanelCap → DialogPanel → Button
+## Финальная сцена встречи с командой.
+## Грузится как инстанс внутри MainGame ($MiniGameLayer.add_child) — НЕ через
+## change_scene_to_file (на AuroraOS-сборке после смены сцены ломался инпут).
+##
+## Порядок:
+##   - сцена появляется → запускается красное мигание (~1.4с)
+##   - после мигания первый тап → появляется Person
+##   - тап → меняется фон
+##   - тап → появляется панель капитана, TapCatcher выключается
+##   - дальше управление через стрелочки в диалоговых панелях
+##
+## Анимация альфы оверлея и таймер мигания крутятся в _process(delta), без Tween
+## и SceneTreeTimer — так надёжнее всего на этой сборке.
 extends Node2D
 
 enum Step { INITIAL, PERSON_SHOWN, BG_CHANGED, CAP_DIALOG, TEAM_DIALOG, CAP_DIALOG2, DONE }
 
 var step: Step = Step.INITIAL
-var _flashing: bool = true   # блокирует клики пока идёт мигание
-var _last_tap_frame: int = -1
+
+# ── Параметры мигания ──
+const FLASH_UP:     float = 0.18
+const FLASH_DOWN:   float = 0.28
+const FLASH_CYCLES: int   = 3
+const FLASH_PEAK_A: float = 0.45
+const FLASH_TOTAL:  float = FLASH_CYCLES * (FLASH_UP + FLASH_DOWN)
+
+var _flashing: bool = true                 # блокирует тапы пока крутится мигание
+var _flash_elapsed: float = 0.0
+var _flash_layer: CanvasLayer = null
+var _flash_rect:  ColorRect   = null
+var _last_tap_frame: int = -1               # дедуп тапов от двойного срабатывания
 
 @onready var background:       TextureRect   = $Background
+@onready var tap_catcher:      ColorRect     = $TapCatcher
 @onready var person:           Sprite2D      = $Person
 @onready var nav_button:       TextureButton = $Button
 
@@ -21,7 +44,14 @@ var _last_tap_frame: int = -1
 @onready var team_next_btn:    TextureButton = $DialogPanel/NextButton
 @onready var team_label:       RichTextLabel = $DialogPanel/DialogLabel
 
-var tex_bg2 := preload("res://ImagesBackground/result_finalroomhappy.png") as Texture2D
+## Использовали `result_finalroomhappy.png` — но этот файл физически удалён,
+## остался только сиротский .import (compress/mode=0 без etc2_astc-варианта).
+## На десктопе работало по закешированному .ctex, на Android при экспорте
+## ассет либо терялся, либо приходил в формате, несовместимом с GLES Compatibility,
+## и `preload` возвращал null → подмена фона на втором тапе ломалась тихо.
+## Актуальная версия — `_1`, импортирована корректно (s3tc_bptc + etc2_astc).
+var tex_bg2 := preload("res://ImagesBackground/result_finalroomhappy_1.png") as Texture2D
+
 
 func _ready() -> void:
 	person.visible           = false
@@ -42,64 +72,73 @@ func _ready() -> void:
 		cap_next_btn.pressed.connect(_on_cap_next_pressed)
 	if not team_next_btn.pressed.is_connected(_on_team_next_pressed):
 		team_next_btn.pressed.connect(_on_team_next_pressed)
+	# TapCatcher — обычный ColorRect с прозрачным цветом и mouse_filter=STOP.
+	# Это самый базовый Control, который гарантированно ловит инпут — у него нет
+	# никаких внутренних стейтбоксов/фокус-логики, как у Button. Тапы по экрану
+	# ловим через gui_input.
+	if not tap_catcher.gui_input.is_connected(_on_tap_catcher_input):
+		tap_catcher.gui_input.connect(_on_tap_catcher_input)
 
-	_start_red_flash()
+	_setup_flash_overlay()
 
 
-func _start_red_flash() -> void:
-	var vp   := get_viewport_rect().size
-	var layer := CanvasLayer.new()
-	layer.layer = 10
-	add_child(layer)
+func _setup_flash_overlay() -> void:
+	var vp := get_viewport_rect().size
+	_flash_layer = CanvasLayer.new()
+	_flash_layer.layer = 10
+	add_child(_flash_layer)
 
-	var rect := ColorRect.new()
-	rect.color    = Color(1.0, 0.0, 0.0, 0.0)
-	rect.position = Vector2.ZERO
-	rect.size     = vp
-	# На мобильном Control перехватывает касания, даже когда прозрачный —
-	# обязательно отключаем, иначе тапы не долетают до _input.
-	rect.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	layer.add_child(rect)
+	_flash_rect = ColorRect.new()
+	_flash_rect.color    = Color(1.0, 0.0, 0.0, 0.0)
+	_flash_rect.position = Vector2.ZERO
+	_flash_rect.size     = vp
+	# Обязательно IGNORE — иначе ColorRect перехватывает тапы.
+	_flash_rect.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_flash_layer.add_child(_flash_rect)
 
-	var flash_up   := 0.18
-	var flash_down := 0.28
-	var cycles     := 3
 
-	var tw := create_tween()
-	for _i in range(cycles):
-		tw.tween_property(rect, "color:a", 0.45, flash_up) \
-			.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN)
-		tw.tween_property(rect, "color:a", 0.0,  flash_down) \
-			.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+# Считаем альфу мигания вручную, без Tween. Цикл = FLASH_UP + FLASH_DOWN:
+# 0..FLASH_UP — растим до FLASH_PEAK_A, FLASH_UP..(FLASH_UP+FLASH_DOWN) — гасим к 0.
+# После FLASH_TOTAL секунд оверлей удаляется, тапы разблокируются.
+func _process(delta: float) -> void:
+	if not _flashing:
+		return
 
-	# На Android после change_scene_to_file корутина с await иногда
-	# не планируется вовсе — ни tween не стартует, ни _flashing не
-	# сбрасывается. Поэтому вместо await вешаем очистку на сигнал
-	# SceneTreeTimer: сам таймер тикает независимо от корутин.
-	var total := cycles * (flash_up + flash_down) + 0.05
-	get_tree().create_timer(total).timeout.connect(
-		func() -> void:
-			if is_instance_valid(layer):
-				layer.queue_free()
-			_flashing = false
-	)
+	_flash_elapsed += delta
+	if _flash_elapsed >= FLASH_TOTAL:
+		if is_instance_valid(_flash_layer):
+			_flash_layer.queue_free()
+		_flash_layer = null
+		_flash_rect = null
+		_flashing = false
+		return
 
-# ── Клик по экрану продвигает сюжет на шагах 0-2 ─────────────────────────────
-# Используем _input, а не _unhandled_input: на мобильном касание иногда
-# не долетает до unhandled-фазы, если поверх лежит Control (даже прозрачный).
-# _input срабатывает гарантированно, а конфликта с кнопками нет — после шага
-# CAP_DIALOG мы сразу выходим и клики проходят к TextureButton'ам панелей.
-func _input(event: InputEvent) -> void:
+	var cycle_len := FLASH_UP + FLASH_DOWN
+	var t := fmod(_flash_elapsed, cycle_len)
+	var a: float
+	if t < FLASH_UP:
+		a = lerp(0.0, FLASH_PEAK_A, t / FLASH_UP)
+	else:
+		a = lerp(FLASH_PEAK_A, 0.0, (t - FLASH_UP) / FLASH_DOWN)
+	if is_instance_valid(_flash_rect):
+		_flash_rect.color = Color(1.0, 0.0, 0.0, a)
+
+
+# ── Один тап = один шаг вперёд (шаги 0–2). После CAP_DIALOG TapCatcher скрыт. ──
+# Ловим через gui_input ColorRect'а — событие приходит обоими типами:
+# и InputEventMouseButton, и InputEventScreenTouch (из-за emulate_*_from_*).
+# Дедупим по кадру, иначе один тап продвинет сразу 2 шага.
+func _on_tap_catcher_input(event: InputEvent) -> void:
+	if _flashing:
+		return
 	if step >= Step.CAP_DIALOG:
-		return   # дальше всё кликается через кнопки панелей
+		return
 
 	var tapped := false
-	if event is InputEventScreenTouch and event.pressed:
-		tapped = true
-	elif event is InputEventMouseButton and event.pressed \
-			and event.button_index == MOUSE_BUTTON_LEFT:
-		tapped = true
-
+	if event is InputEventMouseButton:
+		tapped = event.pressed and event.button_index == MOUSE_BUTTON_LEFT
+	elif event is InputEventScreenTouch:
+		tapped = event.pressed
 	if not tapped:
 		return
 
@@ -108,12 +147,9 @@ func _input(event: InputEvent) -> void:
 		return
 	_last_tap_frame = frame
 
-	if _flashing:
-		get_viewport().set_input_as_handled()
-		return
-
+	tap_catcher.accept_event()
 	_advance()
-	get_viewport().set_input_as_handled()
+
 
 func _advance() -> void:
 	match step:
@@ -127,28 +163,29 @@ func _advance() -> void:
 
 		Step.BG_CHANGED:
 			dialog_panel_cap.visible = true
+			tap_catcher.visible = false
 			step = Step.CAP_DIALOG
+
 
 # ── Стрелочка в панели капитана ───────────────────────────────────────────────
 func _on_cap_next_pressed() -> void:
 	dialog_panel_cap.visible = false
 	if step == Step.CAP_DIALOG:
-		# Первое сообщение капитана → открываем панель команды
 		dialog_panel.visible = true
 		step = Step.TEAM_DIALOG
 	elif step == Step.CAP_DIALOG2:
-		# Второе сообщение капитана → всё прочитано, показываем кнопку
 		nav_button.visible = true
 		step = Step.DONE
+
 
 # ── Стрелочка в панели команды ────────────────────────────────────────────────
 func _on_team_next_pressed() -> void:
 	dialog_panel.visible = false
-	# Снова открываем панель капитана с финальным сообщением
-	cap_label.text           = "Теперь мы можем продолжить нашу миссию по исследованию глубокого космоса и поиску новых цивилизаций"
+	cap_label.text = "Теперь мы можем продолжить нашу миссию по исследованию глубокого космоса и поиску новых цивилизаций"
 	dialog_panel_cap.visible = true
 	step = Step.CAP_DIALOG2
 
-# ── Кнопка перехода на следующую сцену (подключить позже) ─────────────────────
+
+# ── Кнопка перехода на следующую сцену ────────────────────────────────────────
 func _on_nav_button_pressed() -> void:
 	get_tree().change_scene_to_file("res://scenes/FinalScene.tscn")

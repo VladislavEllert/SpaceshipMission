@@ -183,12 +183,58 @@ func _on_reactor_pressed() -> void:
 func _on_door_pressed() -> void:
 	if GameState.door_unlocked:
 		if GameState.room1_door_opened:
-			get_tree().change_scene_to_file("res://scenes/MeetTeam.tscn")
+			# Открываем MeetTeam как инстанс внутри MainGame, по той же
+			# схеме, что работает у всех мини-игр. change_scene_to_file
+			# здесь на мобилке ломает инпут — тапы не долетают до Button'ов.
+			var main_game := get_tree().get_first_node_in_group("MainGame")
+			if main_game and main_game.has_method("open_meet_team"):
+				main_game.open_meet_team()
+			else:
+				get_tree().change_scene_to_file("res://scenes/MeetTeam.tscn")
 		else:
 			GameState.room1_door_opened = true
 			room_background.texture = BG_DOOR_OPEN
 	else:
 		_open_dialog(screen_dialog, screen_label, screen_next, messages_door_locked)
+
+# DEBUG: ставит все флаги прогресса в "пройдено", открывает дверь визуально.
+# После нажатия можно сразу тапнуть по двери — попадёшь в MeetTeam.
+func _on_skip_all_pressed() -> void:
+	GameState.ball_cleaned         = true
+	GameState.robot_powered        = true
+	GameState.panel_solved         = true
+	GameState.panel_game_won       = true
+	GameState.ship_panel_opened    = true
+	GameState.ship_fully_solved    = true
+	GameState.reactor_colored      = true
+	GameState.reactor_picked_up    = true
+	GameState.reactor_installed    = true
+	GameState.hidden_tool_taken    = true
+	GameState.power_solved         = true
+	GameState.door_unlocked        = true
+	GameState.room1_door_opened    = true
+	GameState.puzzle_solved_15     = true
+	GameState.flask_solved         = true
+	GameState.platformer_solved    = true
+	GameState.jumper_solved        = true
+	GameState.laser_mirror_solved  = true
+	GameState.pipe_game_solved     = true
+	GameState.shell_game_solved    = true
+	GameState.flow_connect_solved  = true
+	GameState.chest1_opened        = true
+	GameState.chest2_opened        = true
+	GameState.screen_unlocked      = true
+
+	# Поле screen_unlocked есть и на main_game, ставим и там
+	var main_game := get_tree().get_first_node_in_group("MainGame")
+	if main_game and "screen_unlocked" in main_game:
+		main_game.screen_unlocked = true
+
+	# Подгоняем визуал комнаты под "всё пройдено"
+	room_background.texture = BG_DOOR_OPEN
+	reactor.visible = false
+	reactor_button.visible = false
+	hidden_button.visible = false
 
 func _open_screen_dialog(messages: Array[String]) -> void:
 	_open_dialog(screen_dialog, screen_label, screen_next, messages)
