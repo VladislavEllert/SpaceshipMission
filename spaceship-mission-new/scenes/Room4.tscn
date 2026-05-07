@@ -1,12 +1,12 @@
 [gd_scene load_steps=9 format=3 uid="uid://c1xbopnljxxr7"]
 
-[ext_resource type="Script" uid="uid://cmkyi7ao02e8d" path="res://scenes/room_4_2.gd" id="1_xsx8e"]
+[ext_resource type="Script" path="res://scenes/room_4_2.gd" id="1_xsx8e"]
 [ext_resource type="Texture2D" uid="uid://b0xotjboolq8k" path="res://ImagesBackground/newroom4back.jpg" id="2_xsx8e"]
 [ext_resource type="Texture2D" uid="uid://ch4kncjxv2o5" path="res://items/right-arrow.png" id="3_mdqbh"]
 [ext_resource type="Texture2D" uid="uid://c13a6h4iv6bw4" path="res://items/left-arrow.png" id="4_ey0fo"]
 [ext_resource type="Texture2D" uid="uid://cb6d26nydhix7" path="res://items/RobotPath.png" id="5_ey0fo"]
 [ext_resource type="FontFile" uid="uid://b7dduljs7hlra" path="res://Iceberg-Regular.ttf" id="5_xsx8e"]
-[ext_resource type="Script" uid="uid://dcep1vj7t6n87" path="res://scenes/blink_polygon_hint.gd" id="6_blinkhint"]
+[ext_resource type="Script" uid="uid://cmsegsv660qfy" path="res://scenes/blink_polygon_hint.gd" id="6_blinkhint"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xsx8e"]
 bg_color = Color(0.270222, 0.270222, 0.270222, 1)

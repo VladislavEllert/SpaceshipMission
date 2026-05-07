@@ -1,10 +1,10 @@
 [gd_scene load_steps=8 format=3 uid="uid://bq1xdunt137es"]
 
 [ext_resource type="Script" uid="uid://baywxa8qxcqpr" path="res://minigame/jumper/scenes/main.gd" id="1_jmain"]
+[ext_resource type="Texture2D" uid="uid://cvymjbixl83u1" path="res://minigame/jumper/images/bg/platformer_sky.png" id="2_175pg"]
 [ext_resource type="PackedScene" uid="uid://c7682rnfolln5" path="res://minigame/jumper/scenes/player.tscn" id="2_jmain"]
+[ext_resource type="Texture2D" uid="uid://cmxgw5xcrv8cw" path="res://minigame/jumper/images/bg/ground1.png" id="3_175pg"]
 [ext_resource type="Texture2D" uid="uid://c13a6h4iv6bw4" path="res://items/left-arrow.png" id="3_scwe8"]
-[ext_resource type="Texture2D" uid="uid://bdo1rhatb8p2y" path="res://minigame/jumper/images/bg/layer1.png" id="4_jmain"]
-[ext_resource type="Texture2D" uid="uid://b2vbhcy0a07ca" path="res://minigame/jumper/images/bg/land.png" id="5_jmain"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_jgnd"]
 size = Vector2(1280, 119)
@@ -20,8 +20,8 @@ corner_radius_bottom_left = 8
 script = ExtResource("1_jmain")
 
 [node name="BgSprite" type="Sprite2D" parent="."]
-scale = Vector2(1.00078, 1.00139)
-texture = ExtResource("4_jmain")
+scale = Vector2(0.938461, 1.07638)
+texture = ExtResource("2_175pg")
 centered = false
 
 [node name="Ground" type="StaticBody2D" parent="."]
@@ -32,9 +32,9 @@ position = Vector2(640, 659.5)
 shape = SubResource("RectangleShape2D_jgnd")
 
 [node name="GroundSprite" type="Sprite2D" parent="Ground"]
-position = Vector2(0, 603)
-scale = Vector2(1.00234, 0.414286)
-texture = ExtResource("5_jmain")
+position = Vector2(0, 598)
+scale = Vector2(0.938462, 0.600985)
+texture = ExtResource("3_175pg")
 centered = false
 
 [node name="Player" parent="." instance=ExtResource("2_jmain")]
